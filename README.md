@@ -10,7 +10,7 @@ The previous work [Commonroad_Scenarios](https://gitlab.lrz.de/ss19/commonroad_s
 
 Define the class `GenerateCRScenarios_I` inheriting the class `GenerateCRScenarios` in [cr_scenario_generation.py](https://gitlab.lrz.de/ss19/commonroad_scenarios/-/blob/master/scenario_generation/cr_scenario_generation.py).
 
-Overload some methods to retain only the initial states for interaction and extend the scenario benchmark Ids with mark **I**.
+Overload some methods to keep only the initial states for interaction and extend the scenario benchmark Ids with mark **I**.
 
 ## Generate interactive CommonRoad scenarios using SUMO
 An example can be found in `example.py`
