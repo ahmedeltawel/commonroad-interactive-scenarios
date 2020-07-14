@@ -1,0 +1,241 @@
+"""
+This class inherits from the class GenerateCRScenarios
+"""
+import os
+from collections import defaultdict
+
+from commonroad.prediction.prediction import TrajectoryPrediction
+from cr_scenario_features.features import changes_lane, get_obstacle_state_list
+from lxml import etree
+from sumo2cr.interface.sumo_simulation import SumoSimulation
+from commonroad.common.file_writer import CommonRoadFileWriter
+from commonroad.common.file_writer import OverwriteExistingFile
+from commonroad.visualization.video import create_scenario_video
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from commonroad.visualization.draw_dispatch_cr import draw_object, plottable_types
+import logging
+import numpy as np
+import copy
+import random
+import warnings
+from commonroad.scenario.trajectory import State, Trajectory
+from commonroad.planning.planning_problem import PlanningProblemSet, PlanningProblem
+from commonroad.scenario.scenario import Scenario, LaneletNetwork
+from commonroad.scenario.obstacle import DynamicObstacle
+from commonroad.geometry.shape import Rectangle
+from typing import Dict, List, Union, Tuple, Callable
+from commonroad.planning.goal import GoalRegion
+from commonroad.common.util import Interval
+from sumo_config.default import SumoCommonRoadConfig
+
+from scenario_generation.enums import EgoSelectionCriterion
+from scenario_generation.scenario_checker import check_collision
+from scenario_generation.config_files.scenario_config import ScenarioConfig
+from scenario_generation.scenario_util import apply_smoothing_filter, find_first_greater, sort_by_list, get_state_at_time
+from scenario_generation.cr_scenario_generation import GenerateCRScenarios
+
+try:
+    from commonroad.common.file_writer import Tag
+except NameError:
+    # using commonroad-io < 2020.1
+    Tag = None
+
+class GenerateCRScenarios_I(GenerateCRScenarios):
+    """
+    Class for generating interactive CommonRoad scenarios with only initial states of vehicles.
+    """
+    def _init(self):
+        super().__init__()
+        #self.scenario_name = GenerateCRScenarios.scenario_name + "_I"
+
+    #Overload the methods in class GenerateCRScenarios
+    def create_planning_problem(self, obstacles, planning_pro_with_lanelet=False,
+                                visualize_ego=False, planning_pro_per_scen=1):
+        """
+        Define planning problem for commonroad scenarios.
+        :param obstacles: commonroad scenarios converted by _get_all_cr_obstacles
+        :param planning_pro_with_lanelet: define goal area in the planning problem by state or lanelet.
+        :param planning_pro_per_scen: number of planning problems generated from one scenario
+        :return: list of dynamic obstacles
+        :return: list of planning problem sets
+        """
+        lanelet_network = self.lanelet_network
+
+        # find some ego vehicles
+        self.logger.debug('start searching for interesting ego vehicles')
+        num_planning_pro, ego_list, obs_list, obs_list_with_ego = self._choose_ego_from_obstacles(planning_pro_per_scen,
+                                                                                                 obstacles)
+
+        list_obstacles = []
+        list_obstacles_with_ego = []  # used when parameter "visualize_ego" is true
+        list_planning_problem_set = []
+        for i in range(num_planning_pro):
+            ego = ego_list[i]
+            obstacles_short = obs_list[i]
+            ####################################################################
+            #retain initial states of vehicles
+            list_initail_state = []
+            for id, obstacle in obstacles_short.items():
+                list_initail_state.append(obstacle.initial_state)
+                obstacle.prediction.trajectory.state_list = copy.deepcopy(list_initail_state)
+            #####################################################################
+
+            # define planning problem id
+            planing_problem_id = 1
+
+            # define initialState
+            initial_pos = ego.initial_state.position
+            initial_v = ego.initial_state.velocity
+            initial_orientation = ego.initial_state.orientation
+            initial_yaw_rate = 0.0
+            initial_slip_angle = 0.0
+            initial_time_step = ego.initial_state.time_step
+            initial_state = State(position=initial_pos,
+                                  velocity=initial_v,
+                                  orientation=initial_orientation,
+                                  yaw_rate=initial_yaw_rate,
+                                  slip_angle=initial_slip_angle,
+                                  time_step=initial_time_step)
+
+            # define goalState using the final state
+            last_state = ego.prediction.trajectory.final_state
+            goal_center = last_state.position
+            goal_orientation = last_state.orientation
+
+            goal_state = last_state
+            goal_state.position = Rectangle(length=6, width=2, center=goal_center, orientation=goal_orientation)
+            goal_state.time_step = Interval(goal_state.time_step - 1, goal_state.time_step)
+
+            goal_state = State(time_step=goal_state.time_step,
+                               position=goal_state.position)
+            state_list = [goal_state]
+            goal_region = GoalRegion(state_list)
+
+            # define goalState using the final lanelet
+            if planning_pro_with_lanelet is True:
+                lanelet_of_goal_position = lanelet_network.find_lanelet_by_position([goal_center])[0]  # list of id
+                if len(lanelet_of_goal_position) > 0:
+                    self.logger.debug(f'{i + 1}th goal lanelet defined at lanelet {lanelet_of_goal_position[0]}')
+                    goal_lanelet = {0: lanelet_of_goal_position}
+                    state_list[0].position = lanelet_network.find_lanelet_by_id(
+                        lanelet_of_goal_position[0]).convert_to_polygon()
+                    goal_region = GoalRegion(state_list, goal_lanelet)
+                else:
+                    self.logger.warning(f'No goal lanelet found for the {i + 1}th planning problem.')
+                    break
+
+            # combine elements of a planning problem and generate planning problem set
+            planning_problem = PlanningProblem(planing_problem_id, initial_state, goal_region)
+            planning_problem_set = PlanningProblemSet()
+            planning_problem_set.add_planning_problem(planning_problem)
+
+            list_obstacles.append(obstacles_short)
+            list_planning_problem_set.append(planning_problem_set)
+            if visualize_ego is True:
+                obstacles_with_ego = obs_list_with_ego[i]
+                ####################################################################
+                #retain initial states of vehicles
+                list_with_ego_initail_state = []
+                for id, obstacle in obstacles_with_ego.items():
+                    for id, obstacle in obstacles_short.items():
+                        list_initail_state.append(obstacle.initial_state)
+                        obstacle.prediction.trajectory.state_list = copy.deepcopy(list_initail_state)
+                #####################################################################
+
+                list_obstacles_with_ego.append(obstacles_with_ego)
+
+        return list_obstacles, list_obstacles_with_ego, list_planning_problem_set
+
+    def write_cr_file_and_video(self, i, scenario_counter, create_video = False, check_validity=True):
+        """
+        Write commonroad scenario file and create corresponding videos.
+        :param i: the i-th map
+        :param scenario_counter: counter for generated scenarios from the i-th map
+        :return: nothing
+        """
+        output_dir_name = os.path.join(self.scenario_folder, '../')
+        # create for each planning problem a cr scenario file and the corresponding videos
+        generated_scenarios = 0
+        for k in range(len(self.list_cr_scenarios)):
+            commonroad_scenario = self.list_cr_scenarios[k]
+
+            if check_validity:
+                if check_collision(commonroad_scenario._dynamic_obstacles) is True:
+                    warnings.warn('<write_cr_file_and_video> Collision detected! Skipping scenario.')
+                    continue
+                else:
+                    self.logger.info('Scenario contains no collision.')
+
+            planning_problem_set = self.list_planning_problem_set[k]
+            
+            #extend the file name with mark I
+            scen_name = self.conf_scenario.map_name + "-" + str(i) + "_" + str(k + 1 + scenario_counter) + "_T-1" + "_I"
+
+            filename = os.path.join(output_dir_name, scen_name + '.xml')
+            # write cr file without ego
+            self.write_final_cr_file(filename, commonroad_scenario, planning_problem_set, check_validity)
+            self.logger.info(f"Commonroad scenario file created for {k + 1 + scenario_counter}th planning problem")
+
+            # write cr file with ego
+            if self.conf_scenario.visualize_ego:
+                commonroad_scenario_with_ego = self.list_cr_scenarios_with_ego[k]
+                filename2 = os.path.join(output_dir_name, scen_name + '.with_ego.xml')
+                self.write_final_cr_file(filename2, commonroad_scenario_with_ego)
+                self.logger.info(f"Commonroad scenario file with ego created for"
+                                 f"{k + 1 + scenario_counter} th planning problem")
+
+            generated_scenarios += 1
+            if create_video is True:
+                # create ego centered video
+                if self.conf_scenario.visualize_ego is True:
+                    cr_scenario_with_ego = self.list_cr_scenarios_with_ego[k]
+                    ego_vehicle = cr_scenario_with_ego.obstacle_by_id(self.conf_scenario.default_ego_id)
+                    video_center_traj = []
+                    ego_state_list = ego_vehicle.prediction.trajectory.state_list
+                    for state in ego_state_list:
+                        video_center_traj.append(state.position)
+                    video_with_ego_path = os.path.join(output_dir_name, scen_name + '_with_ego.mp4')
+                    self.logger.info(f'Create video at {video_with_ego_path}')
+                    create_scenario_video(
+                        [cr_scenario_with_ego, planning_problem_set],
+                        time_begin=0,
+                        delta_time_steps=3,
+                        time_end=self.conf_scenario.cr_scenario_time_steps,
+                        file_path=video_with_ego_path,
+                        plot_limits=None,
+                        draw_params={'scenario': {'dynamic_obstacle': {'show_label': self.conf_scenario.visualize_veh_id},
+                                                  'lanelet_network': {
+                                                      'lanelet': {'show_label': self.conf_scenario.visualize_lanelet_id}}}},
+                        fps=10,
+                        dpi=120)
+                self.logger.info(f"Video created for {k + 1 + scenario_counter}th planning problem (ego visualized)")
+
+        return generated_scenarios
+
+    def write_final_cr_file(self, filename: str, commonroad_scenario, planning_problem_set=None, check_validity=False):
+        """
+        Write final commonroad scenario file.
+        :param filename:
+        :param commonroad_scenario:
+        :param planning_problem_set:
+        :return:
+        """
+        #extend scenario IDs with mark I
+        commonroad_scenario.benchmark_id = self.scenario_name + "_I"
+        if Tag is not None:
+            tags = [Tag(tag) for tag in self.conf_scenario.tags]
+        else:
+            tags = self.conf_scenario.tags
+
+        if planning_problem_set is not None:
+            fw = CommonRoadFileWriter(commonroad_scenario, planning_problem_set, self.conf_scenario.author,
+                                      self.conf_scenario.affiliation, self.conf_scenario.source,
+                                      tags, decimal_precision=12)
+            fw.write_to_file(filename, OverwriteExistingFile.ALWAYS, check_validity=check_validity)
+        else:
+            problemset = PlanningProblemSet(None)
+            file_writer = CommonRoadFileWriter(commonroad_scenario, problemset, self.conf_scenario.author,
+                                               self.conf_scenario.affiliation, self.conf_scenario.source,
+                                               tags, decimal_precision=12)
+            file_writer.write_to_file(filename, OverwriteExistingFile.ALWAYS)
