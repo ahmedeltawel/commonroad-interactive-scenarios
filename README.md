@@ -1,6 +1,6 @@
 # Commonroad Interactive Benchmarks
 
-Extend the existing static CommonRoad scenario generation methods to interative scenarios.
+Extend the existing non-interactive CommonRoad scenario generation methods to interative scenarios.
 
 ## Requirements
 
@@ -13,4 +13,4 @@ Define the class `GenerateCRScenarios_I` inheriting the class `GenerateCRScenari
 Overload some methods to retain only the initial states for interaction and extend the scenario benchmark Ids with mark **I**.
 
 ## Generate interactive CommonRoad scenarios using SUMO
-An example can be found in `genarate_interactive_scenarios.py`
+An example can be found in `example.py`
