@@ -21,4 +21,4 @@ An example can be found in `generate_scenarios.py`
 Check if a scenario is deterministic or not by two means:
 *  Simulate the scenario through sumo-manager multiple times, compare the simulated scenarios. Method defined in ...
 
-*  Read the rou.xml file and check if any key parameters are set to 'random'. Method defined in `determinism_checker.py`. Run the `example.py` to test.
+*  Read rou.xml file and check if any key parameters are set to 'random'. Method defined in `determinism_checker.py`. Run `example.py` to test.
