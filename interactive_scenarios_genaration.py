@@ -2,37 +2,15 @@
 This class inherits from the class GenerateCRScenarios
 """
 import os
-from collections import defaultdict
-
-from commonroad.prediction.prediction import TrajectoryPrediction
-from cr_scenario_features.features import changes_lane, get_obstacle_state_list
-from lxml import etree
-from sumo2cr.interface.sumo_simulation import SumoSimulation
-from commonroad.common.file_writer import CommonRoadFileWriter
-from commonroad.common.file_writer import OverwriteExistingFile
 from commonroad.visualization.video import create_scenario_video
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-from commonroad.visualization.draw_dispatch_cr import draw_object, plottable_types
-import logging
-import numpy as np
 import copy
-import random
 import warnings
-from commonroad.scenario.trajectory import State, Trajectory
+from commonroad.scenario.trajectory import State
 from commonroad.planning.planning_problem import PlanningProblemSet, PlanningProblem
-from commonroad.scenario.scenario import Scenario, LaneletNetwork
-from commonroad.scenario.obstacle import DynamicObstacle
 from commonroad.geometry.shape import Rectangle
-from typing import Dict, List, Union, Tuple, Callable
 from commonroad.planning.goal import GoalRegion
 from commonroad.common.util import Interval
-from sumo_config.default import SumoCommonRoadConfig
-
-from scenario_generation.enums import EgoSelectionCriterion
 from scenario_generation.scenario_checker import check_collision
-from scenario_generation.config_files.scenario_config import ScenarioConfig
-from scenario_generation.scenario_util import apply_smoothing_filter, find_first_greater, sort_by_list, get_state_at_time
 from scenario_generation.cr_scenario_generation import GenerateCRScenarios
 
 try:
@@ -45,9 +23,9 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
     """
     Class for generating interactive CommonRoad scenarios with only initial states of vehicles.
     """
-    def _init(self):
+    def _init_(self):
         super().__init__()
-        #self.scenario_name = GenerateCRScenarios.scenario_name + "_I"
+        GenerateCRScenarios.scenario_name = GenerateCRScenarios.scenario_name + "_I"
 
     #Overload the methods in class GenerateCRScenarios
     def create_planning_problem(self, obstacles, planning_pro_with_lanelet=False,
@@ -74,7 +52,7 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
             ego = ego_list[i]
             obstacles_short = obs_list[i]
             ####################################################################
-            #retain initial states of vehicles
+            #remain initial states of vehicles
             list_initail_state = []
             for id, obstacle in obstacles_short.items():
                 list_initail_state.append(obstacle.initial_state)
@@ -135,7 +113,6 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
             if visualize_ego is True:
                 obstacles_with_ego = obs_list_with_ego[i]
                 ####################################################################
-                #retain initial states of vehicles
                 list_with_ego_initail_state = []
                 for id, obstacle in obstacles_with_ego.items():
                     for id, obstacle in obstacles_short.items():
@@ -168,8 +145,7 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
                     self.logger.info('Scenario contains no collision.')
 
             planning_problem_set = self.list_planning_problem_set[k]
-            
-            #extend the file name with mark I
+
             scen_name = self.conf_scenario.map_name + "-" + str(i) + "_" + str(k + 1 + scenario_counter) + "_T-1" + "_I"
 
             filename = os.path.join(output_dir_name, scen_name + '.xml')
@@ -213,29 +189,3 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
 
         return generated_scenarios
 
-    def write_final_cr_file(self, filename: str, commonroad_scenario, planning_problem_set=None, check_validity=False):
-        """
-        Write final commonroad scenario file.
-        :param filename:
-        :param commonroad_scenario:
-        :param planning_problem_set:
-        :return:
-        """
-        #extend scenario IDs with mark I
-        commonroad_scenario.benchmark_id = self.scenario_name + "_I"
-        if Tag is not None:
-            tags = [Tag(tag) for tag in self.conf_scenario.tags]
-        else:
-            tags = self.conf_scenario.tags
-
-        if planning_problem_set is not None:
-            fw = CommonRoadFileWriter(commonroad_scenario, planning_problem_set, self.conf_scenario.author,
-                                      self.conf_scenario.affiliation, self.conf_scenario.source,
-                                      tags, decimal_precision=12)
-            fw.write_to_file(filename, OverwriteExistingFile.ALWAYS, check_validity=check_validity)
-        else:
-            problemset = PlanningProblemSet(None)
-            file_writer = CommonRoadFileWriter(commonroad_scenario, problemset, self.conf_scenario.author,
-                                               self.conf_scenario.affiliation, self.conf_scenario.source,
-                                               tags, decimal_precision=12)
-            file_writer.write_to_file(filename, OverwriteExistingFile.ALWAYS)
