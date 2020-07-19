@@ -1,6 +1,9 @@
 from xml.etree import ElementTree
 
 def rou_file_determinism_check(rou_file: str) -> bool:
+    """
+    This function finds out if any key parameters in rou file are set to 'random' to check the determinism for one scenario.
+    """
 
     #read rou.xml file
     tree = ElementTree.parse(rou_file)
