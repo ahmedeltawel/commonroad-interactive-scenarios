@@ -146,7 +146,7 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
 
             planning_problem_set = self.list_planning_problem_set[k]
 
-            scen_name = self.conf_scenario.map_name + "-" + str(i) + "_" + str(k + 1 + scenario_counter) + "_T-1" + "_I"
+            scen_name = self.conf_scenario.map_name + "-" + str(i) + "_" + str(k + 1 + scenario_counter) + "_I"
 
             filename = os.path.join(output_dir_name, scen_name + '.xml')
             # write cr file without ego
