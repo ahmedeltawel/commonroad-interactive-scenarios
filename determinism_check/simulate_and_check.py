@@ -1,5 +1,5 @@
 """
-Check the determinism of cr scenarios
+Check the determinism of scenarios by resimulation
 """
 import copy
 import os
@@ -16,10 +16,13 @@ from cr2sumo.interface.sumo_interface import SumoInterface
 from cr2sumo.rpc.sumo_client import SumoRPCClient
 from sumo_config.default import SumoCommonRoadConfig
 
-# get variables needed for the test from scenarioa
+
 
 
 def get_variable_lists(obstacle: DynamicObstacle):
+    '''
+    get variables needed for the test from scenarioa
+    '''
     state_list = obstacle.prediction.trajectory.state_list
     accel_list = []
     velocity_list = []
@@ -35,10 +38,12 @@ def get_variable_lists(obstacle: DynamicObstacle):
     variable_lists = {'accel': accel_list, 'v': velocity_list, "pos_x": position_x_list, 'pos_y': position_y_list, 'orientation': orientation_list}
     return variable_lists
 
-# compare two lists of 'float' --> almost equal
 
 
 def if_equal(list1: List[float], list2: List[float], allowed_error=1e-6) -> bool:
+    '''
+    compare two lists of 'float' --> almost equal
+    '''
     equal = True
     len1 = len(list1)
     len2 = len(list2)
@@ -49,15 +54,15 @@ def if_equal(list1: List[float], list2: List[float], allowed_error=1e-6) -> bool
         for i in range(len1):
             if abs(list1[i] - list2[i]) > allowed_error:
                 equal = False
-                continue
+                break
     return equal
 
 
 def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.getcwd(), "scenarios", "a9")) -> bool:
     """
-    Check if a scenario is deterministic using SUMO.
+    Check if a scenario is deterministic by resimulting scenario through SUMO.
     :param scenario_name: The name of the scenario to be simulated
-    :param scenario_folder: The folder where the rou file can be found
+    :param scenario_folder: The folder where the sumo files can be found
     """
     
     print('Simulating {}'.format(scenario_name))
@@ -71,12 +76,12 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
     ## SIMULATION multiple times
     ##
     list_simulated_scenario = []
-    simulation_times = 2
+    simulation_times = 2 #option
     deterministic = True
     
     for i in range(simulation_times):
         sumo_client: SumoRPCClient = sumo_interface.start_simulator()
-        folder = '/home/zechen/MPfAV/commonroad-interactive-ss20/sumo-manager-dev/example/scenarios/a9'
+        folder = 'path_to_sumo_files'
         # upload folder contains all files needed for sumo-simulation
         sumo_client.send_sumo_scenario(conf.scenario_name, folder)
         sumo_client.initialize(conf)
@@ -84,6 +89,7 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
         #Simulate through all time steps
         for t in range(conf.simulation_steps):
             sumo_client.simulate_step()
+        #Record the simulated scenario
         commonroad_scenario: Scenario = sumo_client.commonroad_scenarios_all_time_steps()
         list_simulated_scenario.append(commonroad_scenario)
         sumo_client.stop()
@@ -95,7 +101,6 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
     list_copy = copy.deepcopy(list_simulated_scenario)
     for idx in range(len(list_simulated_scenario) - 1):
         scenario_test = list_simulated_scenario[idx]
-        # list_copy = copy.deepcopy(list_simulated_scenario)
         del list_copy[idx]
         for scenario in list_copy:
             for obs_test_id, obs_test in scenario_test._dynamic_obstacles.items():
@@ -115,5 +120,5 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
         
     return deterministic
 
-
-deterministic = check_determinism('a9')
+#Test run
+#deterministic = check_determinism('scenario_name')
