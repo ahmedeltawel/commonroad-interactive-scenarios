@@ -9,8 +9,6 @@ from commonroad.scenario.trajectory import State, Trajectory
 from commonroad.scenario.scenario import Scenario, LaneletNetwork
 from commonroad.scenario.obstacle import DynamicObstacle
 
-
-
 import os
 import matplotlib
 matplotlib.use('TkAgg')
@@ -18,10 +16,9 @@ from cr2sumo.interface.sumo_interface import SumoInterface
 from cr2sumo.rpc.sumo_client import SumoRPCClient
 from sumo_config.default import SumoCommonRoadConfig
 
+# get variables needed for the test from scenarioa
 
-##
-##get variables needed for the test from scenarioa
-##
+
 def get_variable_lists(obstacle: DynamicObstacle):
     state_list = obstacle.prediction.trajectory.state_list
     accel_list = []
@@ -38,10 +35,10 @@ def get_variable_lists(obstacle: DynamicObstacle):
     variable_lists = {'accel': accel_list, 'v': velocity_list, "pos_x": position_x_list, 'pos_y': position_y_list, 'orientation': orientation_list}
     return variable_lists
 
-##
-##compare two lists of 'float' --> almost equal
-##
-def if_equal(list1: List[float], list2 : List[float], allowed_error = 1e-6) -> bool:
+# compare two lists of 'float' --> almost equal
+
+
+def if_equal(list1: List[float], list2: List[float], allowed_error=1e-6) -> bool:
     equal = True
     len1 = len(list1)
     len2 = len(list2)
@@ -54,7 +51,6 @@ def if_equal(list1: List[float], list2 : List[float], allowed_error = 1e-6) -> b
                 equal = False
                 continue
     return equal
-
 
 
 def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.getcwd(), "scenarios", "a9")) -> bool:
@@ -80,9 +76,9 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
     
     for i in range(simulation_times):
         sumo_client: SumoRPCClient = sumo_interface.start_simulator()
-        
+        folder = '/home/zechen/MPfAV/commonroad-interactive-ss20/sumo-manager-dev/example/scenarios/a9'
         # upload folder contains all files needed for sumo-simulation
-        sumo_client.send_sumo_scenario(conf.scenario_name, scenario_folder)
+        sumo_client.send_sumo_scenario(conf.scenario_name, folder)
         sumo_client.initialize(conf)
 
         #Simulate through all time steps
@@ -94,32 +90,26 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
      
     sumo_interface.stop_simulator()
     print('Simulation {} ended'.format(scenario_name))
-     
-    
-    #compare the simulated scenarios
+
+    # compare the simulated scenarios
     list_copy = copy.deepcopy(list_simulated_scenario)
     for idx in range(len(list_simulated_scenario) - 1):
         scenario_test = list_simulated_scenario[idx]
-        #list_copy = copy.deepcopy(list_simulated_scenario)
+        # list_copy = copy.deepcopy(list_simulated_scenario)
         del list_copy[idx]
         for scenario in list_copy:
             for obs_test_id, obs_test in scenario_test._dynamic_obstacles.items():
                 variable_lists_test = get_variable_lists(obs_test)
                 variable_lists = get_variable_lists(scenario._dynamic_obstacles[obs_test_id])
-                #use almost equal
+                # use almost equal
                 for key in variable_lists.keys():
                     if not if_equal(variable_lists[key], variable_lists_test[key]):
                         print("This scenario is not deterministic.")
                         deterministic = False
-                        continue
-                    continue
-                continue
-            continue
+                        break
+                break
+            break
 
-                #if variable_lists != variable_lists_test:
-                    #print("This scenario is not deterministic.")
-                    #deterministic = False
-                    #continue
     if deterministic:
         print("This scenario is deterministic.")
         
