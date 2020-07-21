@@ -82,7 +82,7 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
         sumo_client: SumoRPCClient = sumo_interface.start_simulator()
         
         # upload folder contains all files needed for sumo-simulation
-        sumo_client.send_commonroad_scenario(conf.scenario_name, scenario_folder)
+        sumo_client.send_sumo_scenario(conf.scenario_name, scenario_folder)
         sumo_client.initialize(conf)
 
         #Simulate through all time steps
