@@ -1,12 +1,13 @@
 """"
 Adapted from main script to generate sumo scenarios and convert them to interactive cr scenarios for existing cr maps.
-(almost the same as the script generate_cr_scenarios.py)
 """
 import logging
 import traceback
 import random
 
 import matplotlib as mpl
+from pathlib import Path
+import os
 from commonroad.visualization.video import create_scenario_video
 
 from scenario_generation.scenario_util import init_logging
@@ -18,14 +19,15 @@ from pathlib import Path
 from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
 from scenario_generation.interactive_scenarios_genaration import GenerateCRScenarios_I
 from sumo2cr.interface.sumo_simulation import SumoSimulation
+from sumo2cr.maps.util import *
 from sumo2cr.maps.sumo_scenario import ScenarioWrapper
 import shutil
 import time
 
 # Options
-scenario_directory = '/home/user/file_folder'
-output_folder = '/home/user/desired_output_folder'
-CREATE_VIDEO = 0  #True
+scenario_directory = '/home/yueming/cr_map'
+output_folder = '/home/yueming/Scenarios_test'
+CREATE_VIDEO = 0 #True
 
 # load parameters
 from scenario_generation.config_files.scenario_config import ScenarioConfig
@@ -86,7 +88,7 @@ for cr_file in filenames:
 
         scenario_counter = 0
         for j in range(scenario_config.scen_per_map):
-            scenario_name = location_name + '-' + str(map_nr) + "_" + str(j + 1)
+            scenario_name = location_name + '-' + str(map_nr) + "_" + str(j + 1) + "_I"
             sumo_conf.scenario_name = scenario_name
             sumo_conf.scenarios_path = dir_name
 
@@ -112,6 +114,14 @@ for cr_file in filenames:
             sumo_sim.stop()
             scenario = sumo_sim.commonroad_scenarios_all_time_steps()
 
+            ###########################################
+            # keep all egoVehicle ids
+            ego_ids = []
+            vehicle_ids = sumo_sim.ids_cr2sumo
+            for cr_id, sumo_id in vehicle_ids['egoVehicle'].items():
+                    ego_ids.append(int(sumo_id))
+            ###########################################
+
             # select ego vehicles for planning problems and postprocess final CommonRoad scenarios
             cr_scenarios = GenerateCRScenarios_I(scenario, sumo_conf.simulation_steps, sumo_conf.scenario_name,
                                                scenario_config, scenario_dir_name)
@@ -120,6 +130,13 @@ for cr_file in filenames:
 
             scenario_nr_new = cr_scenarios.write_cr_file_and_video(map_nr, scenario_counter, CREATE_VIDEO,
                                                                    check_validity=False)
+            ###############################################
+            # write ego vehicle id to sumo route file
+            rou_file_names = list(Path(scenario_dir_name).rglob("*.rou.xml"))
+            rou_file = str(rou_file_names[0])
+            write_ego_ids_to_rou_file(rou_file, ego_ids)
+            ###############################################
+
             scenario_counter += scenario_nr_new
             obtained_scenario_number += scenario_nr_new
     except BaseException as e:
