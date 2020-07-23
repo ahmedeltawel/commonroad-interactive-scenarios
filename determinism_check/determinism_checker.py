@@ -11,24 +11,29 @@ def rou_file_determinism_check(rou_file: str) -> bool:
     
     deterministic = True
     
+    vehicles = root.findall('vehicle')
+    flows = root.findall('flow')
+    trips = root.findall('trip')
+    
+    
     #get lists of parameters that can be set to 'random' and effect the determinism
     if deterministic:
         list_departSpeed = []
         list_departPos = []
         list_departLane = []
         list_arrivalPos = []
-
-        vehicles = root.findall('vehicle')
-        if vehicles:
-            for vehicle in vehicles:
-                #get the list of 'departSpeed' for all vehicles
-                list_departSpeed.append(vehicle.get('departSpeed'))
-                #get the list of 'departPos' for all vehicles
-                list_departPos.append(vehicle.get('departPos'))
-                #get the list of 'departLane' for all vehicles
-                list_departLane.append(vehicle.get('departLane'))
-                #get the list of 'arrivalPos' for all vehicles
-                list_departLane.append(vehicle.get('arrivalPos'))
+        
+        all_attributes = vehicles + flows + trips
+        if all_attributes:
+            for attribute in all_attributes:
+                #get the list of 'departSpeed' for all vehicles, flows and trips
+                list_departSpeed.append(attribute.get('departSpeed'))
+                #get the list of 'departPos' for all vehicles, flows and trips
+                list_departPos.append(attribute.get('departPos'))
+                #get the list of 'departLane' for all vehicles, flows and trips
+                list_departLane.append(attribute.get('departLane'))
+                #get the list of 'arrivalPos' for all vehicles, flows and trips
+                list_departLane.append(attribute.get('arrivalPos'))
                 
             #check if any item in the lists is set to 'random'
             list_param = list_departSpeed + list_departPos + list_departLane + list_arrivalPos
@@ -39,7 +44,7 @@ def rou_file_determinism_check(rou_file: str) -> bool:
                     break
         else:
             deterministic = False
-            print("There is no vehicle.")
+            print("There is no vehicle, flow or trip defined.")
             
     #check if there exists route distributions
     if deterministic:
@@ -53,24 +58,36 @@ def rou_file_determinism_check(rou_file: str) -> bool:
         if vType_dist:
             print("Found vehicle type distribution.")
             deterministic = False
-    #check if there exists speed distributions
+    #check if there exists speed distributions or stochastic car-following described in 'vType'
     if deterministic:
         list_speedFactor = []
         list_speedDev = []
+        list_sigma = []
         vTypes = root.findall('vType')
         for vType in vTypes:
             list_speedFactor.append(vType.get('speedFactor'))
             list_speedDev.append(vType.get('speedDev'))
-        for speedDev in list_speedDev:
-            if not speedDev == "0":
+            list_sigma.append(vType.get('sigma'))
+        for item in range(len(list_speedDev)):
+            if not list_speedDev[item] == "0":
                 print("Found speed deviation.")
                 deterministic = False
                 break
-        for speedFactor in list_speedFactor:
-            if "norm" in speedFactor:
+            if "norm" in list_speedFactor[item]:
                 print("Found speed deviation.")
                 deterministic = False
                 break
+            if not list_sigma[item] == "0":
+                print("Found stochastic car following behaviors.")
+                deterministic = False
+                break
+    #check if there exist flows with a random number of vehicles
+    if deterministic:
+        for flow in flows:
+            if flow.get('probability'):
+                print("Found flows with random number of vehicles")
+                break
+        
     return deterministic
     
         
