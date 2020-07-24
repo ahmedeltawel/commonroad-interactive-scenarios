@@ -1,0 +1,18 @@
+<!-- generated on 2020-07-24 18:56:50.473556 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<connections>
+	<connection contPos="-4.0" from="29720" fromLane="0" keepClear="true" to="30278" toLane="0"/>
+	<connection contPos="-4.0" from="29720" fromLane="0" keepClear="true" to="30277" toLane="0"/>
+	<connection contPos="-4.0" from="30277" fromLane="0" keepClear="true" to="29523" toLane="0"/>
+	<connection contPos="-4.0" from="30278" fromLane="0" keepClear="true" to="29722" toLane="0"/>
+	<connection contPos="-4.0" from="29722" fromLane="0" keepClear="true" to="30207" toLane="0"/>
+	<connection contPos="-4.0" from="29722" fromLane="0" keepClear="true" to="30206" toLane="0"/>
+	<connection contPos="-4.0" from="30474" fromLane="0" keepClear="true" to="29720" toLane="0"/>
+	<connection contPos="-4.0" from="30567" fromLane="0" keepClear="true" to="29974" toLane="0"/>
+	<connection contPos="-4.0" from="29974" fromLane="0" keepClear="true" to="30475" toLane="0"/>
+	<connection contPos="-4.0" from="29974" fromLane="0" keepClear="true" to="30474" toLane="0"/>
+	<connection contPos="-4.0" from="30475" fromLane="0" keepClear="true" to="29976" toLane="0"/>
+	<connection contPos="-4.0" from="30566" fromLane="0" keepClear="true" to="29556" toLane="0"/>
+	<connection contPos="-4.0" from="29972" fromLane="0" keepClear="true" to="30567" toLane="0"/>
+	<connection contPos="-4.0" from="29972" fromLane="0" keepClear="true" to="30566" toLane="0"/>
+</connections>
