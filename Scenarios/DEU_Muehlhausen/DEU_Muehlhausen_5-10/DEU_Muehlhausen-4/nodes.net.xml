@@ -1,0 +1,19 @@
+<!-- generated on 2020-07-24 17:04:24.662505 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<nodes>
+	<node function="unregulated" id="31" x="185.9695866666667" y="83.77630383333333"/>
+	<node function="unregulated" id="33" x="246.86424499999998" y="118.773845"/>
+	<node function="unregulated" id="34" x="145.01318" y="69.2172965"/>
+	<node function="unregulated" id="37" x="127.587275" y="62.73533750000001"/>
+	<node function="unregulated" id="38" x="207.73863875" y="-24.160634957499997"/>
+	<node function="unregulated" id="41" x="47.1133465" y="25.7644655"/>
+	<node function="unregulated" id="42" x="108.403605" y="150.813525"/>
+	<node function="unregulated" id="47" x="245.32810999999998" y="121.917435"/>
+	<node function="unregulated" id="48" x="48.654065" y="22.6224095"/>
+	<node function="unregulated" id="49" x="123.15728" y="-63.464119999999994"/>
+	<node function="unregulated" id="50" x="269.49672999999996" y="5.37267115"/>
+	<node function="unregulated" id="51" x="217.907965" y="-117.1275"/>
+	<node function="unregulated" id="52" x="221.378385" y="-116.67612"/>
+	<node function="unregulated" id="53" x="267.905735" y="8.4895485"/>
+	<node function="unregulated" id="54" x="124.68809999999999" y="-66.611593"/>
+</nodes>

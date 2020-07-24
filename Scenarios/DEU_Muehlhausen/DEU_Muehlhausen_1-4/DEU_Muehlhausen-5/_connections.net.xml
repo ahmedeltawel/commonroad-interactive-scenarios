@@ -1,0 +1,7 @@
+<!-- generated on 2020-07-24 16:44:17.930953 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<connections>
+	<connection contPos="-4.0" from="2506" fromLane="1" keepClear="true" shape="916.391795,70.1625025 902.06102,76.38299749999999 889.775715,82.044063 " to="2562" toLane="1" via="2562_1"/>
+	<connection contPos="-4.0" from="2506" fromLane="1" keepClear="true" shape="916.391795,70.1625025 912.09318,71.7456215 906.7168200000001,73.27410599999999 896.86016,75.7537125 892.5015450000001,77.13745499999999 888.73609,78.667667 888.27839,78.88062199999999 " to="2562" toLane="2" via="2562_2"/>
+	<connection contPos="-4.0" from="2506" fromLane="0" keepClear="true" shape="917.741485,73.39142749999999 903.508045,79.56980999999999 891.26635,85.21074250000001 " to="2562" toLane="0" via="2562_0"/>
+</connections>

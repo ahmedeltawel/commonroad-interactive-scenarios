@@ -1,0 +1,52 @@
+<!-- generated on 2020-07-24 17:04:24.659726 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<edges>
+	<edge from="31" function="normal" id="3159" numLanes="1" spreadType="center" to="33">
+		<lane index="0" length="51.38652894479011" shape="200.690535,96.22248450000001 223.77778999999998,107.497695 246.86424499999998,118.773845 " speed="33.333333333333336" width="3.499523615997604"/>
+	</edge>
+	<edge from="34" function="normal" id="3162" numLanes="1" spreadType="center" to="31">
+		<lane index="0" length="23.27165483844211" shape="145.01318,69.2172965 155.50197500000002,74.2880845 165.96461,79.3468325 " speed="33.333333333333336" width="3.5000016837683083"/>
+	</edge>
+	<edge from="31" function="normal" id="3163" numLanes="1" spreadType="center" to="37">
+		<lane index="0" length="23.27755052912447" shape="164.458855,82.506028 153.978545,77.4391435 143.502095,72.37397150000001 " speed="33.333333333333336" width="3.4992900643560576"/>
+	</edge>
+	<edge from="31" function="normal" id="2790" numLanes="1" spreadType="center" to="38">
+		<lane disallow="bus truck" index="0" length="73.87306875164992" shape="189.685995,71.0404475 192.26989,65.67545 194.11881499999998,61.122408 195.630065,56.4430565 197.230935,50.201271000000006 198.60114,43.3800985 199.77406,35.4954045 200.7494,26.0454705 202.691325,-0.55445341 202.74040000000002,-1.09547683 " speed="33.333333333333336" width="3.4995087483907064"/>
+	</edge>
+	<edge from="37" function="normal" id="9325" numLanes="1" spreadType="center" to="34">
+		<lane index="0" length="37.03346408887832" shape="111.672455,53.096703500000004 128.341655,61.156174500000006 145.01318,69.2172965 " speed="33.333333333333336" width="3.498579002898891"/>
+	</edge>
+	<edge from="37" function="normal" id="3166" numLanes="1" spreadType="center" to="41">
+		<lane index="0" length="69.99999991056829" shape="110.13176,56.2387095 73.641531,38.5930045 47.1133465,25.7644655 " speed="33.333333333333336" width="3.4990217589997936"/>
+	</edge>
+	<edge from="37" function="normal" id="2725" numLanes="1" spreadType="center" to="42">
+		<lane index="0" length="70.00000061881761" shape="121.451135,82.04025949999999 114.82985,116.94089500000001 108.403605,150.813525 " speed="33.333333333333336" width="3.499088853315959"/>
+	</edge>
+	<edge from="38" function="normal" id="2789" numLanes="1" spreadType="center" to="31">
+		<lane disallow="bus truck" index="0" length="75.1953356602161" shape="206.22493500000002,-0.775719855 206.17795,-0.249935785 204.21451000000002,26.601727 203.21258,36.2008935 202.00367,44.23764 200.590595,51.2070115 198.93851,57.600194 197.366155,62.42944 195.45098000000002,67.133578 192.80592000000001,72.6229755 " speed="33.333333333333336" width="3.4965506326391314"/>
+	</edge>
+	<edge from="47" function="normal" id="3160" numLanes="1" spreadType="center" to="31">
+		<lane index="0" length="51.4041178755694" shape="245.32810999999998,121.917435 222.241865,110.64268 199.13823000000002,99.3591035 " speed="33.333333333333336" width="3.497568671877656"/>
+	</edge>
+	<edge from="48" function="normal" id="3165" numLanes="1" spreadType="center" to="37">
+		<lane index="0" length="70.00000052835719" shape="48.654065,22.6224095 75.16525899999999,35.442091500000004 111.672455,53.096703500000004 " speed="33.333333333333336" width="3.498579002898891"/>
+	</edge>
+	<edge from="38" function="normal" id="2542" numLanes="1" spreadType="center" to="49">
+		<lane index="0" length="70.00000327652484" shape="186.174665,-32.9877415 123.15728,-63.464119999999994 " speed="33.333333333333336" width="3.4988592189085006"/>
+	</edge>
+	<edge from="38" function="normal" id="2546" numLanes="1" spreadType="center" to="50">
+		<lane index="0" length="45.117020014134425" shape="229.39967000000001,-15.309961 249.455515,-4.9655966 269.49672999999996,5.37267115 " speed="33.333333333333336" width="3.499991861193862"/>
+	</edge>
+	<edge from="38" function="normal" id="2793" numLanes="1" spreadType="center" to="51">
+		<lane index="0" length="69.9999985308727" shape="209.237615,-47.666541 217.907965,-117.1275 " speed="33.333333333333336" width="3.4998761387940642"/>
+	</edge>
+	<edge from="52" function="normal" id="2792" numLanes="1" spreadType="center" to="38">
+		<lane index="0" length="70.00000036790257" shape="221.378385,-116.67612 212.7079,-47.215176 " speed="33.333333333333336" width="3.4993948439671727"/>
+	</edge>
+	<edge from="53" function="normal" id="2545" numLanes="1" spreadType="center" to="38">
+		<lane index="0" length="45.125699142320585" shape="267.905735,8.4895485 247.851025,-1.855031045 227.801015,-12.197166 " speed="33.333333333333336" width="3.4985782201488695"/>
+	</edge>
+	<edge from="54" function="normal" id="2543" numLanes="1" spreadType="center" to="38">
+		<lane index="0" length="69.99999757631414" shape="124.68809999999999,-66.611593 187.70524,-36.134721 " speed="33.333333333333336" width="3.5000034025589173"/>
+	</edge>
+</edges>

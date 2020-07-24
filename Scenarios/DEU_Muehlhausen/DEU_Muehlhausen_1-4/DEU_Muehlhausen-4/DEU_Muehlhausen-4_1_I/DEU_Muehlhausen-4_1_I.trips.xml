@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- generated on 2020-07-24 16:53:12.728600 by randomTrips.py UNKNOWN
+  options: -n /home/yueming/Scenarios_test/20200724-165236/DEU_Muehlhausen-4/DEU_Muehlhausen-4_1_I/DEU_Muehlhausen-4_1_I.net.xml -o /home/yueming/Scenarios_test/20200724-165236/DEU_Muehlhausen-4/DEU_Muehlhausen-4_1_I/DEU_Muehlhausen-4_1_I.trips.xml -r /home/yueming/Scenarios_test/20200724-165236/DEU_Muehlhausen-4/DEU_Muehlhausen-4_1_I/DEU_Muehlhausen-4_1_I.rou.xml -b 0 -e 30 -p 0.46864748336301437 <doubleminus>allow-fringe <doubleminus>fringe-factor 1000000000 <doubleminus>trip-attributes=departLane="best" departSpeed="max" departPos="base" 
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <trip id="0" depart="0.00" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="1" depart="0.47" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="2" depart="0.94" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="3" depart="1.41" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="4" depart="1.87" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="5" depart="2.34" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="6" depart="2.81" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="7" depart="3.28" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="8" depart="3.75" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="9" depart="4.22" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="10" depart="4.69" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="11" depart="5.16" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="12" depart="5.62" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="13" depart="6.09" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="14" depart="6.56" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="15" depart="7.03" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="16" depart="7.50" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="17" depart="7.97" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="18" depart="8.44" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="19" depart="8.90" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="20" depart="9.37" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="21" depart="9.84" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="22" depart="10.31" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="23" depart="10.78" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="24" depart="11.25" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="25" depart="11.72" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="26" depart="12.18" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="27" depart="12.65" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="28" depart="13.12" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="29" depart="13.59" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="30" depart="14.06" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="31" depart="14.53" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="32" depart="15.00" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="33" depart="15.47" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="34" depart="15.93" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="35" depart="16.40" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="36" depart="16.87" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="37" depart="17.34" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="38" depart="17.81" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="39" depart="18.28" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="40" depart="18.75" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="41" depart="19.21" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="42" depart="19.68" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="43" depart="20.15" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="44" depart="20.62" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="45" depart="21.09" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="46" depart="21.56" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="47" depart="22.03" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="48" depart="22.50" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="49" depart="22.96" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="50" depart="23.43" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="51" depart="23.90" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="52" depart="24.37" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="53" depart="24.84" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="54" depart="25.31" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="55" depart="25.78" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="56" depart="26.24" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="57" depart="26.71" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="58" depart="27.18" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="59" depart="27.65" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="60" depart="28.12" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="61" depart="28.59" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="62" depart="29.06" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="63" depart="29.52" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+    <trip id="64" depart="29.99" from="3267" to="2653" departLane="best" departSpeed="max" departPos="base"/>
+</routes>
