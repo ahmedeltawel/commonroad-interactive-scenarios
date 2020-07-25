@@ -1,17 +1,22 @@
 """
 This class inherits from the class GenerateCRScenarios
 """
+
 import os
-from commonroad.visualization.video import create_scenario_video
 import copy
 import warnings
-from commonroad.scenario.trajectory import State
-from commonroad.planning.planning_problem import PlanningProblemSet, PlanningProblem
-from commonroad.geometry.shape import Rectangle
 from commonroad.planning.goal import GoalRegion
 from commonroad.common.util import Interval
 from scenario_generation.scenario_checker import check_collision
 from scenario_generation.cr_scenario_generation import GenerateCRScenarios
+from commonroad.visualization.video import create_scenario_video
+from commonroad.scenario.trajectory import State, Trajectory
+from commonroad.planning.planning_problem import PlanningProblemSet, PlanningProblem
+from commonroad.geometry.shape import Rectangle
+
+
+
+
 
 try:
     from commonroad.common.file_writer import Tag
@@ -26,6 +31,9 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
     def _init_(self):
         super().__init__()
         GenerateCRScenarios.scenario_name = GenerateCRScenarios.scenario_name + "_I"
+        # keep all the ego vehicle ids
+        #self.ego_id_list = []
+
 
     #Overload the methods in class GenerateCRScenarios
     def create_planning_problem(self, obstacles, planning_pro_with_lanelet=False,
@@ -50,6 +58,11 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
         list_planning_problem_set = []
         for i in range(num_planning_pro):
             ego = ego_list[i]
+            ###############################################
+            # get ego vehicel ids
+            ego_id = ego.obstacle_id
+            ###############################################
+
             obstacles_short = obs_list[i]
             ####################################################################
             #remain initial states of vehicles
@@ -121,6 +134,8 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
                 #####################################################################
 
                 list_obstacles_with_ego.append(obstacles_with_ego)
+                ###############################################################
+            self.ego_id_list.append(ego_id)
 
         return list_obstacles, list_obstacles_with_ego, list_planning_problem_set
 
