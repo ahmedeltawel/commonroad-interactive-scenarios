@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-from determinism_checker import *
+from route_file_checker import *
 
 scenario_directory = 'Test' #option
 
