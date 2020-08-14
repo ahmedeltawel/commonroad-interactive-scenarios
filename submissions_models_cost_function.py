@@ -377,38 +377,75 @@ class CostFunction:
         return {'cost': total_cost, 'partial_cost_results': partial_cost_results}
 
 
+
 class ClosestDistance(PartialCostFunction):
     id = 'CD'
 
     @classmethod
     def evaluate(cls, scenario, vehicle_model, trajectory):
+        a = 9001        #current minimal distance
+        i = 0           #current time step
+        t = 0           #time step the near collision happend
+        for state in trajectory.state_list:
+            position = state.position
+            for dyn_obs in scenario.dynamic_obstacles:
+                b = dyn_obs.prediction.trajectory.state_at_time_step(i)
+                if b is not None :
+                    if distance.euclidean(position, b.position) < a :
+                        a = distance.euclidean(position, b.position)
+                        t =i
+            i = i + 1
+        #print(t)
+        return a
+
+class ClosestDistanceExtended(PartialCostFunction):  #under development
+    #the idea is the delete random spawning and other nonderministic behavior as an other condition is added.
+    #The distance had to get smaller from time step i-1 to time step i
+    #to ignore e.g. vehicles spawning next to each other.
+    #as scenarios should get 100% deterministic in the futute this function is not needed
+    id = 'CD'
+
+    @classmethod
+    def evaluate(cls, scenario, vehicle_model, trajectory):
         a = 9001
+        t = 0
+        id = None
         i = 0
         for state in trajectory.state_list:
             position = state.position
             for dyn_obs in scenario.dynamic_obstacles:
-                b = dyn_obs.prediction.trajectory.prediction.trajectory.state_at_time_step(i)
-                if b is not None:
-                    if distance.euclidean(position, b.position) < a:
-                        a = b
+                b = dyn_obs.prediction.trajectory.state_at_time_step(i)
+                d = dyn_obs.prediction.trajectory.state_at_time_step(i-1)
+                if b is not None and d is not None:
+                    k = distance.euclidean(position, b.position)
+                    if k < a : #distance has to be smaller than the old maximum
+                        c = distance.euclidean(trajectory.state_list[i-1].position, d.position )
+                        if k<c: #distance has to be larger in the last time step
+                            a = distance.euclidean(position, b.position)
+                            t = i
+                            id = dyn_obs.obstacle_id
             i = i + 1
+        print("Ego vehicle is close to "+str(id)+" at time step "+str(t)+" with "+str(a))
         return a
+
+
+
 
 class AvgSpeed(PartialCostFunction):
     id = 'AS'
 
     @classmethod
     def evaluate(cls, scenario, vehicle_model, trajectory):
-        a = 0
-        b = 0
+        sum_of_data = 0
+        counted_data = 0
         i = 0
         for dyn_obs in scenario.dynamic_obstacles:
             state = dyn_obs.prediction.trajectory.state_at_time_step(i)
             if state is not None:
-                a = a + state.velocity
-                b = b + 1
+                sum_of_data = sum_of_data + state.velocity
+                counted_data = counted_data + 1
             i = i+1
-        return a/b
+        return sum_of_data/counted_data
 
 
 class StrongesBreake(PartialCostFunction):
@@ -416,16 +453,75 @@ class StrongesBreake(PartialCostFunction):
 
     @classmethod
     def evaluate(cls, scenario, vehicle_model, trajectory):
-        a = 0
-        dist = 50
-        i = 0
+        current_strongest_break = 0
+        distance = 50
+        current_timestep = 0
         for dyn_obs in scenario.dynamic_obstacles:
-            state = dyn_obs.prediction.trajectory.state_at_time_step(i)
+            state = dyn_obs.prediction.trajectory.state_at_time_step(current_timestep)
             if state is not None:
-                if a > state.acceleration and distance.euclidean(trajectory.state_at_time_step(i).position, state.position)<dist:
-                    a = state.acceleration
-            i = i+1
+                if current_strongest_break > state.acceleration and distance.euclidean(trajectory.state_at_time_step(current_timestep).position, state.position)<distance:
+                    current_strongest_break = state.acceleration
+                    #print('new strong brake found')
+            current_timestep = current_timestep+1
+        return current_strongest_break
+
+
+
+
+#no sufficient testing done!
+class Evaluation:    #meant for testing with more ego vehicles and more scenarios.
+
+    @classmethod
+    def Distance(cls,scenario, trajectory_list):
+        a=0
+        for trajectory in trajectory_list:
+            b= ClosestDistance.evaluate(scenario, None, trajectory)
+            if b>a:
+                a=b
         return a
+
+    @classmethod
+    def Breake(cls,scenario, trajectory_list):
+        a = 0
+        for trajectory in trajectory_list:
+            b = StrongesBreake.evaluate(scenario, None, trajectory)
+            if b < a:
+                a = b
+        return a
+
+    @classmethod
+    def Speed(cls,scenario, scenario_without_ego):
+        return AvgSpeed.evaluate(scenario_without_ego, None, None) - AvgSpeed.evaluate(scenario, None, None)
+
+    @classmethod
+    def Position(cls,scenario, scenario_without_ego, trajectory_list):
+
+        a = 0
+        b = 0
+        t = 0
+
+        while t < len(trajectory_list[0].state_list):
+            for i in range (len(scenario.dynamic_obstacles)):
+                with_ego = scenario.dynamic_obstacles[i].prediction.trajectory.state_at_time_step(t)
+                without_ego = scenario_without_ego.dynamic_obstacles[i].prediction.trajectory.state_at_time_step(t)
+                if with_ego is not None and without_ego is not None:
+                    a = a + distance.euclidean(without_ego.position, with_ego.position)
+                    b = b +1
+            t = t+1
+
+        return a/b
+
+    #with no testing possibility it does not make sense to extend this approach
+
+
+
+
+
+
+
+
+
+
 
 
 
