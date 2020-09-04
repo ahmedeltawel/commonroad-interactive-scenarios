@@ -1,0 +1,15 @@
+name: cr37
+
+dependencies:
+  - python=3.7
+  - numpy
+  - pip
+#  - pip:
+#      # environment dependencies
+#      - networkx
+#      - triangle
+#      - Polygon3
+#      - pybind11
+#      # learning dependencies
+#      - gym
+#      - stable_baselines
