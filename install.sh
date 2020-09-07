@@ -63,19 +63,53 @@ safe_cd commonroad_scenarios
 git checkout 46c86a33b7cdda5f7c8a4847d7780db56bfe2b7d
 git submodule update --init --recursive
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+conda install cartopy rtree numba
+pip install -r requirements.txt
+
+echo "Installing CommonRoad map-tool"
+safe_cd commonroad-map-tool
+python setup.py install
+safe_cd ..
+
+echo "Installing CommonRoad scenarios-features"
 safe_cd commonroad-scenario-features
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 safe_cd ..
-conda install cartopy rtree numba
+
+echo "Installing sumo-interface"
+safe_cd sumo-interface
 pip install -r requirements.txt
+pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+
+cp pathConfig_DEFAULT.py pathConfig.py
+search="SUMO_BINARY = '/home/user/sumo/bin/sumo'"
+replace="SUMO_BINARY = '${BASEDIR}/sumo/bin/sumo'"
+sed -i "s+${search}+${replace}+g" pathConfig.py
+if [ $? -eq 0 ]; then
+    echo "SUMO_BINARY has been set"
+else
+    fail "Could not set SUMO_BINARY in pathConfig.py"
+fi
 back_to_basedir
 
+echo "Installing SUMO"
+require_sudo apt-get install python3 wget curl g++ libxerces-c-dev libfox-1.6-0 libfox-1.6-dev cmake libsqlite3-dev libgdal-dev libproj-dev libgl2ps-dev
+git clone --recursive https://github.com/mo-kli/sumo.git
+safe_cd sumo
+git checkout 53edc58fcda9d534f9e95a7b66e127a766ed19d8
+mkdir -p build/cmake-build
+safe_cd build/cmake-build
+cmake ../..
+make -j $JOBS
+safe_cd ../..
+export SUMO_HOME="$PWD"
+export PATH=$PATH:$SUMO_HOME/bin
+echo "export SUMO_HOME=$SUMO_HOME" >> ~/.profile
+echo "export PATH=$PATH:$SUMO_HOME/bin" >> ~/.profile
+safe_cd tools
+pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+safe_cd ..
 
-echo "Installing CommonRoad map-tool"
-git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
-safe_cd commonroad-map-tool
-git checkout b24be1d196d728d29524c2554b3e07540e1f2970
-python setup.py install
 back_to_basedir
 
 
@@ -83,7 +117,7 @@ echo "Installing CommonRoad collision-checker"
 git clone https://gitlab.lrz.de/tum-cps/commonroad-collision-checker.git
 safe_cd commonroad-collision-checker
 git checkout 197589618abc1dab44dffb89aed39b71b78786f4
-mkdir build
+mkdir -p build
 safe_cd build
 cmake -DADD_PYTHON_BINDINGS=TRUE -DPATH_TO_PYTHON_ENVIRONMENT="${CONDA_PREFIX}" -DPYTHON_VERSION="${PYTHON_VERSION}" -DCMAKE_BUILD_TYPE=Release ..
 make -j $JOBS
@@ -103,39 +137,4 @@ cmake -DPYTHON_INCLUDE_DIR="${CONDA_PREFIX}/include/python${PYTHON_VERSION}m" -D
 make -j "$JOBS"
 safe_cd ..
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
-back_to_basedir
-
-
-echo "Installing sumo-interface"
-git clone https://gitlab.lrz.de/cps/sumo-interface.git
-safe_cd sumo-interface
-git checkout 3ca9cff5c563c9d6d8d53929a4f521fc6b879e7a
-pip install -r requirements.txt
-pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
-
-cp pathConfig_DEFAULT.py pathConfig.py
-search="SUMO_BINARY = '/home/user/sumo/bin/sumo'"
-replace="SUMO_BINARY = '$PWD/sumo/bin/sumo'"
-sed -i "s+${search}+${replace}+g" pathConfig.py
-if [ $? -eq 0 ]; then
-    echo "SUMO_BINARY has been set"
-else
-    fail "Could not set SUMO_BINARY in pathConfig.py"
-fi
-
-require_sudo apt-get install python3 wget curl g++ libxerces-c-dev libfox-1.6-0 libfox-1.6-dev cmake libsqlite3-dev libgdal-dev libproj-dev libgl2ps-dev
-
-git clone --recursive https://github.com/mo-kli/sumo.git
-safe_cd sumo
-git checkout smooth_lane_change_merge
-mkdir build/cmake-build
-safe_cd build/cmake-build
-cmake ../..
-make -j $JOBS
-safe_cd ../..
-export SUMO_HOME="$PWD"
-echo "export SUMO_HOME=$SUMO_HOME" >> ~/.profile
-safe_cd tools
-pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
-
 back_to_basedir
