@@ -28,11 +28,11 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
     """
     Class for generating interactive CommonRoad scenarios with only initial states of vehicles.
     """
-    def _init_(self):
-        super().__init__()
-        GenerateCRScenarios.scenario_name = GenerateCRScenarios.scenario_name + "_I"
-        # keep all the ego vehicle ids
-        #self.ego_id_list = []
+    # def __init__(self):
+    #     super().__init__()
+    #     GenerateCRScenarios.scenario_name = GenerateCRScenarios.scenario_name + "_I"
+    #     # keep all the ego vehicle ids
+    #     self.ego_id_list = []
 
 
     #Overload the methods in class GenerateCRScenarios
@@ -47,6 +47,7 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
         :return: list of planning problem sets
         """
         lanelet_network = self.lanelet_network
+        self.ego_id_list = []
 
         # find some ego vehicles
         self.logger.debug('start searching for interesting ego vehicles')
@@ -59,8 +60,9 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
         for i in range(num_planning_pro):
             ego = ego_list[i]
             ###############################################
-            # get ego vehicel ids
+            # get ego vehicle ids
             ego_id = ego.obstacle_id
+            self.ego_id_list.append(ego_id)
             ###############################################
 
             obstacles_short = obs_list[i]
@@ -135,7 +137,6 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
 
                 list_obstacles_with_ego.append(obstacles_with_ego)
                 ###############################################################
-            self.ego_id_list.append(ego_id)
 
         return list_obstacles, list_obstacles_with_ego, list_planning_problem_set
 

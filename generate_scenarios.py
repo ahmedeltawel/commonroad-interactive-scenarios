@@ -17,7 +17,7 @@ import os
 from pathlib import Path
 
 from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
-from scenario_generation.interactive_scenarios_genaration import GenerateCRScenarios_I
+from interactive_scenarios_generation import GenerateCRScenarios_I
 from sumo2cr.interface.sumo_simulation import SumoSimulation
 from sumo2cr.maps.util import *
 from sumo2cr.maps.sumo_scenario import ScenarioWrapper
@@ -25,8 +25,9 @@ import shutil
 import time
 
 # Options
-scenario_directory = '/home/yueming/cr_map'
-output_folder = '/home/yueming/Scenarios_test'
+scenario_root = os.path.join(os.path.dirname(__file__), 'scenarios')
+scenario_directory = os.path.join(scenario_root, 'cr')
+output_folder = os.path.join(scenario_root, 'interactive')
 CREATE_VIDEO = 0 #True
 
 # load parameters

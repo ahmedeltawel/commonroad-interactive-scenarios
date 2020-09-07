@@ -6,9 +6,25 @@ Extend the existing non-interactive CommonRoad scenario generation methods to in
 
 *  The previous work [Commonroad_Scenarios](https://gitlab.lrz.de/ss19/commonroad_scenarios) needs to be installed properly.
 
-*  Install [SUMO-CommonRoad Interface](https://gitlab.lrz.de/cps/sumo-interface/-/tree/interactive_SS20)
+*  [SUMO-CommonRoad Interface](https://gitlab.lrz.de/cps/sumo-interface/-/tree/interactive_SS20)
 
-*  Install [commonroad-sumo-manager](https://gitlab.lrz.de/cps/commonroad-sumo-manager), if needed.
+*  [commonroad-sumo-manager](https://gitlab.lrz.de/cps/commonroad-sumo-manager), if needed.
+
+## Installation
+
+This project should be run with conda. Make sure it is installed before proceeding with the installation.
+
+To create an environment for this project including all requirements, run
+```
+conda env create -n cr37 -f environment.yml
+```
+
+
+To install the requirements of the module, simply run
+```
+bash install.sh cr37
+```
+`cr37` to be replaced by the name of your conda environment if needed.
 
 ## interactive_scenarios_genaration.py
 
