@@ -5,8 +5,11 @@ This class inherits from the class GenerateCRScenarios
 import os
 import copy
 import warnings
+from typing import List, Callable
+
 from commonroad.planning.goal import GoalRegion
 from commonroad.common.util import Interval
+from scenario_generation.config_files.scenario_config import ScenarioConfig
 from scenario_generation.scenario_checker import check_collision
 from scenario_generation.cr_scenario_generation import GenerateCRScenarios
 from commonroad.visualization.video import create_scenario_video
@@ -24,16 +27,17 @@ except NameError:
     # using commonroad-io < 2020.1
     Tag = None
 
-class GenerateCRScenarios_I(GenerateCRScenarios):
+class GenerateCRScenarios_Interactive(GenerateCRScenarios):
     """
     Class for generating interactive CommonRoad scenarios with only initial states of vehicles.
     """
-    # def __init__(self):
-    #     super().__init__()
-    #     GenerateCRScenarios.scenario_name = GenerateCRScenarios.scenario_name + "_I"
-    #     # keep all the ego vehicle ids
-    #     self.ego_id_list = []
 
+    def __init__(self, scenario, scenario_length: int, scenario_name: str, config: ScenarioConfig, scenario_folder: str,
+                 timestr: str = None, ego_selection_criteria: List[Callable] = None):
+
+        super().__init__(scenario, scenario_length, scenario_name, config, scenario_folder, timestr,
+                         ego_selection_criteria)
+        self.scenario_name = self.scenario_name + "_I"
 
     #Overload the methods in class GenerateCRScenarios
     def create_planning_problem(self, obstacles, planning_pro_with_lanelet=False,
@@ -67,11 +71,9 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
 
             obstacles_short = obs_list[i]
             ####################################################################
-            #remain initial states of vehicles
-            list_initail_state = []
+            # Keep only the initial state of vehicles
             for id, obstacle in obstacles_short.items():
-                list_initail_state.append(obstacle.initial_state)
-                obstacle.prediction.trajectory.state_list = copy.deepcopy(list_initail_state)
+                obstacle.prediction.trajectory.state_list = [obstacle.initial_state]
             #####################################################################
 
             # define planning problem id
@@ -129,10 +131,7 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
                 obstacles_with_ego = obs_list_with_ego[i]
                 ####################################################################
                 list_with_ego_initail_state = []
-                for id, obstacle in obstacles_with_ego.items():
-                    for id, obstacle in obstacles_short.items():
-                        list_initail_state.append(obstacle.initial_state)
-                        obstacle.prediction.trajectory.state_list = copy.deepcopy(list_initail_state)
+                list_obstacles_with_ego.append(obstacles_with_ego)
                 #####################################################################
 
                 list_obstacles_with_ego.append(obstacles_with_ego)
@@ -148,7 +147,7 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
         :return: nothing
         """
         output_dir_name = os.path.join(self.scenario_folder, '../')
-        # create for each planning problem a cr scenario file and the corresponding videos
+        # create for each planning problem a maps scenario file and the corresponding videos
         generated_scenarios = 0
         for k in range(len(self.list_cr_scenarios)):
             commonroad_scenario = self.list_cr_scenarios[k]
@@ -165,11 +164,11 @@ class GenerateCRScenarios_I(GenerateCRScenarios):
             scen_name = self.conf_scenario.map_name + "-" + str(i) + "_" + str(k + 1 + scenario_counter) + "_I"
 
             filename = os.path.join(output_dir_name, scen_name + '.xml')
-            # write cr file without ego
+            # write maps file without ego
             self.write_final_cr_file(filename, commonroad_scenario, planning_problem_set, check_validity)
             self.logger.info(f"Commonroad scenario file created for {k + 1 + scenario_counter}th planning problem")
 
-            # write cr file with ego
+            # write maps file with ego
             if self.conf_scenario.visualize_ego:
                 commonroad_scenario_with_ego = self.list_cr_scenarios_with_ego[k]
                 filename2 = os.path.join(output_dir_name, scen_name + '.with_ego.xml')
