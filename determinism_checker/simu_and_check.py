@@ -1,5 +1,5 @@
 """
-Check the determinism of scenarios by comparing difference of state values
+Check the determinism of example_scenarios by comparing difference of state values
 """
 import os
 import copy
@@ -60,10 +60,10 @@ def if_equal(list1: List[float], list2 : List[float], allowed_error = 0.5) -> bo
 
 conf = SumoConf()
 conf.scenario_name = 'DEU_Muehlhausen-1_1_I'  # given scenario name
-scenario_folder = os.path.join(os.path.dirname(__file__),'../scenarios')
+scenario_folder = os.path.join(os.path.dirname(__file__),'../example_scenarios')
 scenario_file = os.path.join(scenario_folder, conf.scenario_name)  # path to scenario files
 
-list_simulated_scenario = []  # store simulated scenarios for every simulation
+list_simulated_scenario = []  # store simulated example_scenarios for every simulation
 simulation_times = 2  # simulation times, option
 video_output_folder = '/home/yueming/Scenarios_test'  # output folder path
 
@@ -78,7 +78,7 @@ for i in range(simulation_times):
     for step in range(conf.simulation_steps):
         sumo_sim.simulate_step()
     sumo_sim.stop()
-    # record simulated scenarios
+    # record simulated example_scenarios
     simulated_scenario = sumo_sim.commonroad_scenarios_all_time_steps()
     list_simulated_scenario.append(simulated_scenario)
     # create videos
@@ -120,7 +120,7 @@ for n in range(simulation_times):
 
 
 ###
-# check determinism by comparing states of all vehicles between recorded scenarios
+# check determinism by comparing states of all vehicles between recorded example_scenarios
 ###
 deterministic = True
 list_copy = copy.deepcopy(list_simulated_scenario)
@@ -132,7 +132,7 @@ for idx in range(len(list_simulated_scenario) - 1):
     for scenario in list_copy:
         if not deterministic:
             break
-        # check the num of vehicles in scenarios
+        # check the num of vehicles in example_scenarios
         if len(scenario_test._dynamic_obstacles) != len(scenario._dynamic_obstacles):
             print("This scenario is not deterministic. Different num of obstacle vehicles detected.")
             deterministic = False

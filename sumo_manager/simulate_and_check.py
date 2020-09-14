@@ -1,5 +1,5 @@
 """
-Check the determinism of scenarios by resimulation
+Check the determinism of example_scenarios by resimulation
 """
 import copy
 from copy import deepcopy
@@ -58,7 +58,7 @@ def if_equal(list1: List[float], list2: List[float], allowed_error=1) -> bool:
     return equal
 
 
-def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.getcwd(), "scenarios", "DEU_Muehlhausen-13_2_I")) -> bool:
+def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.getcwd(), "example_scenarios", "DEU_Muehlhausen-13_2_I")) -> bool:
     """
     Check if a scenario is deterministic by resimulting scenario through SUMO.
     :param scenario_name: The name of the scenario to be simulated
@@ -112,7 +112,7 @@ def check_determinism(scenario_name: str, scenario_folder: str=os.path.join(os.g
     sumo_interface.stop_simulator()
     print('Simulation {} ended'.format(scenario_name))
 
-    # compare the simulated scenarios
+    # compare the simulated example_scenarios
     list_copy = copy.deepcopy(list_simulated_scenario)
     for idx in range(len(list_simulated_scenario) - 1):
         scenario_test = list_simulated_scenario[idx]

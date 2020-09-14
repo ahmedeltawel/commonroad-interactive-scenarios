@@ -1,5 +1,5 @@
 """"
-Adapted from main script to generate sumo scenarios and convert them to interactive maps scenarios for existing maps maps.
+Adapted from main script to generate sumo example_scenarios and convert them to interactive maps example_scenarios for existing maps maps.
 """
 import argparse
 import logging
@@ -64,14 +64,17 @@ class CRBenchmarkID:
 def generate_scenarios_argsparser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-crm", "--cr_maps", type=str, default="./scenarios/maps",
-        help="Path to the folder of input maps as CommonRoad scenarios"
+        "-crm", "--cr_maps", type=str, default="./example_scenarios/maps",
+        help="Path to the folder of input maps as CommonRoad example_scenarios"
     )
     parser.add_argument(
-        "-o", "--output", type=str, default="./scenarios/output", help="Output folder path",
+        "-o", "--output", type=str, default="./example_scenarios/output", help="Output folder path",
     )
     parser.add_argument(
         "-v", "--video", action="store_true", default=False, help="Create video",
+    )
+    parser.add_argument(
+        "-nmr", "--num_max_resimulation", type=int, default=10, help="Maximum number of resimulation",
     )
     return parser
 
@@ -93,7 +96,7 @@ def simulate_scenario(sumo_conf: SumoConf, scenario_wrapper: ScenarioWrapper, sc
     # vehicle_ids_sumo2cr = sumo_sim.ids_sumo2cr
     ###########################################
 
-    # select ego vehicles for planning problems and postprocess final CommonRoad scenarios
+    # select ego vehicles for planning problems and postprocess final CommonRoad example_scenarios
     cr_scenarios = GenerateCRScenarios_Interactive(scenario, sumo_conf.simulation_steps,
                                                    sumo_conf.scenario_name,
                                                    scenario_config, scenario_dir_name)
@@ -103,7 +106,7 @@ def simulate_scenario(sumo_conf: SumoConf, scenario_wrapper: ScenarioWrapper, sc
     return cr_scenarios, vehicle_ids_cr2sumo
 
 
-def generate_scenarios(cr_maps_folder_path: str, output_folder_path: str, create_video: bool = False):
+def generate_scenarios(cr_maps_folder_path: str, output_folder_path: str, create_video: bool = False, num_max_resimulation: int = 10):
     # Use vehicle parameters from sumo_config
     sumo_conf = SumoConf()
     cr2net_conf = CR2SumoNetConfig_edited()
@@ -180,7 +183,7 @@ def generate_scenarios(cr_maps_folder_path: str, output_folder_path: str, create
                                                                       cr_map_path=map_file,
                                                                       conf=sumo_conf)
 
-                simulation_rem_num_of_trials = 10
+                simulation_rem_num_of_trials = num_max_resimulation
                 while simulation_rem_num_of_trials > 0:
                     simulation_rem_num_of_trials -= 1
                     cr_scenarios, vehicle_ids_cr2sumo = simulate_scenario(sumo_conf, scenario_wrapper, scenario_config, scenario_dir_name)
@@ -213,4 +216,5 @@ if __name__ == '__main__':
     arguments = generate_scenarios_argsparser().parse_args(sys.argv[1:])
     generate_scenarios(cr_maps_folder_path=arguments.cr_maps,
                        output_folder_path=arguments.output,
-                       create_video=arguments.video)
+                       create_video=arguments.video,
+                       num_max_resimulation=arguments.num_max_resimulation)

@@ -1,5 +1,5 @@
 """
-Check the determinism of scenarios by calculating the deviations
+Check the determinism of example_scenarios by calculating the deviations
 """
 import os
 from sumo2cr.interface.sumo_simulation import SumoSimulation
@@ -33,10 +33,10 @@ def get_variable_lists(obstacle: DynamicObstacle):
 
 conf = SumoCommonRoadConfig()
 conf.scenario_name = 'DEU_Muehlhausen-1_1_I'  # given scenario name
-scenario_folder = os.path.join(os.path.dirname(__file__),'../scenarios')
+scenario_folder = os.path.join(os.path.dirname(__file__),'../example_scenarios')
 scenario_file = os.path.join(scenario_folder, conf.scenario_name)  # path to scenario files
 
-list_simulated_scenario = []  # store simulated scenarios for every simulation
+list_simulated_scenario = []  # store simulated example_scenarios for every simulation
 simulation_times = 10 # simulation times, option
 video_output_folder = '/home/yueming/Scenarios_test'  # output folder path
 
@@ -51,7 +51,7 @@ for i in range(simulation_times):
     for step in range(conf.simulation_steps):
         sumo_sim.simulate_step()
     sumo_sim.stop()
-    # record simulated scenarios
+    # record simulated example_scenarios
     simulated_scenario = sumo_sim.commonroad_scenarios_all_time_steps()
     list_simulated_scenario.append(simulated_scenario)
     # create videos

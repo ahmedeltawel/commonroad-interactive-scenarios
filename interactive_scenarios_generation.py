@@ -29,7 +29,7 @@ except NameError:
 
 class GenerateCRScenarios_Interactive(GenerateCRScenarios):
     """
-    Class for generating interactive CommonRoad scenarios with only initial states of vehicles.
+    Class for generating interactive CommonRoad example_scenarios with only initial states of vehicles.
     """
 
     def __init__(self, scenario, scenario_length: int, scenario_name: str, config: ScenarioConfig, scenario_folder: str,
@@ -43,8 +43,8 @@ class GenerateCRScenarios_Interactive(GenerateCRScenarios):
     def create_planning_problem(self, obstacles, planning_pro_with_lanelet=False,
                                 visualize_ego=False, planning_pro_per_scen=1):
         """
-        Define planning problem for commonroad scenarios.
-        :param obstacles: commonroad scenarios converted by _get_all_cr_obstacles
+        Define planning problem for commonroad example_scenarios.
+        :param obstacles: commonroad example_scenarios converted by _get_all_cr_obstacles
         :param planning_pro_with_lanelet: define goal area in the planning problem by state or lanelet.
         :param planning_pro_per_scen: number of planning problems generated from one scenario
         :return: list of dynamic obstacles
@@ -143,7 +143,7 @@ class GenerateCRScenarios_Interactive(GenerateCRScenarios):
         """
         Write commonroad scenario file and create corresponding videos.
         :param i: the i-th map
-        :param scenario_counter: counter for generated scenarios from the i-th map
+        :param scenario_counter: counter for generated example_scenarios from the i-th map
         :return: nothing
         """
         output_dir_name = os.path.join(self.scenario_folder, '../')
