@@ -3,23 +3,19 @@ This class inherits from the class GenerateCRScenarios
 """
 
 import os
-import copy
 import warnings
 from typing import List, Callable
 
-from commonroad.planning.goal import GoalRegion
 from commonroad.common.util import Interval
-from scenario_generation.config_files.scenario_config import ScenarioConfig
-from scenario_generation.scenario_checker import check_collision
-from scenario_generation.cr_scenario_generation import GenerateCRScenarios
-from commonroad.visualization.video import create_scenario_video
-from commonroad.scenario.trajectory import State, Trajectory
-from commonroad.planning.planning_problem import PlanningProblemSet, PlanningProblem
 from commonroad.geometry.shape import Rectangle
-
-
-
-
+from commonroad.planning.goal import GoalRegion
+from commonroad.planning.planning_problem import PlanningProblemSet, PlanningProblem
+from commonroad.scenario.scenario import Scenario
+from commonroad.scenario.trajectory import State
+from commonroad.visualization.video import create_scenario_video
+from scenario_generation.config_files.scenario_config import ScenarioConfig
+from scenario_generation.cr_scenario_generation import GenerateCRScenarios
+from scenario_generation.scenario_checker import check_collision
 
 try:
     from commonroad.common.file_writer import Tag
@@ -27,19 +23,35 @@ except NameError:
     # using commonroad-io < 2020.1
     Tag = None
 
+
 class GenerateCRScenarios_Interactive(GenerateCRScenarios):
     """
     Class for generating interactive CommonRoad example_scenarios with only initial states of vehicles.
     """
 
-    def __init__(self, scenario, scenario_length: int, scenario_name: str, config: ScenarioConfig, scenario_folder: str,
-                 timestr: str = None, ego_selection_criteria: List[Callable] = None):
-
+    def __init__(self, scenario: Scenario,
+                 scenario_length: int,
+                 scenario_name: str,
+                 config: ScenarioConfig,
+                 scenario_folder: str,
+                 timestr: str = None,
+                 ego_selection_criteria: List[Callable] = None):
+        """
+        Initialize new object
+        :param scenario: The scenario which lanelet network will be used
+        :param scenario_length: The length of the scenario
+        :param scenario_name: The benchmark ID of the scenario
+        :param config: The config of the scenario generation
+        :param scenario_folder: The folder which contains the scenario
+        :param timestr: Time stamp which will be written in folder name for file tracking
+        :param ego_selection_criteria: The list of criteria which will be used for ego selection. If one of the criteria
+        meets then the obstacle will be marked as possible ego vehicle
+        """
         super().__init__(scenario, scenario_length, scenario_name, config, scenario_folder, timestr,
                          ego_selection_criteria)
         self.scenario_name = self.scenario_name + "_I"
 
-    #Overload the methods in class GenerateCRScenarios
+    # Overload the methods in class GenerateCRScenarios
     def create_planning_problem(self, obstacles, planning_pro_with_lanelet=False,
                                 visualize_ego=False, planning_pro_per_scen=1):
         """
@@ -56,7 +68,7 @@ class GenerateCRScenarios_Interactive(GenerateCRScenarios):
         # find some ego vehicles
         self.logger.debug('start searching for interesting ego vehicles')
         num_planning_pro, ego_list, obs_list, obs_list_with_ego = self._choose_ego_from_obstacles(planning_pro_per_scen,
-                                                                                                 obstacles)
+                                                                                                  obstacles)
 
         list_obstacles = []
         list_obstacles_with_ego = []  # used when parameter "visualize_ego" is true
@@ -139,7 +151,7 @@ class GenerateCRScenarios_Interactive(GenerateCRScenarios):
 
         return list_obstacles, list_obstacles_with_ego, list_planning_problem_set
 
-    def write_cr_file_and_video(self, i, scenario_counter, create_video = False, check_validity=True):
+    def write_cr_file_and_video(self, i, scenario_counter, create_video=False, check_validity=True):
         """
         Write commonroad scenario file and create corresponding videos.
         :param i: the i-th map
@@ -195,12 +207,12 @@ class GenerateCRScenarios_Interactive(GenerateCRScenarios):
                         time_end=self.conf_scenario.cr_scenario_time_steps,
                         file_path=video_with_ego_path,
                         plot_limits=None,
-                        draw_params={'scenario': {'dynamic_obstacle': {'show_label': self.conf_scenario.visualize_veh_id},
-                                                  'lanelet_network': {
-                                                      'lanelet': {'show_label': self.conf_scenario.visualize_lanelet_id}}}},
+                        draw_params={
+                            'scenario': {'dynamic_obstacle': {'show_label': self.conf_scenario.visualize_veh_id},
+                                         'lanelet_network': {
+                                             'lanelet': {'show_label': self.conf_scenario.visualize_lanelet_id}}}},
                         fps=10,
                         dpi=120)
                 self.logger.info(f"Video created for {k + 1 + scenario_counter}th planning problem (ego visualized)")
 
         return generated_scenarios
-

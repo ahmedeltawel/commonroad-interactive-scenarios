@@ -31,7 +31,7 @@ This will create an `install` folder, pull all the dependencies and install them
 To generate interactive scenarios use the script `scenario_generator/generate_scenarios.py`. 
 
 ```bash
-python scenario_generator/generate_scenarios.py 
+python generate_scenarios.py 
 ```
 **Arguments:**
 * `--cr_maps`: Path to the folder which contains the CommonRoad scenarios, which maps will be used for the scenarios generation. 

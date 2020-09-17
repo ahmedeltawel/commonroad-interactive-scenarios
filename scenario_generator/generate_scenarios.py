@@ -9,18 +9,14 @@ import random
 from typing import Tuple
 
 import matplotlib as mpl
-from pathlib import Path
-import os
-from commonroad.visualization.video import create_scenario_video
 
 from scenario_generation.scenario_util import init_logging
 
 mpl.use('TkAgg')
-import os
 from pathlib import Path
 
 from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
-from interactive_scenarios_generation import GenerateCRScenarios_Interactive
+from scenario_generator.interactive_scenarios_generation import GenerateCRScenarios_Interactive
 from sumo2cr.interface.sumo_simulation import SumoSimulation
 from sumo2cr.maps.util import *
 from sumo2cr.maps.sumo_scenario import ScenarioWrapper
@@ -34,34 +30,61 @@ from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig
 
 
 class CRBenchmarkID:
+    """
+    Class for creating and splitting benchmark ids
+    """
 
     def __init__(self, country: str, scene: str, config: str, pred: str):
+        """
+        Initialize new object
+        :param country: The country of the scenario
+        :param scene: The scene of the scenario
+        :param config: The config of the scenario
+        :param pred: The type of the prediction of the scenario
+        """
         self.country, self.scene, self.config, self.pred = country, scene, config, pred
         self.benchmark_id = self._build_benchmark_id()
 
-    def _build_benchmark_id(self):
+    def _build_benchmark_id(self) -> str:
+        """
+        Build benchmark ID from the object
+        :return The benchmark ID as string
+        """
         return '_'.join([self.country, self.scene, self.config, self.pred])
 
     @classmethod
-    def from_string(cls, benchmark_id: str):
+    def from_string(cls, benchmark_id: str) -> 'CRBenchmarkID':
+        """
+        Create object from full benchmark ID string
+        :param benchmark_id: The benchmark ID as string
+        :return The benchmark ID as object
+        """
         country, scene, config, pred = cls._split_benchmark_id(benchmark_id)
         return cls(country, scene, config, pred)
 
     @staticmethod
-    def _split_benchmark_id(benchmark_id):
+    def _split_benchmark_id(benchmark_id: str) -> List[str]:
+        """
+        Split benchmark id
+        :param benchmark_id: The benchmark ID as string to be split
+        :return List of strings containing the split values of the benchmark ID
+        """
         split_benchmark_id = benchmark_id.split('_')
         if len(split_benchmark_id) != 4:
             raise ValueError(f"Invalid benchmark ID: {benchmark_id}")
         return split_benchmark_id
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """String value of the benchmark ID"""
         return self.benchmark_id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """The representation of the object"""
         return self.benchmark_id
 
 
-def generate_scenarios_argsparser():
+def generate_scenarios_argsparser() -> argparse.ArgumentParser:
+    """Returns a parser for the script's arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-crm", "--cr_maps", type=str, default="./example_scenarios/maps",
@@ -79,7 +102,18 @@ def generate_scenarios_argsparser():
     return parser
 
 
-def simulate_scenario(sumo_conf: SumoConf, scenario_wrapper: ScenarioWrapper, scenario_config: ScenarioConfig, scenario_dir_name: str) -> Tuple[GenerateCRScenarios_Interactive, dict]:
+def simulate_scenario(sumo_conf: SumoConf,
+                      scenario_wrapper: ScenarioWrapper,
+                      scenario_config: ScenarioConfig,
+                      scenario_dir_path: str) -> Tuple[GenerateCRScenarios_Interactive, dict]:
+    """
+    Simulates traffic for a scenario
+    :param sumo_conf: The SUMO configuration for the traffic simulation
+    :param scenario_wrapper: Object contains scenario-relevant information
+    :param scenario_config: The configuration of the scenario generation
+    :param scenario_dir_path: Path to the folder which contains the scenario
+    :return CR scenario generator object and vehicle ID mapping between CR and SUMO
+    """
     # simulate sumo scenario and extract scenario files
     sumo_sim = SumoSimulation()
     sumo_sim.initialize(sumo_conf, scenario_wrapper=scenario_wrapper)
@@ -99,14 +133,26 @@ def simulate_scenario(sumo_conf: SumoConf, scenario_wrapper: ScenarioWrapper, sc
     # select ego vehicles for planning problems and postprocess final CommonRoad example_scenarios
     cr_scenarios = GenerateCRScenarios_Interactive(scenario, sumo_conf.simulation_steps,
                                                    sumo_conf.scenario_name,
-                                                   scenario_config, scenario_dir_name)
+                                                   scenario_config, scenario_dir_path)
 
     cr_scenarios.create_cr_scenarios(delete_collising_obstacles=True)
 
     return cr_scenarios, vehicle_ids_cr2sumo
 
 
-def generate_scenarios(cr_maps_folder_path: str, output_folder_path: str, create_video: bool = False, num_max_resimulation: int = 10):
+def generate_scenarios(cr_maps_folder_path: str,
+                       output_folder_path: str,
+                       create_video: bool = False,
+                       num_max_resimulation: int = 10) -> int:
+    """
+    Generates interactive scenarios from CR maps
+    :param cr_maps_folder_path: Path to the folder which contains the CR scenarios
+    :param output_folder_path: Path of the output folder
+    :param create_video: Indicates whether to create video about the new scenario or not
+    :param num_max_resimulation: The number of maximum resimulation which is used in cases
+    when no interesting ego vehicle has been found in the generated traffic
+    :return Num of generated scenarios
+    """
     # Use vehicle parameters from sumo_config
     sumo_conf = SumoConf()
     cr2net_conf = CR2SumoNetConfig_edited()
@@ -210,6 +256,7 @@ def generate_scenarios(cr_maps_folder_path: str, output_folder_path: str, create
             logger.warning(f'UNEXPECTED ERROR, continue with next scenario: {traceback.format_exc()}')
 
     logger.info(f'max_num_of_scenarios: {max_num_of_scenarios}, obtained_num_of_scenarios: {obtained_num_of_scenarios}')
+    return obtained_num_of_scenarios
 
 
 if __name__ == '__main__':

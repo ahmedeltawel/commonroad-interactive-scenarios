@@ -20,7 +20,7 @@ from sumo_config.default import SumoCommonRoadConfig
 
 def get_variable_lists(obstacle: DynamicObstacle):
     '''
-    get variables needed for the test from scenarioa
+    get variables needed for the single_Ibbenbueren from scenarioa
     '''
     state_list = obstacle.prediction.trajectory.state_list
     accel_list = []
