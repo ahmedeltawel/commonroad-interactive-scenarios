@@ -1,11 +1,13 @@
 from xml.etree import ElementTree
 
-def rou_file_determinism_check(rou_file: str) -> bool:
-    '''
-    This function gathers info from route files and checks if there are any settings, which can let vehicles spawn randomly.
-    '''
 
-    #read rou.xml file
+def rou_file_determinism_check(rou_file: str) -> bool:
+    """
+    This function gathers info from route files and checks if there are any settings,
+    which can let vehicles spawn randomly.
+    """
+
+    # Read rou.xml file
     tree = ElementTree.parse(rou_file)
     root = tree.getroot()
     
@@ -14,84 +16,53 @@ def rou_file_determinism_check(rou_file: str) -> bool:
     vehicles = root.findall('vehicle')
     flows = root.findall('flow')
     trips = root.findall('trip')
-    
-    
-    #get lists of parameters that can be set to 'random' and effect the determinism
-    if deterministic:
-        list_departSpeed = []
-        list_departPos = []
-        list_departLane = []
-        list_arrivalPos = []
-        
-        all_attributes = vehicles + flows + trips
-        if all_attributes:
-            for attribute in all_attributes:
-                #get the list of 'departSpeed' for all vehicles, flows and trips
-                list_departSpeed.append(attribute.get('departSpeed'))
-                #get the list of 'departPos' for all vehicles, flows and trips
-                list_departPos.append(attribute.get('departPos'))
-                #get the list of 'departLane' for all vehicles, flows and trips
-                list_departLane.append(attribute.get('departLane'))
-                #get the list of 'arrivalPos' for all vehicles, flows and trips
-                list_departLane.append(attribute.get('arrivalPos'))
-                
-            #check if any item in the lists is set to 'random'
-            list_param = list_departSpeed + list_departPos + list_departLane + list_arrivalPos
-            for param in list_param:
-                if param == 'random':
-                    deterministic = False
-                    print("Found parameters set to 'random'.")
-                    break
-        else:
-            deterministic = False
-            print("There is no vehicle, flow or trip defined.")
+
+    all_elements = vehicles + flows + trips
+
+    # Check if there exist flows with a random number of vehicles
+    random_flows = [flow for flow in flows if flow.get('probability') is not None]
+    if len(random_flows) != 0:
+        deterministic = False
+        print(f"Found flows with random number of vehicles: {random_flows}.")
+
+    # Check if there exists random attributes
+    attribute_types = ['departSpeed', 'departPos', 'departLane', 'arrivalPos']
+    list_random_params = [f"{element}.{attribute_tpye}"
+                          for element in all_elements
+                          for attribute_tpye in attribute_types
+                          if element.get(attribute_tpye) == 'random']
+    if len(list_random_params) != 0:
+        deterministic = False
+        print(f"Found parameters set to 'random': {list_random_params}.")
             
-    #check if there exists route distributions
-    if deterministic:
-        route_dist = root.findall('routeDistribution')
-        if route_dist:
-            print("Found route distribution.")
-            deterministic = False
-    #check if there exists vehicle type distributions
-    if deterministic:
-        vType_dist = root.findall('vTypeDistribution')
-        if vType_dist:
-            print("Found vehicle type distribution.")
-            deterministic = False
-    #check if there exists speed distributions or stochastic car-following described in 'vType'
-    if deterministic:
-        list_speedFactor = []
-        list_speedDev = []
-        list_sigma = []
-        vTypes = root.findall('vType')
-        for vType in vTypes:
-            list_speedFactor.append(vType.get('speedFactor'))
-            list_speedDev.append(vType.get('speedDev'))
-            list_sigma.append(vType.get('sigma'))
-        for item in range(len(list_speedDev)):
-            if not list_speedDev[item] == "0":
-                print("Found speed deviation.")
-                deterministic = False
-                break
-            if "norm" in list_speedFactor[item]:
-                print("Found speed deviation.")
-                deterministic = False
-                break
-            if not list_sigma[item] == "0":
-                print("Found stochastic car following behaviors.")
-                deterministic = False
-                break
-    #check if there exist flows with a random number of vehicles
-    if deterministic:
-        for flow in flows:
-            if flow.get('probability'):
-                print("Found flows with random number of vehicles")
-                break
+    # Check if there exists route distributions
+    list_route_dist = root.findall('routeDistribution')
+    if len(list_route_dist) != 0:
+        deterministic = False
+        print(f"Found route distribution: {list_route_dist}")
+
+    # Check if there exists vehicle type distributions
+    list_vType_dist = root.findall('vTypeDistribution')
+    if len(list_vType_dist) != 0:
+        deterministic = False
+        print(f"Found vehicle type distribution: {list_vType_dist}")
+
+    # Check if there exists speed distributions or stochastic car-following described in 'vType'
+    vType_elements = root.findall('vType')
+
+    list_random_speedFactor = [vType for vType in vType_elements if "norm" in vType.get('speedFactor')]
+    if len(list_random_speedFactor) != 0:
+        deterministic = False
+        print(f"Found random speed factor: {list_random_speedFactor}.")
+
+    list_random_speedDev = [vType for vType in vType_elements if vType.get('speedDev') != "0"]
+    if len(list_random_speedDev) != 0:
+        deterministic = False
+        print(f"Found random speed deviation: {list_random_speedDev}.")
+
+    list_random_sigma = [vType for vType in vType_elements if vType.get('sigma') != "0"]
+    if len(list_random_sigma) != 0:
+        deterministic = False
+        print(f"Found car following stochastic behaviour: {list_random_sigma}.")
         
     return deterministic
-    
-        
- 
-
-
-        

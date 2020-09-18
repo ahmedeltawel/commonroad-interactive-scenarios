@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Fri Sep 18 17:13:14 2020 by Eclipse SUMO Version v1_2_0+5214-53edc58fcd
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/Scenarios/CHN_Cho-1-1/CHN_Cho-1_1_I/CHN_Cho-1_1_I.net.xml"/>
+        <route-files value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/Scenarios/CHN_Cho-1-1/CHN_Cho-1_1_I/CHN_Cho-1_1_I.rou.xml"/>
+        <additional-files value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/Scenarios/CHN_Cho-1-1/CHN_Cho-1_1_I/CHN_Cho-1_1_I.add.xml"/>
+    </input>
+
+    <output>
+        <lanechange-output value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/Scenarios/CHN_Cho-1-1/CHN_Cho-1_1_I/output_lanechange.txt"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <step-length value="0.1"/>
+    </time>
+
+    <processing>
+        <lateral-resolution value="0"/>
+        <ignore-route-errors value="true"/>
+        <time-to-teleport value="-1"/>
+        <lanechange.duration value="15"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="33229"/>
+    </traci_server>
+
+    <gui_only>
+        <tracker-interval value="0.1"/>
+    </gui_only>
+
+</configuration>
+-->
+
+<lanechanges>
+    <change id="14" type="passenger@14" time="16.30" from="233_0" to="233_1" dir="1" speed="19.38" pos="177.73" reason="speedGain" leaderGap="10.79" leaderSecureGap="5.57" leaderSpeed="16.83" followerGap="16.29" followerSecureGap="5.27" followerSpeed="8.53" origLeaderGap="15.75" origLeaderSecureGap="12.66" origLeaderSpeed="13.85"/>
+    <change id="14" type="passenger@14" time="16.30" from="233_0" to="233_1" dir="1" speed="19.38" pos="177.73" reason="speedGain" leaderGap="10.79" leaderSecureGap="5.57" leaderSpeed="16.83" followerGap="16.29" followerSecureGap="5.27" followerSpeed="8.53" origLeaderGap="15.75" origLeaderSecureGap="12.66" origLeaderSpeed="13.85"/>
+    <change id="20" type="passenger@20" time="17.80" from="233_0" to="233_1" dir="1" speed="11.38" pos="70.71" reason="speedGain" leaderGap="5.63" leaderSecureGap="0.09" leaderSpeed="8.01" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="6.55" origLeaderSecureGap="2.23" origLeaderSpeed="5.98"/>
+    <change id="20" type="passenger@20" time="17.80" from="233_0" to="233_1" dir="1" speed="11.38" pos="70.71" reason="speedGain" leaderGap="5.63" leaderSecureGap="0.09" leaderSpeed="8.01" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="6.55" origLeaderSecureGap="2.23" origLeaderSpeed="5.98"/>
+    <change id="18" type="passenger@18" time="19.80" from="233_1" to="233_0" dir="-1" speed="18.70" pos="163.88" reason="speedGain" leaderGap="24.78" leaderSecureGap="0.18" leaderSpeed="16.63" followerGap="8.01" followerSecureGap="5.41" followerSpeed="7.69" origLeaderGap="13.04" origLeaderSecureGap="10.25" origLeaderSpeed="12.10"/>
+    <change id="18" type="passenger@18" time="19.80" from="233_1" to="233_0" dir="-1" speed="18.70" pos="163.88" reason="speedGain" leaderGap="24.78" leaderSecureGap="0.18" leaderSpeed="16.63" followerGap="8.01" followerSecureGap="5.41" followerSpeed="7.69" origLeaderGap="13.04" origLeaderSecureGap="10.25" origLeaderSpeed="12.10"/>
+    <change id="22" type="passenger@22" time="20.60" from="233_0" to="233_1" dir="1" speed="12.91" pos="67.32" reason="speedGain" leaderGap="16.58" leaderSecureGap="0.00" leaderSpeed="7.57" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.23" origLeaderSecureGap="0.21" origLeaderSpeed="5.83"/>
+    <change id="22" type="passenger@22" time="20.60" from="233_0" to="233_1" dir="1" speed="12.91" pos="67.32" reason="speedGain" leaderGap="16.58" leaderSecureGap="0.00" leaderSpeed="7.57" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.23" origLeaderSecureGap="0.21" origLeaderSpeed="5.83"/>
+    <change id="24" type="passenger@24" time="24.60" from="233_0" to="233_1" dir="1" speed="15.78" pos="75.23" reason="speedGain" leaderGap="17.81" leaderSecureGap="0.00" leaderSpeed="8.72" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.37" origLeaderSecureGap="0.24" origLeaderSpeed="5.63"/>
+    <change id="24" type="passenger@24" time="24.60" from="233_0" to="233_1" dir="1" speed="15.78" pos="75.23" reason="speedGain" leaderGap="17.81" leaderSecureGap="0.00" leaderSpeed="8.72" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.37" origLeaderSecureGap="0.24" origLeaderSpeed="5.63"/>
+    <change id="26" type="passenger@26" time="28.40" from="233_0" to="233_1" dir="1" speed="16.15" pos="76.21" reason="speedGain" leaderGap="18.16" leaderSecureGap="0.00" leaderSpeed="9.33" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.40" origLeaderSecureGap="0.26" origLeaderSpeed="6.04"/>
+    <change id="26" type="passenger@26" time="28.40" from="233_0" to="233_1" dir="1" speed="16.15" pos="76.21" reason="speedGain" leaderGap="18.16" leaderSecureGap="0.00" leaderSpeed="9.33" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.40" origLeaderSecureGap="0.26" origLeaderSpeed="6.04"/>
+    <change id="21" type="passenger@21" time="30.80" from="233_0" to="233_1" dir="1" speed="23.16" pos="285.18" reason="speedGain" leaderGap="16.55" leaderSecureGap="13.92" leaderSpeed="17.80" followerGap="16.96" followerSecureGap="13.93" followerSpeed="15.95" origLeaderGap="36.48" origLeaderSecureGap="16.54" origLeaderSpeed="16.83"/>
+    <change id="21" type="passenger@21" time="30.80" from="233_0" to="233_1" dir="1" speed="23.16" pos="285.18" reason="speedGain" leaderGap="16.55" leaderSecureGap="13.92" leaderSpeed="17.80" followerGap="16.96" followerSecureGap="13.93" followerSpeed="15.95" origLeaderGap="36.48" origLeaderSecureGap="16.54" origLeaderSpeed="16.83"/>
+    <change id="23" type="passenger@23" time="31.30" from="233_0" to="233_1" dir="1" speed="22.45" pos="240.24" reason="speedGain" leaderGap="20.34" leaderSecureGap="17.25" leaderSpeed="16.45" followerGap="21.35" followerSecureGap="9.10" followerSpeed="14.45" origLeaderGap="20.34" origLeaderSecureGap="17.25" origLeaderSpeed="16.45"/>
+    <change id="23" type="passenger@23" time="31.30" from="233_0" to="233_1" dir="1" speed="22.45" pos="240.24" reason="speedGain" leaderGap="20.34" leaderSecureGap="17.25" leaderSpeed="16.45" followerGap="21.35" followerSecureGap="9.10" followerSpeed="14.45" origLeaderGap="20.34" origLeaderSecureGap="17.25" origLeaderSpeed="16.45"/>
+    <change id="egoVehicle28" type="passenger" time="31.70" from="233_0" to="233_1" dir="1" speed="15.05" pos="67.84" reason="speedGain" leaderGap="15.26" leaderSecureGap="0.00" leaderSpeed="8.42" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.10" origLeaderSecureGap="0.02" origLeaderSpeed="5.22"/>
+    <change id="egoVehicle28" type="passenger" time="31.70" from="233_0" to="233_1" dir="1" speed="15.05" pos="67.84" reason="speedGain" leaderGap="15.26" leaderSecureGap="0.00" leaderSpeed="8.42" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.10" origLeaderSecureGap="0.02" origLeaderSpeed="5.22"/>
+    <change id="30" type="bicycle@30" time="35.10" from="233_0" to="233_1" dir="1" speed="6.92" pos="32.32" reason="speedGain" leaderGap="13.61" leaderSecureGap="0.00" leaderSpeed="7.53" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.28" origLeaderSecureGap="0.06" origLeaderSpeed="3.92"/>
+    <change id="30" type="bicycle@30" time="35.10" from="233_0" to="233_1" dir="1" speed="6.92" pos="32.32" reason="speedGain" leaderGap="13.61" leaderSecureGap="0.00" leaderSpeed="7.53" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.28" origLeaderSecureGap="0.06" origLeaderSpeed="3.92"/>
+    <change id="25" type="passenger@25" time="37.40" from="233_0" to="233_1" dir="1" speed="26.10" pos="321.01" reason="speedGain" leaderGap="33.69" leaderSecureGap="22.18" leaderSpeed="21.70" followerGap="34.50" followerSecureGap="8.32" followerSpeed="18.56" origLeaderGap="63.43" origLeaderSecureGap="22.62" origLeaderSpeed="21.58"/>
+    <change id="25" type="passenger@25" time="37.40" from="233_0" to="233_1" dir="1" speed="26.10" pos="321.01" reason="speedGain" leaderGap="33.69" leaderSecureGap="22.18" leaderSpeed="21.70" followerGap="34.50" followerSecureGap="8.32" followerSpeed="18.56" origLeaderGap="63.43" origLeaderSecureGap="22.62" origLeaderSpeed="21.58"/>
+    <change id="27" type="passenger@27" time="38.50" from="233_0" to="233_1" dir="1" speed="29.93" pos="263.82" reason="speedGain" leaderGap="32.62" leaderSecureGap="6.06" leaderSpeed="20.67" followerGap="26.71" followerSecureGap="6.21" followerSpeed="13.77" origLeaderGap="32.62" origLeaderSecureGap="6.06" origLeaderSpeed="20.67"/>
+    <change id="27" type="passenger@27" time="38.50" from="233_0" to="233_1" dir="1" speed="29.93" pos="263.82" reason="speedGain" leaderGap="32.62" leaderSecureGap="6.06" leaderSpeed="20.67" followerGap="26.71" followerSecureGap="6.21" followerSpeed="13.77" origLeaderGap="32.62" origLeaderSecureGap="6.06" origLeaderSpeed="20.67"/>
+    <change id="32" type="passenger@32" time="40.60" from="233_0" to="233_1" dir="1" speed="8.51" pos="56.61" reason="speedGain" leaderGap="13.88" leaderSecureGap="0.00" leaderSpeed="5.33" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.09" origLeaderSecureGap="0.22" origLeaderSpeed="4.44"/>
+    <change id="32" type="passenger@32" time="40.60" from="233_0" to="233_1" dir="1" speed="8.51" pos="56.61" reason="speedGain" leaderGap="13.88" leaderSecureGap="0.00" leaderSpeed="5.33" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.09" origLeaderSecureGap="0.22" origLeaderSpeed="4.44"/>
+</lanechanges>

@@ -12,6 +12,8 @@ import matplotlib as mpl
 
 from scenario_generation.scenario_util import init_logging
 
+from utils.benchmark_id import CRBenchmarkID
+
 mpl.use('TkAgg')
 from pathlib import Path
 
@@ -28,59 +30,13 @@ from scenario_generation.config_files.scenario_config import ScenarioConfig
 from scenario_generation.config_files.sumo_config import SumoConf
 from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
 
-
-class CRBenchmarkID:
-    """
-    Class for creating and splitting benchmark ids
-    """
-
-    def __init__(self, country: str, scene: str, config: str, pred: str):
-        """
-        Initialize new object
-        :param country: The country of the scenario
-        :param scene: The scene of the scenario
-        :param config: The config of the scenario
-        :param pred: The type of the prediction of the scenario
-        """
-        self.country, self.scene, self.config, self.pred = country, scene, config, pred
-        self.benchmark_id = self._build_benchmark_id()
-
-    def _build_benchmark_id(self) -> str:
-        """
-        Build benchmark ID from the object
-        :return The benchmark ID as string
-        """
-        return '_'.join([self.country, self.scene, self.config, self.pred])
-
-    @classmethod
-    def from_string(cls, benchmark_id: str) -> 'CRBenchmarkID':
-        """
-        Create object from full benchmark ID string
-        :param benchmark_id: The benchmark ID as string
-        :return The benchmark ID as object
-        """
-        country, scene, config, pred = cls._split_benchmark_id(benchmark_id)
-        return cls(country, scene, config, pred)
-
-    @staticmethod
-    def _split_benchmark_id(benchmark_id: str) -> List[str]:
-        """
-        Split benchmark id
-        :param benchmark_id: The benchmark ID as string to be split
-        :return List of strings containing the split values of the benchmark ID
-        """
-        split_benchmark_id = benchmark_id.split('_')
-        if len(split_benchmark_id) != 4:
-            raise ValueError(f"Invalid benchmark ID: {benchmark_id}")
-        return split_benchmark_id
-
-    def __str__(self) -> str:
-        """String value of the benchmark ID"""
-        return self.benchmark_id
-
-    def __repr__(self) -> str:
-        """The representation of the object"""
-        return self.benchmark_id
+__author__ = "Yueming Li, Peter Kocsis"
+__copyright__ = "TUM Cyber-Physical System Group"
+__credits__ = []
+__version__ = "0.1"
+__maintainer__ = "Moritz Klischat"
+__email__ = "moritz.klischat@tum.de"
+__status__ = "Integration"
 
 
 def generate_scenarios_argsparser() -> argparse.ArgumentParser:
