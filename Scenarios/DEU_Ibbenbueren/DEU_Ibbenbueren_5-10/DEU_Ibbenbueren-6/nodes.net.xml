@@ -1,0 +1,24 @@
+<!-- generated on 2020-07-24 19:05:54.666913 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<nodes>
+	<node function="unregulated" id="32" x="85.95232150000001" y="-701.075365"/>
+	<node function="unregulated" id="34" x="95.03577075" y="-716.4847"/>
+	<node function="unregulated" id="36" x="131.5611" y="-736.159425"/>
+	<node function="unregulated" id="39" x="76.32842875" y="-708.1014975"/>
+	<node function="unregulated" id="41" x="70.5336515" y="-725.0934649999999"/>
+	<node function="unregulated" id="42" x="81.061757" y="-724.2171900000001"/>
+	<node function="unregulated" id="43" x="67.5945945" y="-745.27634"/>
+	<node function="unregulated" id="44" x="80.52515600000001" y="-696.14895"/>
+	<node function="unregulated" id="45" x="80.326704" y="-696.001185"/>
+	<node function="unregulated" id="46" x="71.51046149999999" y="-705.94464"/>
+	<node function="unregulated" id="47" x="39.9450715" y="-671.506665"/>
+	<node function="unregulated" id="48" x="78.2270905" y="-698.800655"/>
+	<node function="unregulated" id="49" x="44.472115" y="-666.167625"/>
+	<node function="unregulated" id="50" x="2.09710567" y="-625.10106"/>
+	<node function="unregulated" id="51" x="64.2718355" y="-744.177315"/>
+	<node function="unregulated" id="52" x="35.878299" y="-807.965765"/>
+	<node function="unregulated" id="53" x="158.29652" y="-748.076225"/>
+	<node function="unregulated" id="54" x="151.24139916666664" y="-740.46949"/>
+	<node function="unregulated" id="55" x="39.193539" y="-809.061555"/>
+	<node function="unregulated" id="56" x="-1.68182304" y="-628.7442575"/>
+</nodes>

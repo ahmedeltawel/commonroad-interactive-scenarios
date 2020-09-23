@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Fri Jul 24 16:44:19 2020 by Eclipse SUMO Version 1.4.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-5/DEU_Muehlhausen-5_1_I/DEU_Muehlhausen-5_1_I.net.xml"/>
+        <route-files value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-5/DEU_Muehlhausen-5_1_I/DEU_Muehlhausen-5_1_I.rou.xml"/>
+        <additional-files value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-5/DEU_Muehlhausen-5_1_I/DEU_Muehlhausen-5_1_I.add.xml"/>
+    </input>
+
+    <output>
+        <lanechange-output value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-5/DEU_Muehlhausen-5_1_I/output_lanechange.txt"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <step-length value="0.1"/>
+    </time>
+
+    <processing>
+        <lateral-resolution value="0"/>
+        <ignore-route-errors value="true"/>
+        <time-to-teleport value="-1"/>
+        <lanechange.duration value="15"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="36343"/>
+    </traci_server>
+
+    <gui_only>
+        <tracker-interval value="0.1"/>
+    </gui_only>
+
+</configuration>
+-->
+
+<lanechanges>
+    <change id="32" type="passenger@32" time="23.70" from="2506_0" to="2506_1" dir="1" speed="6.78" pos="54.27" reason="speedGain" leaderGap="2.77" leaderSecureGap="0.00" leaderSpeed="10.40" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="4.50" origLeaderSecureGap="1.51" origLeaderSpeed="6.90"/>
+    <change id="34" type="passenger@34" time="26.50" from="2506_0" to="2506_1" dir="1" speed="6.71" pos="47.19" reason="speedGain" leaderGap="13.08" leaderSecureGap="0.00" leaderSpeed="6.25" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.29" origLeaderSecureGap="0.23" origLeaderSpeed="5.08"/>
+    <change id="36" type="bicycle@36" time="29.50" from="2506_0" to="2506_1" dir="1" speed="6.90" pos="33.98" reason="speedGain" leaderGap="12.17" leaderSecureGap="0.00" leaderSpeed="5.69" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.01" origLeaderSecureGap="0.00" origLeaderSpeed="3.89"/>
+</lanechanges>

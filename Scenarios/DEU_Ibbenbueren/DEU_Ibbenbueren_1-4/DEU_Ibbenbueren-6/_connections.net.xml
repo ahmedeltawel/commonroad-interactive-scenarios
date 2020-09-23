@@ -1,0 +1,10 @@
+<!-- generated on 2020-07-24 18:40:55.983317 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<connections>
+	<connection contPos="-4.0" from="30290" fromLane="0" keepClear="true" to="29603" toLane="0"/>
+	<connection contPos="-4.0" from="29856" fromLane="0" keepClear="true" to="30291" toLane="0"/>
+	<connection contPos="-4.0" from="29856" fromLane="0" keepClear="true" to="30290" toLane="0"/>
+	<connection contPos="-4.0" from="30291" fromLane="0" keepClear="true" to="29603" toLane="1"/>
+	<connection contPos="-4.0" from="29856" fromLane="1" keepClear="true" to="30291" toLane="1"/>
+	<connection contPos="-4.0" from="30291" fromLane="1" keepClear="true" to="29603" toLane="2"/>
+</connections>

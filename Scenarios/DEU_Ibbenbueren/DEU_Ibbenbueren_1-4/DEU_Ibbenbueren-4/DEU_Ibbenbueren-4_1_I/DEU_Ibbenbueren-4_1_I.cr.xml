@@ -1,0 +1,452 @@
+<commonRoad affiliation="TUM" author="Fabian Hoeltke" benchmarkID="DEU_Ibbenbueren-4" commonRoadVersion="2020a" date="2020-06-11" source="Globetrotter" timeStepSize="0.1">
+  <location>
+    <geoNameId>2896817</geoNameId>
+    <gpsLatitude>52.27964</gpsLatitude>
+    <gpsLongitude>7.71457</gpsLongitude>
+  </location>
+  <scenarioTags>
+    <intersection />
+  </scenarioTags>
+  <lanelet id="29793">
+    <leftBound>
+      <point>
+        <x>894.25748</x>
+        <y>-946.21115</y>
+      </point>
+      <point>
+        <x>859.99333</x>
+        <y>-938.59329</y>
+      </point>
+      <point>
+        <x>838.52478</x>
+        <y>-933.45042</y>
+      </point>
+      <point>
+        <x>826.04878</x>
+        <y>-930.27258</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>895.03531</x>
+        <y>-942.79887</y>
+      </point>
+      <point>
+        <x>860.80868</x>
+        <y>-935.18959</y>
+      </point>
+      <point>
+        <x>839.38869</x>
+        <y>-930.05872</y>
+      </point>
+      <point>
+        <x>826.92592</x>
+        <y>-926.88429</y>
+      </point>
+    </rightBound>
+    <predecessor ref="30386" />
+    <predecessor ref="30387" />
+    <adjacentRight drivingDir="same" ref="29794" />
+    <laneletType>urban</laneletType>
+    <trafficSignRef ref="30106" />
+  </lanelet>
+  <lanelet id="29794">
+    <leftBound>
+      <point>
+        <x>895.03531</x>
+        <y>-942.79887</y>
+      </point>
+      <point>
+        <x>860.80868</x>
+        <y>-935.18959</y>
+      </point>
+      <point>
+        <x>839.38869</x>
+        <y>-930.05872</y>
+      </point>
+      <point>
+        <x>826.83449</x>
+        <y>-926.86100</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>895.77047</x>
+        <y>-939.37684</y>
+      </point>
+      <point>
+        <x>861.59415</x>
+        <y>-931.77886</y>
+      </point>
+      <point>
+        <x>840.19569</x>
+        <y>-926.65279</y>
+      </point>
+      <point>
+        <x>827.65408</x>
+        <y>-923.45792</y>
+      </point>
+    </rightBound>
+    <predecessor ref="30388" />
+    <adjacentLeft drivingDir="same" ref="29793" />
+    <laneletType>urban</laneletType>
+    <trafficSignRef ref="30106" />
+  </lanelet>
+  <lanelet id="29956">
+    <leftBound>
+      <point>
+        <x>971.19665</x>
+        <y>-964.36115</y>
+      </point>
+      <point>
+        <x>946.1651</x>
+        <y>-959.92935</y>
+      </point>
+      <point>
+        <x>922.15714</x>
+        <y>-955.45884</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>971.7884</x>
+        <y>-960.91158</y>
+      </point>
+      <point>
+        <x>946.8057</x>
+        <y>-956.48848</y>
+      </point>
+      <point>
+        <x>922.85138</x>
+        <y>-952.02927</y>
+      </point>
+    </rightBound>
+    <predecessor ref="30543" />
+    <successor ref="30386" />
+    <adjacentRight drivingDir="same" ref="29957" />
+    <laneletType>urban</laneletType>
+    <trafficSignRef ref="30145" />
+  </lanelet>
+  <lanelet id="29957">
+    <leftBound>
+      <point>
+        <x>971.7884</x>
+        <y>-960.91158</y>
+      </point>
+      <point>
+        <x>946.8057</x>
+        <y>-956.48848</y>
+      </point>
+      <point>
+        <x>922.85138</x>
+        <y>-952.02927</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>972.35831</x>
+        <y>-957.45829</y>
+      </point>
+      <point>
+        <x>947.41405</x>
+        <y>-953.04167</y>
+      </point>
+      <point>
+        <x>923.46893</x>
+        <y>-948.58362</y>
+      </point>
+    </rightBound>
+    <predecessor ref="30544" />
+    <successor ref="30387" />
+    <adjacentLeft drivingDir="same" ref="29956" />
+    <adjacentRight drivingDir="same" ref="29958" />
+    <laneletType>urban</laneletType>
+    <trafficSignRef ref="30145" />
+  </lanelet>
+  <lanelet id="29958">
+    <leftBound>
+      <point>
+        <x>972.35831</x>
+        <y>-957.45829</y>
+      </point>
+      <point>
+        <x>947.41405</x>
+        <y>-953.04167</y>
+      </point>
+      <point>
+        <x>923.46893</x>
+        <y>-948.58362</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>972.93497</x>
+        <y>-954.00613</y>
+      </point>
+      <point>
+        <x>948.0224</x>
+        <y>-949.59486</y>
+      </point>
+      <point>
+        <x>924.13121</x>
+        <y>-945.1469</y>
+      </point>
+    </rightBound>
+    <predecessor ref="30545" />
+    <successor ref="30388" />
+    <adjacentLeft drivingDir="same" ref="29957" />
+    <laneletType>urban</laneletType>
+    <trafficSignRef ref="30145" />
+  </lanelet>
+  <lanelet id="30543">
+    <leftBound>
+      <point>
+        <x>1001.4857</x>
+        <y>-969.62317</y>
+      </point>
+      <point>
+        <x>977.70591</x>
+        <y>-965.44854</y>
+      </point>
+      <point>
+        <x>971.19665</x>
+        <y>-964.36115</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>1002.1062</x>
+        <y>-966.17867</y>
+      </point>
+      <point>
+        <x>978.28258</x>
+        <y>-961.99637</y>
+      </point>
+      <point>
+        <x>971.7884</x>
+        <y>-960.91158</y>
+      </point>
+    </rightBound>
+    <successor ref="29956" />
+    <adjacentRight drivingDir="same" ref="30544" />
+    <laneletType>urban</laneletType>
+  </lanelet>
+  <lanelet id="30544">
+    <leftBound>
+      <point>
+        <x>1002.1062</x>
+        <y>-966.17867</y>
+      </point>
+      <point>
+        <x>978.28258</x>
+        <y>-961.99637</y>
+      </point>
+      <point>
+        <x>971.7884</x>
+        <y>-960.91158</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>1002.7661</x>
+        <y>-962.74126</y>
+      </point>
+      <point>
+        <x>978.8795</x>
+        <y>-958.54761</y>
+      </point>
+      <point>
+        <x>972.35831</x>
+        <y>-957.45829</y>
+      </point>
+    </rightBound>
+    <successor ref="29957" />
+    <adjacentLeft drivingDir="same" ref="30543" />
+    <adjacentRight drivingDir="same" ref="30545" />
+    <laneletType>urban</laneletType>
+  </lanelet>
+  <lanelet id="30545">
+    <leftBound>
+      <point>
+        <x>1002.7661</x>
+        <y>-962.74126</y>
+      </point>
+      <point>
+        <x>978.8795</x>
+        <y>-958.54761</y>
+      </point>
+      <point>
+        <x>972.35831</x>
+        <y>-957.45829</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>1003.3867</x>
+        <y>-959.29676</y>
+      </point>
+      <point>
+        <x>979.45617</x>
+        <y>-955.09544</y>
+      </point>
+      <point>
+        <x>972.93497</x>
+        <y>-954.00613</y>
+      </point>
+    </rightBound>
+    <successor ref="29958" />
+    <adjacentLeft drivingDir="same" ref="30544" />
+    <laneletType>urban</laneletType>
+  </lanelet>
+  <lanelet id="30386">
+    <leftBound>
+      <point>
+        <x>922.15714</x>
+        <y>-955.45884</y>
+      </point>
+      <point>
+        <x>918.02788</x>
+        <y>-954.49051</y>
+      </point>
+      <point>
+        <x>913.10981</x>
+        <y>-952.8955</y>
+      </point>
+      <point>
+        <x>900.93078</x>
+        <y>-948.15614</y>
+      </point>
+      <point>
+        <x>896.68697</x>
+        <y>-946.81236</y>
+      </point>
+      <point>
+        <x>894.25748</x>
+        <y>-946.21115</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>922.85138</x>
+        <y>-952.02927</y>
+      </point>
+      <point>
+        <x>919.10574</x>
+        <y>-951.16061</y>
+      </point>
+      <point>
+        <x>914.37816</x>
+        <y>-949.63341</y>
+      </point>
+      <point>
+        <x>901.98469</x>
+        <y>-944.81859</y>
+      </point>
+      <point>
+        <x>897.52712</x>
+        <y>-943.41469</y>
+      </point>
+      <point>
+        <x>895.03531</x>
+        <y>-942.79887</y>
+      </point>
+    </rightBound>
+    <predecessor ref="29956" />
+    <successor ref="29793" />
+    <laneletType>urban</laneletType>
+  </lanelet>
+  <lanelet id="30387">
+    <leftBound>
+      <point>
+        <x>922.85138</x>
+        <y>-952.02927</y>
+      </point>
+      <point>
+        <x>904.44185</x>
+        <y>-948.39117</y>
+      </point>
+      <point>
+        <x>894.25748</x>
+        <y>-946.21115</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>923.46893</x>
+        <y>-948.58362</y>
+      </point>
+      <point>
+        <x>905.15443</x>
+        <y>-944.96447</y>
+      </point>
+      <point>
+        <x>895.03531</x>
+        <y>-942.79887</y>
+      </point>
+    </rightBound>
+    <predecessor ref="29957" />
+    <successor ref="29793" />
+    <adjacentRight drivingDir="same" ref="30388" />
+    <laneletType>urban</laneletType>
+  </lanelet>
+  <lanelet id="30388">
+    <leftBound>
+      <point>
+        <x>923.46893</x>
+        <y>-948.58362</y>
+      </point>
+      <point>
+        <x>905.15443</x>
+        <y>-944.96447</y>
+      </point>
+      <point>
+        <x>895.03531</x>
+        <y>-942.79887</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>924.13121</x>
+        <y>-945.1469</y>
+      </point>
+      <point>
+        <x>905.88693</x>
+        <y>-941.54198</y>
+      </point>
+      <point>
+        <x>895.77047</x>
+        <y>-939.37684</y>
+      </point>
+    </rightBound>
+    <predecessor ref="29958" />
+    <successor ref="29794" />
+    <adjacentLeft drivingDir="same" ref="30387" />
+    <laneletType>urban</laneletType>
+  </lanelet>
+  <trafficSign id="30106">
+    <trafficSignElement>
+      <trafficSignID>274</trafficSignID>
+      <additionalValue>69.44444444444444</additionalValue>
+    </trafficSignElement>
+    <position>
+      <point>
+        <x>895.77047</x>
+        <y>-939.37684</y>
+      </point>
+    </position>
+    <virtual>false</virtual>
+  </trafficSign>
+  <trafficSign id="30145">
+    <trafficSignElement>
+      <trafficSignID>274</trafficSignID>
+      <additionalValue>69.44444444444444</additionalValue>
+    </trafficSignElement>
+    <position>
+      <point>
+        <x>972.93497</x>
+        <y>-954.00613</y>
+      </point>
+    </position>
+    <virtual>false</virtual>
+  </trafficSign>
+</commonRoad>

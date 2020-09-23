@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Fri Jul 24 16:53:12 2020 by Eclipse SUMO netconvert Version 1.4.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="/home/yueming/Scenarios_test/20200724-165236/DEU_Muehlhausen-4/nodes.net.xml"/>
+        <edge-files value="/home/yueming/Scenarios_test/20200724-165236/DEU_Muehlhausen-4/edges.net.xml"/>
+        <connection-files value="/home/yueming/Scenarios_test/20200724-165236/DEU_Muehlhausen-4/_connections.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/yueming/Scenarios_test/20200724-165236/DEU_Muehlhausen-4/DEU_Muehlhausen-4.net.xml"/>
+    </output>
+
+    <processing>
+        <plain.extend-edge-shape value="true"/>
+        <geometry.remove.keep-edges.explicit value="true"/>
+        <geometry.avoid-overlap value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.internal-link-detail value="20"/>
+    </junctions>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+</configuration>
+-->
+
+<net version="1.3" junctionCornerDetail="5" junctionLinkDetail="20" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="755.20,162.08,785.42,326.11" origBoundary="753.45,161.24,788.97,326.23" projParameter="!"/>
+
+    <edge id=":6_0" function="internal">
+        <lane id=":6_0_0" index="0" speed="33.33" length="6.90" width="3.50" shape="755.88,244.66 755.87,244.36 755.58,237.32"/>
+        <lane id=":6_0_1" index="1" speed="33.33" length="6.90" width="3.50" shape="757.06,244.74 757.88,238.29 757.95,237.86"/>
+        <lane id=":6_0_2" index="2" disallow="bus truck" speed="33.33" length="6.90" width="3.50" shape="760.55,244.98 761.33,238.86 761.37,238.63"/>
+    </edge>
+
+    <edge id="2653" from="6" to="8" priority="-1" spreadType="center">
+        <lane id="2653_0" index="0" speed="33.33" length="81.10" width="3.50" customShape="1" shape="753.96,236.95 758.83,216.61 761.22,208.16 764.28,198.84 767.53,190.14 771.15,181.57 774.48,174.56 778.85,166.36 782.40,160.31"/>
+        <lane id="2653_1" index="1" speed="33.33" length="81.10" width="3.50" customShape="1" shape="757.38,237.72 762.21,217.52 764.56,209.22 767.56,200.05 770.77,191.48 774.32,183.05 777.60,176.15 781.90,168.09 785.43,162.05"/>
+        <lane id="2653_2" index="2" disallow="bus truck" speed="33.33" length="81.10" width="3.50" customShape="1" shape="760.79,238.50 765.58,218.46 767.89,210.28 770.85,201.26 774.00,192.83 777.48,184.54 780.70,177.77 784.93,169.83 788.44,163.85"/>
+    </edge>
+    <edge id="3267" from="5" to="6" priority="-1" spreadType="center">
+        <lane id="3267_0" index="0" disallow="bus" speed="33.33" length="81.38" width="3.50" customShape="1" shape="753.45,326.05 754.08,306.43 755.06,274.17 755.89,257.53 756.76,244.72"/>
+        <lane id="3267_1" index="1" disallow="bus" speed="33.33" length="81.38" width="3.50" customShape="1" shape="756.95,326.23 757.58,306.57 758.56,274.37 759.38,257.77 760.25,244.96"/>
+    </edge>
+
+    <junction id="5" type="dead_end" x="755.20" y="326.11" incLanes="" intLanes="" shape="758.70,326.22 751.70,325.99"/>
+    <junction id="6" type="priority" x="757.73" y="256.16" incLanes="3267_0 3267_1" intLanes=":6_0_0 :6_0_1 :6_0_2" shape="762.50,238.89 752.26,236.56 752.60,239.54 753.38,240.54 754.21,241.55 754.85,242.82 755.02,244.60 762.00,245.08 762.06,242.77 762.06,241.95 762.09,241.15 762.22,240.18">
+        <request index="0" response="000" foes="000" cont="0"/>
+        <request index="1" response="000" foes="000" cont="0"/>
+        <request index="2" response="000" foes="000" cont="0"/>
+    </junction>
+    <junction id="8" type="dead_end" x="785.42" y="162.08" incLanes="2653_0 2653_1 2653_2" intLanes="" shape="780.89,159.42 789.93,164.73"/>
+
+    <connection from="3267" to="2653" fromLane="0" toLane="0" contPos="-4.00" shape="755.99,256.03 756.13,251.46 755.87,244.36 755.55,236.76 755.68,232.20 756.15,228.17 756.54,226.17" via=":6_0_0" dir="s" state="M"/>
+    <connection from="3267" to="2653" fromLane="0" toLane="1" contPos="-4.00" shape="755.99,256.03 756.82,246.61 757.88,238.29 759.11,231.04 759.96,226.91" via=":6_0_1" dir="s" state="M"/>
+    <connection from="3267" to="2653" fromLane="1" toLane="2" contPos="-4.00" shape="759.48,256.28 760.29,247.04 761.33,238.86 762.54,231.74 763.38,227.68" via=":6_0_2" dir="s" state="M"/>
+
+    <connection from=":6_0" to="2653" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":6_0" to="2653" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":6_0" to="2653" fromLane="2" toLane="2" dir="s" state="M"/>
+
+</net>

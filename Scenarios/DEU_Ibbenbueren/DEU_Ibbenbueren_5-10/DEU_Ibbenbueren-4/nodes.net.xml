@@ -1,0 +1,13 @@
+<!-- generated on 2020-07-24 19:01:30.019022 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<nodes>
+	<node function="unregulated" id="17" x="67.61846525" y="-294.75752624999996"/>
+	<node function="unregulated" id="19" x="159.179575" y="-290.14788999999996"/>
+	<node function="unregulated" id="21" x="-22.430554" y="-311.329215"/>
+	<node function="unregulated" id="23" x="58.099911000000006" y="-203.8245375"/>
+	<node function="unregulated" id="25" x="104.961635" y="-378.197595"/>
+	<node function="unregulated" id="26" x="158.99824" y="-286.65452"/>
+	<node function="unregulated" id="27" x="108.133295" y="-376.70067"/>
+	<node function="unregulated" id="28" x="-21.621817" y="-314.73588"/>
+	<node function="unregulated" id="29" x="52.884240500000004" y="-204.4724"/>
+</nodes>

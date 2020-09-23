@@ -1,0 +1,7 @@
+<!-- generated on 2020-07-24 18:49:22.590988 by genarate_interactive_scenarios.py UNKNOWN
+-->
+<nodes>
+	<node function="unregulated" id="5" x="-949.092945" y="-984.62457"/>
+	<node function="unregulated" id="6" x="-892.5773433333334" y="-992.4751216666667"/>
+	<node function="unregulated" id="8" x="-794.33" y="-1006.68355"/>
+</nodes>

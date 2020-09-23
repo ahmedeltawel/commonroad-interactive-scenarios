@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Fri Jul 24 16:44:08 2020 by Eclipse SUMO netconvert Version 1.4.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-2/nodes.net.xml"/>
+        <edge-files value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-2/edges.net.xml"/>
+        <connection-files value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-2/_connections.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/yueming/Scenarios_test/20200724-164339/DEU_Muehlhausen-2/DEU_Muehlhausen-2.net.xml"/>
+    </output>
+
+    <processing>
+        <plain.extend-edge-shape value="true"/>
+        <geometry.remove.keep-edges.explicit value="true"/>
+        <geometry.avoid-overlap value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.internal-link-detail value="20"/>
+    </junctions>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+</configuration>
+-->
+
+<net version="1.3" junctionCornerDetail="5" junctionLinkDetail="20" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="767.51,606.12,785.07,754.96" origBoundary="764.08,605.43,786.82,755.07" projParameter="!"/>
+
+    <edge id=":6_0" function="internal">
+        <lane id=":6_0_0" index="0" speed="33.33" length="7.41" width="3.50" shape="778.31,674.40 777.69,672.12 776.28,667.45"/>
+        <lane id=":6_0_1" index="1" speed="33.33" length="7.41" width="3.50" shape="779.41,674.33 778.57,667.07"/>
+        <lane id=":6_0_2" index="2" speed="33.33" length="7.41" width="3.50" shape="782.91,674.13 782.02,666.50"/>
+    </edge>
+
+    <edge id="2884" from="6" to="8" priority="-1" spreadType="center">
+        <lane id="2884_0" index="0" speed="33.33" length="61.97" width="3.50" customShape="1" shape="775.47,667.58 770.89,641.46 767.15,622.14 764.08,606.78"/>
+        <lane id="2884_1" index="1" speed="33.33" length="61.97" width="3.50" customShape="1" shape="778.92,667.01 774.34,640.87 770.59,621.50 767.51,606.12"/>
+        <lane id="2884_2" index="2" speed="33.33" length="61.97" width="3.50" customShape="1" shape="782.37,666.44 777.78,640.24 774.03,620.83 770.94,605.43"/>
+    </edge>
+    <edge id="3491" from="5" to="6" priority="-1" spreadType="center">
+        <lane id="3491_0" index="0" speed="33.33" length="80.86" width="3.50" customShape="1" shape="783.33,755.07 782.66,734.30 781.35,704.70 779.73,674.31"/>
+        <lane id="3491_1" index="1" speed="33.33" length="80.86" width="3.50" customShape="1" shape="786.82,754.90 786.16,734.17 784.84,704.53 783.22,674.11"/>
+    </edge>
+
+    <junction id="5" type="dead_end" x="785.07" y="754.96" incLanes="" intLanes="" shape="788.57,754.85 781.58,755.07"/>
+    <junction id="6" type="priority" x="782.05" y="685.03" incLanes="3491_0 3491_1" intLanes=":6_0_0 :6_0_1 :6_0_2" shape="777.98,674.42 784.97,674.01 784.80,671.08 784.71,670.06 784.58,669.05 784.38,667.82 784.10,666.16 773.74,667.87 775.09,670.41 776.04,671.12 776.94,671.84 777.64,672.84">
+        <request index="0" response="000" foes="000" cont="0"/>
+        <request index="1" response="000" foes="000" cont="0"/>
+        <request index="2" response="000" foes="000" cont="0"/>
+    </junction>
+    <junction id="8" type="dead_end" x="767.51" y="606.12" incLanes="2884_0 2884_1 2884_2" intLanes="" shape="762.37,607.15 772.66,605.09"/>
+
+    <connection from="3491" to="2884" fromLane="0" toLane="0" contPos="-4.00" shape="780.31,685.14 779.94,681.57 779.17,677.55 777.69,672.12 774.88,662.81 773.84,658.32 773.58,656.83" via=":6_0_0" dir="s" state="M"/>
+    <connection from="3491" to="2884" fromLane="0" toLane="1" contPos="-4.00" shape="780.31,685.14 779.58,675.82 778.39,665.51 777.04,656.28" via=":6_0_1" dir="s" state="M"/>
+    <connection from="3491" to="2884" fromLane="1" toLane="2" contPos="-4.00" shape="783.80,684.92 783.06,675.47 781.86,665.04 780.49,655.72" via=":6_0_2" dir="s" state="M"/>
+
+    <connection from=":6_0" to="2884" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":6_0" to="2884" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":6_0" to="2884" fromLane="2" toLane="2" dir="s" state="M"/>
+
+</net>

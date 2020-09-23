@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Fri Jul 24 19:01:30 2020 by Eclipse SUMO netconvert Version 1.4.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="/home/yueming/Scenarios_test/20200724-190006/DEU_Ibbenbueren-4/nodes.net.xml"/>
+        <edge-files value="/home/yueming/Scenarios_test/20200724-190006/DEU_Ibbenbueren-4/edges.net.xml"/>
+        <connection-files value="/home/yueming/Scenarios_test/20200724-190006/DEU_Ibbenbueren-4/_connections.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/yueming/Scenarios_test/20200724-190006/DEU_Ibbenbueren-4/DEU_Ibbenbueren-4.net.xml"/>
+    </output>
+
+    <processing>
+        <plain.extend-edge-shape value="true"/>
+        <geometry.remove.keep-edges.explicit value="true"/>
+        <geometry.avoid-overlap value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.internal-link-detail value="20"/>
+    </junctions>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+</configuration>
+-->
+
+<net version="1.3" junctionCornerDetail="5" junctionLinkDetail="20" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-22.43,-378.20,159.18,-203.82" origBoundary="-22.43,-378.20,159.18,-203.61" projParameter="!"/>
+
+    <edge id=":17_0" function="internal">
+        <lane id=":17_0_0" index="0" disallow="bus truck" speed="12.18" length="32.75" width="3.50" shape="89.12,-290.68 85.09,-290.68 81.66,-290.34 78.85,-289.74 76.14,-288.79 74.09,-287.74 72.21,-286.42 70.54,-284.85 69.12,-283.04 67.97,-281.05 66.88,-278.40 66.15,-275.62 65.78,-273.35"/>
+    </edge>
+    <edge id=":17_1" function="internal">
+        <lane id=":17_1_0" index="0" speed="33.33" length="43.63" width="3.50" shape="89.12,-290.68 77.70,-291.40 67.36,-292.41 58.10,-293.69 50.94,-294.99 45.89,-296.12"/>
+    </edge>
+    <edge id=":17_2" function="internal">
+        <lane id=":17_2_0" index="0" speed="11.47" length="39.33" width="3.50" shape="89.12,-290.68 84.59,-291.08 81.61,-291.60 78.69,-292.39 77.27,-292.92 75.89,-293.55 74.58,-294.30 73.35,-295.18 72.24,-296.21 71.29,-297.38 70.51,-298.68 69.94,-300.07 69.57,-301.54 69.38,-303.04 69.35,-304.55 69.47,-306.06 70.03,-309.03 70.91,-311.93 72.03,-314.74 72.66,-316.11"/>
+    </edge>
+    <edge id=":17_3" function="internal">
+        <lane id=":17_3_0" index="0" speed="10.41" length="32.14" width="3.50" shape="75.82,-314.62 75.28,-313.44 74.31,-311.00 73.56,-308.55 73.10,-306.06 73.02,-304.87 73.04,-303.68 73.19,-302.53 73.47,-301.43 73.90,-300.40 74.48,-299.45 75.19,-298.59 76.04,-297.83 76.99,-297.15 78.04,-296.56 79.15,-296.05 80.30,-295.63 82.79,-294.96 85.33,-294.52 89.30,-294.17"/>
+    </edge>
+    <edge id=":17_4" function="internal">
+        <lane id=":17_4_0" index="0" disallow="bus truck" speed="33.33" length="42.93" width="3.50" shape="75.82,-314.62 73.84,-309.95 72.02,-304.67 70.24,-298.32 68.57,-290.89 66.98,-281.89 65.78,-273.35"/>
+        <lane id=":17_4_1" index="1" disallow="bus truck" speed="33.33" length="42.93" width="3.50" shape="75.82,-314.62 74.95,-312.76 71.19,-304.23 68.19,-296.55 65.89,-289.72 64.23,-283.79 63.12,-278.81 62.30,-273.72"/>
+    </edge>
+    <edge id=":17_6" function="internal">
+        <lane id=":17_6_0" index="0" speed="14.12" length="38.57" width="3.50" shape="75.82,-314.62 74.78,-312.52 73.07,-309.47 71.13,-306.52 68.92,-303.72 66.41,-301.17 64.52,-299.62 62.48,-298.27 60.29,-297.14 57.98,-296.28 55.57,-295.70 53.13,-295.41 50.67,-295.41 48.25,-295.65 45.89,-296.12"/>
+    </edge>
+    <edge id=":17_7" function="internal">
+        <lane id=":17_7_0" index="0" speed="13.23" length="33.78" width="3.50" shape="46.69,-299.52 48.77,-299.12 50.87,-298.91 52.98,-298.93 55.08,-299.20 57.12,-299.72 59.09,-300.48 60.95,-301.48 62.69,-302.67 64.31,-304.03 66.50,-306.31 68.45,-308.80 70.18,-311.46 71.72,-314.22 72.66,-316.11"/>
+    </edge>
+    <edge id=":17_8" function="internal">
+        <lane id=":17_8_0" index="0" speed="33.33" length="43.00" width="3.50" shape="46.69,-299.52 51.67,-298.42 58.70,-297.14 67.82,-295.88 78.01,-294.88 89.30,-294.17"/>
+    </edge>
+    <edge id=":17_9" function="internal">
+        <lane id=":17_9_0" index="0" disallow="bus truck" speed="13.16" length="36.26" width="3.50" shape="46.69,-299.52 50.51,-298.41 53.66,-297.15 56.17,-295.83 58.51,-294.23 60.62,-292.35 62.10,-290.63 63.36,-288.75 64.37,-286.72 65.28,-284.04 65.83,-281.26 66.05,-278.44 65.96,-275.04 65.78,-273.35"/>
+    </edge>
+    <edge id=":17_10" function="internal">
+        <lane id=":17_10_0" index="0" speed="11.72" length="28.55" width="3.50" shape="58.82,-274.09 59.11,-277.62 59.08,-280.46 58.73,-283.29 58.18,-285.50 57.36,-287.62 56.22,-289.59 54.79,-291.36 53.09,-292.87 51.18,-294.11 49.13,-295.09 46.43,-295.98 45.89,-296.12"/>
+    </edge>
+    <edge id=":17_11" function="internal">
+        <lane id=":17_11_0" index="0" speed="33.33" length="44.41" width="3.50" shape="58.82,-274.09 59.67,-279.42 60.82,-284.57 62.52,-290.66 64.87,-297.66 67.94,-305.52 71.76,-314.21 72.66,-316.11"/>
+    </edge>
+    <edge id=":17_12" function="internal">
+        <lane id=":17_12_0" index="0" speed="13.59" length="41.04" width="3.50" shape="58.82,-274.09 59.44,-277.57 60.27,-280.29 61.42,-282.88 62.60,-284.82 64.00,-286.61 65.61,-288.21 67.88,-289.92 70.36,-291.30 72.99,-292.36 76.28,-293.28 79.63,-293.86 83.60,-294.20 88.14,-294.22 89.30,-294.17"/>
+    </edge>
+
+    <edge id="38746" from="28" to="17" priority="-1" spreadType="center" shape="-21.62,-314.74 68.00,-296.46">
+        <lane id="38746_0" index="0" speed="33.33" length="70.00" width="3.50" customShape="1" shape="-21.62,-314.74 -18.77,-314.24 -7.99,-311.96 20.38,-305.71 46.70,-299.52"/>
+    </edge>
+    <edge id="38747" from="17" to="21" priority="-1" spreadType="center" shape="67.30,-293.04 -22.43,-311.33">
+        <lane id="38747_0" index="0" speed="33.33" length="70.00" width="3.50" customShape="1" shape="45.89,-296.12 19.55,-302.31 -8.81,-308.55 -19.56,-310.83 -22.43,-311.33"/>
+    </edge>
+    <edge id="38779" from="17" to="19" priority="-1" spreadType="center" shape="67.71,-296.51 159.18,-290.15">
+        <lane id="38779_0" index="0" speed="33.33" length="70.00" width="3.50" customShape="1" shape="89.30,-294.17 95.82,-293.84 128.04,-291.78 145.66,-290.71 159.18,-290.15"/>
+    </edge>
+    <edge id="38780" from="26" to="17" priority="-1" spreadType="center" shape="159.00,-286.65 67.46,-293.02">
+        <lane id="38780_0" index="0" speed="33.33" length="70.00" width="3.50" customShape="1" shape="159.00,-286.65 145.22,-287.23 127.66,-288.30 95.61,-290.34 89.12,-290.68"/>
+    </edge>
+    <edge id="38789" from="29" to="17" priority="-1" spreadType="center" shape="52.88,-204.47 65.89,-295.04">
+        <lane id="38789_0" index="0" disallow="bus" speed="33.33" length="69.88" width="3.50" customShape="1" shape="52.88,-204.47 53.06,-205.86 54.32,-219.32 56.11,-244.29 57.51,-261.77 58.82,-274.09"/>
+    </edge>
+    <edge id="38791" from="17" to="23" priority="-1" spreadType="center" shape="71.10,-294.39 58.10,-203.82">
+        <lane id="38791_0" index="0" disallow="bus truck" speed="33.33" length="70.00" width="3.50" customShape="1" shape="65.78,-273.35 64.45,-260.85 63.06,-243.21 61.23,-217.94 59.93,-204.29 59.84,-203.61"/>
+        <lane id="38791_1" index="1" disallow="bus truck" speed="33.33" length="70.00" width="3.50" customShape="1" shape="62.31,-273.78 60.98,-261.35 59.59,-243.84 57.79,-218.77 56.51,-205.22 56.36,-204.04"/>
+    </edge>
+    <edge id="38819" from="17" to="25" priority="-1" spreadType="center" shape="66.02,-295.47 104.96,-378.20">
+        <lane id="38819_0" index="0" speed="33.33" length="70.00" width="3.50" customShape="1" shape="72.66,-316.11 77.67,-326.51 86.24,-343.54 95.87,-361.72 104.96,-378.20"/>
+    </edge>
+    <edge id="38820" from="27" to="17" priority="-1" spreadType="center" shape="108.13,-376.70 69.19,-293.98">
+        <lane id="38820_0" index="0" speed="33.33" length="70.03" width="3.50" customShape="1" shape="108.13,-376.70 98.97,-360.10 89.37,-341.96 80.81,-324.98 75.81,-314.59"/>
+    </edge>
+
+    <junction id="17" type="priority" x="67.62" y="-294.76" incLanes="38780_0 38820_0 38746_0 38789_0" intLanes=":17_0_0 :17_1_0 :17_2_0 :17_3_0 :17_4_0 :17_4_1 :17_6_0 :17_7_0 :17_8_0 :17_9_0 :17_10_0 :17_11_0 :17_12_0" shape="89.03,-288.93 89.39,-295.92 83.98,-296.71 79.80,-298.44 76.95,-301.06 75.53,-304.53 75.64,-308.80 77.39,-313.83 71.08,-316.87 67.85,-311.13 64.32,-306.64 60.48,-303.40 56.32,-301.42 51.86,-300.70 47.09,-301.23 45.49,-294.41 49.54,-292.98 52.74,-290.78 55.09,-287.80 56.60,-284.06 57.27,-279.55 57.08,-274.28 67.52,-273.17 68.62,-278.26 70.71,-282.37 73.79,-285.50 77.87,-287.63 82.95,-288.77">
+        <request index="0"  response="0000000000000" foes="0001000110000" cont="0"/>
+        <request index="1"  response="0000000000000" foes="1111001110000" cont="0"/>
+        <request index="2"  response="0000110000000" foes="1100111110000" cont="0"/>
+        <request index="3"  response="0000100000000" foes="1000100000000" cont="0"/>
+        <request index="4"  response="0001100000111" foes="1001100000111" cont="0"/>
+        <request index="5"  response="0001100000111" foes="1001100000111" cont="0"/>
+        <request index="6"  response="0111100000110" foes="0111100000110" cont="0"/>
+        <request index="7"  response="0000000000000" foes="0100000000100" cont="0"/>
+        <request index="8"  response="0000000000000" foes="1100001111100" cont="0"/>
+        <request index="9"  response="0000000000011" foes="1100001110011" cont="0"/>
+        <request index="10" response="0000000000010" foes="0000001000010" cont="0"/>
+        <request index="11" response="0001110000110" foes="0001111000110" cont="0"/>
+        <request index="12" response="0001100111110" foes="0001100111110" cont="0"/>
+    </junction>
+    <junction id="19" type="dead_end" x="159.18" y="-290.15" incLanes="38779_0" intLanes="" shape="159.25,-291.90 159.11,-288.40"/>
+    <junction id="21" type="dead_end" x="-22.43" y="-311.33" incLanes="38747_0" intLanes="" shape="-22.73,-309.61 -22.13,-313.05"/>
+    <junction id="23" type="dead_end" x="58.10" y="-203.82" incLanes="38791_0 38791_1" intLanes="" shape="61.58,-203.39 54.62,-204.26"/>
+    <junction id="25" type="dead_end" x="104.96" y="-378.20" incLanes="38819_0" intLanes="" shape="103.43,-379.04 106.49,-377.35"/>
+    <junction id="26" type="dead_end" x="159.00" y="-286.65" incLanes="" intLanes="" shape="159.07,-288.40 158.92,-284.91"/>
+    <junction id="27" type="dead_end" x="108.13" y="-376.70" incLanes="" intLanes="" shape="106.60,-377.55 109.67,-375.86"/>
+    <junction id="28" type="dead_end" x="-21.62" y="-314.74" incLanes="" intLanes="" shape="-21.92,-313.01 -21.32,-316.46"/>
+    <junction id="29" type="dead_end" x="52.88" y="-204.47" incLanes="" intLanes="" shape="54.62,-204.26 51.15,-204.69"/>
+
+    <connection from="38746" to="38819" fromLane="0" toLane="0" contPos="-4.00" shape="46.70,-299.52 48.77,-299.12 50.87,-298.91 52.98,-298.93 55.08,-299.20 57.12,-299.72 59.09,-300.48 60.95,-301.48 62.69,-302.67 64.31,-304.03 66.50,-306.31 68.45,-308.80 70.18,-311.46 71.72,-314.22 72.66,-316.11" via=":17_7_0" dir="r" state="M"/>
+    <connection from="38746" to="38779" fromLane="0" toLane="0" contPos="-4.00" shape="46.70,-299.52 51.67,-298.42 58.70,-297.14 67.82,-295.88 78.01,-294.88 89.30,-294.17" via=":17_8_0" dir="s" state="M"/>
+    <connection from="38746" to="38791" fromLane="0" toLane="0" contPos="-4.00" shape="46.70,-299.52 50.51,-298.41 53.66,-297.15 56.17,-295.83 58.51,-294.23 60.62,-292.35 62.10,-290.63 63.36,-288.75 64.37,-286.72 65.28,-284.04 65.83,-281.26 66.05,-278.44 65.96,-275.04 65.78,-273.35" via=":17_9_0" dir="l" state="m"/>
+    <connection from="38780" to="38791" fromLane="0" toLane="0" contPos="-4.00" shape="89.12,-290.68 85.09,-290.68 81.66,-290.34 78.85,-289.74 76.14,-288.79 74.09,-287.74 72.21,-286.42 70.54,-284.85 69.12,-283.04 67.97,-281.05 66.88,-278.40 66.15,-275.62 65.78,-273.35" via=":17_0_0" dir="r" state="M"/>
+    <connection from="38780" to="38747" fromLane="0" toLane="0" contPos="-4.00" shape="89.12,-290.68 77.70,-291.40 67.36,-292.41 58.10,-293.69 50.94,-294.99 45.89,-296.12" via=":17_1_0" dir="s" state="M"/>
+    <connection from="38780" to="38819" fromLane="0" toLane="0" contPos="-4.00" shape="89.12,-290.68 84.59,-291.08 81.61,-291.60 78.69,-292.39 77.27,-292.92 75.89,-293.55 74.58,-294.30 73.35,-295.18 72.24,-296.21 71.29,-297.38 70.51,-298.68 69.94,-300.07 69.57,-301.54 69.38,-303.04 69.35,-304.55 69.47,-306.06 70.03,-309.03 70.91,-311.93 72.03,-314.74 72.66,-316.11" via=":17_2_0" dir="l" state="m"/>
+    <connection from="38789" to="38747" fromLane="0" toLane="0" contPos="-4.00" shape="58.84,-274.21 59.11,-277.62 59.08,-280.46 58.73,-283.29 58.18,-285.50 57.36,-287.62 56.22,-289.59 54.79,-291.36 53.09,-292.87 51.18,-294.11 49.13,-295.09 46.43,-295.98 45.89,-296.12" via=":17_10_0" dir="r" state="m"/>
+    <connection from="38789" to="38819" fromLane="0" toLane="0" contPos="-4.00" shape="58.84,-274.21 59.67,-279.42 60.82,-284.57 62.52,-290.66 64.87,-297.66 67.94,-305.52 71.76,-314.21 72.66,-316.11" via=":17_11_0" dir="s" state="m"/>
+    <connection from="38789" to="38779" fromLane="0" toLane="0" contPos="-4.00" shape="58.84,-274.21 59.44,-277.57 60.27,-280.29 61.42,-282.88 62.60,-284.82 64.00,-286.61 65.61,-288.21 67.88,-289.92 70.36,-291.30 72.99,-292.36 76.28,-293.28 79.63,-293.86 83.60,-294.20 88.14,-294.22 89.30,-294.17" via=":17_12_0" dir="l" state="m"/>
+    <connection from="38820" to="38779" fromLane="0" toLane="0" contPos="-4.00" shape="75.82,-314.62 75.28,-313.44 74.31,-311.00 73.56,-308.55 73.10,-306.06 73.02,-304.87 73.04,-303.68 73.19,-302.53 73.47,-301.43 73.90,-300.40 74.48,-299.45 75.19,-298.59 76.04,-297.83 76.99,-297.15 78.04,-296.56 79.15,-296.05 80.30,-295.63 82.79,-294.96 85.33,-294.52 89.30,-294.17" via=":17_3_0" dir="r" state="m"/>
+    <connection from="38820" to="38791" fromLane="0" toLane="0" contPos="-4.00" shape="75.82,-314.62 73.84,-309.95 72.02,-304.67 70.24,-298.32 68.57,-290.89 66.98,-281.89 65.78,-273.35" via=":17_4_0" dir="s" state="m"/>
+    <connection from="38820" to="38791" fromLane="0" toLane="1" contPos="-4.00" shape="75.82,-314.62 74.95,-312.76 71.19,-304.23 68.19,-296.55 65.89,-289.72 64.23,-283.79 63.12,-278.81 62.31,-273.78" via=":17_4_1" dir="s" state="m"/>
+    <connection from="38820" to="38747" fromLane="0" toLane="0" contPos="-4.00" shape="75.82,-314.62 74.78,-312.52 73.07,-309.47 71.13,-306.52 68.92,-303.72 66.41,-301.17 64.52,-299.62 62.48,-298.27 60.29,-297.14 57.98,-296.28 55.57,-295.70 53.13,-295.41 50.67,-295.41 48.25,-295.65 45.89,-296.12" via=":17_6_0" dir="l" state="m"/>
+
+    <connection from=":17_0" to="38791" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":17_1" to="38747" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":17_2" to="38819" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":17_3" to="38779" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":17_4" to="38791" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":17_4" to="38791" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":17_6" to="38747" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":17_7" to="38819" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":17_8" to="38779" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":17_9" to="38791" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":17_10" to="38747" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":17_11" to="38819" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":17_12" to="38779" fromLane="0" toLane="0" dir="l" state="M"/>
+
+</net>
