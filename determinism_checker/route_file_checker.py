@@ -1,4 +1,15 @@
+"""
+Check the determinism of the route files
+"""
 from xml.etree import ElementTree
+
+__author__ = "Yueming Li, Peter Kocsis"
+__copyright__ = "TUM Cyber-Physical System Group"
+__credits__ = []
+__version__ = "0.1"
+__maintainer__ = "Moritz Klischat"
+__email__ = "moritz.klischat@tum.de"
+__status__ = "Integration"
 
 
 def rou_file_determinism_check(rou_file: str) -> bool:
