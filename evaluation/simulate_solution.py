@@ -1,16 +1,13 @@
 import os
 from copy import deepcopy
 import matplotlib
-import numpy as np
+
 matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-from commonroad.visualization.draw_dispatch_cr import draw_object
 from commonroad.scenario.scenario import Scenario
 from cr2sumo.interface.sumo_interface import SumoInterface
 from cr2sumo.rpc.sumo_client import SumoRPCClient
 from cr2sumo.visualization.video import create_video
 from sumo_config.default import SumoCommonRoadConfig
-import submissions_models_cost_function as cf
 from commonroad.common.solution import CommonRoadSolutionReader as sr
 
 class simulation_solution:
