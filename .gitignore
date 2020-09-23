@@ -1,6 +1,10 @@
 
 install/
 
-scenarios/
-
 .idea/
+
+__pycache__/
+
+example_scenarios/output/
+
+tests/outputs/

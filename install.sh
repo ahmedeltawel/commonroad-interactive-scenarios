@@ -1,11 +1,49 @@
 #!/usr/bin/env bash
 
-# Based on the implementation in the CommonRoad-RL repository
+# Based on the implementation in the CommonRoad-RL and Commonroad-drivability-checker repository
+
+# Constants
+INSTALL_SUMO_MANAGER="FALSE"
+
+USAGE="
+$(basename "$0") [options] -- installs the dependencies for the commonroad-interactive-benchmark repo.
+Options:
+    -h | --help   show this help text
+    -e ANACONDA_ENV | --env ANACONDA_ENV   name of the environment
+    --sumo_manager   install the sumo-manager, default: false
+"
+# Parse args
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case $key in
+  -h | --help)
+    echo -e "${USAGE}"
+    exit 1
+    ;;
+
+  -e | --env)
+    ENVIRONMENT="$2"
+    shift # past argument
+    shift # past value
+    ;;
+
+  --sumo_manager)
+    INSTALL_SUMO_MANAGER="TRUE"
+    shift # past argument
+    shift # past value
+    ;;
+
+  *) # unknown option
+    shift              # past argument
+    ;;
+  esac
+done
+
 
 PYTHON_VERSION=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 JOBS=$(($(nproc) - 1))
 
-source activate "$1"
+source activate "$ENVIRONMENT"
 which python
 
 function safe_cd() {
@@ -109,7 +147,6 @@ echo "export PATH=$PATH:$SUMO_HOME/bin" >> ~/.profile
 safe_cd tools
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 safe_cd ..
-
 back_to_basedir
 
 
@@ -138,3 +175,16 @@ make -j "$JOBS"
 safe_cd ..
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
+
+
+if [ "${INSTALL_SUMO_MANAGER}" == "TRUE" ]; then
+  echo "Installing CommonRoad-sumo-manager"
+  git clone https://gitlab.lrz.de/cps/commonroad-sumo-manager.git
+  pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+  safe_cd commonroad-sumo-manager
+  git checkout 47eb544ea85163ba3155a422603137d903de0796
+  pip install -r ./requirements.txt
+  back_to_basedir
+fi
+
+echo "Done"
