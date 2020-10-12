@@ -104,11 +104,6 @@ pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth
 conda install cartopy rtree numba
 pip install -r requirements.txt
 
-echo "Installing CommonRoad map-tool"
-safe_cd commonroad-map-tool
-python setup.py install
-safe_cd ..
-
 echo "Installing CommonRoad scenarios-features"
 safe_cd commonroad-scenario-features
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
@@ -129,6 +124,15 @@ else
     fail "Could not set SUMO_BINARY in pathConfig.py"
 fi
 back_to_basedir
+
+
+echo "Installing CommonRoad map-tool"
+git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
+safe_cd commonroad-map-tool
+git checkout 7025be62632b5a2c9759acee08c7ffc117173566
+python setup.py install
+back_to_basedir
+
 
 echo "Installing SUMO"
 require_sudo apt-get install python3 wget curl g++ libxerces-c-dev libfox-1.6-0 libfox-1.6-dev cmake libsqlite3-dev libgdal-dev libproj-dev libgl2ps-dev

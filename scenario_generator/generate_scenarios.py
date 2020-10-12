@@ -134,19 +134,19 @@ def generate_scenarios(cr_maps_folder_path: str,
 
         # create unique scenario ids for each scenario
         max_num_of_scenarios += scenario_config.scen_per_map
-        benchmark_id = CRBenchmarkID.from_string(os.path.splitext(os.path.basename(map_file))[0])
+        benchmark_id = CRBenchmarkID.from_path(map_file)
         location_name = benchmark_id.country + '_' + benchmark_id.scene
         orig_map_name = location_name + '-' + benchmark_id.config
         scenario_config.map_name = location_name
 
-        dir_name = os.path.join(output_folder_path, timestr, orig_map_name)
-        os.makedirs(dir_name, exist_ok=True)
+        dir_path = os.path.join(output_folder_path, timestr, orig_map_name)
+        os.makedirs(dir_path, exist_ok=True)
 
         map_nr = int(benchmark_id.config)
 
         try:
             # conversion from CommonRoad to SUMO map
-            sumo_net_path = dir_name + "/" + location_name + '-' + str(map_nr) + ".net.xml"
+            sumo_net_path = os.path.join(dir_path, location_name + '-' + str(map_nr) + ".net.xml")
             cr2sumo_converter = CR2SumoMapConverter.from_file(map_file, cr2net_conf)
             cr2sumo_converter._convert_map()
             cr2sumo_converter.write_intermediate_files(sumo_net_path)
@@ -170,9 +170,9 @@ def generate_scenarios(cr_maps_folder_path: str,
             for j in range(scenario_config.scen_per_map):
                 new_benchmark_id = CRBenchmarkID(benchmark_id.country, benchmark_id.scene, benchmark_id.config, 'I')
                 sumo_conf.scenario_name = str(new_benchmark_id)
-                sumo_conf.scenarios_path = dir_name
+                sumo_conf.scenarios_path = dir_path
 
-                scenario_dir_name = os.path.join(dir_name, str(new_benchmark_id))
+                scenario_dir_name = os.path.join(dir_path, str(new_benchmark_id))
                 if os.path.exists(scenario_dir_name) == False:
                     os.mkdir(scenario_dir_name)
                 sumo_net_copy = os.path.join(scenario_dir_name, str(new_benchmark_id) + ".net.xml")

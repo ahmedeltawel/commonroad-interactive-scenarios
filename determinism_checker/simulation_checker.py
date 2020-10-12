@@ -4,19 +4,25 @@ Check the determinism of the obstacles by simulating many times
 import os
 import random
 from collections import defaultdict
-from typing import Dict
+from typing import Dict, List
 
 import matplotlib.pyplot as plt
 import numpy as np
+from xml.etree import cElementTree as ET
+import pycrccosy
+from commonroad_ccosy.geometry.util import resample_polyline
+
+from commonroad.common.file_reader import CommonRoadFileReader
+from commonroad.scenario.lanelet import Lanelet
 from commonroad.scenario.obstacle import DynamicObstacle
 from commonroad.scenario.scenario import Scenario
 from commonroad.visualization.draw_dispatch_cr import draw_object
-from cr2sumo.interface.sumo_interface import SumoInterface
-from cr2sumo.visualization.video import create_video as create_video_sumo_manager
-from scenario_generation.config_files.sumo_config import SumoConf
-from sumo2cr.interface.sumo_simulation import SumoSimulation
-from sumo2cr.maps.sumo_scenario import ScenarioWrapper
-from sumo_config.default import SumoCommonRoadConfig as SumoManagerCommonRoadConfig
+
+from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
+from example_scenarios.simple_interactive.configuration import CONFIG_TYPE, get_interactive_scenario_configuration
+
+from sumocr.interface.sumo_simulation import SumoSimulation
+from utils.benchmark_id import CRBenchmarkID
 
 __author__ = "Peter Kocsis, Yueming Li"
 __copyright__ = "TUM Cyber-Physical System Group"
@@ -25,8 +31,6 @@ __version__ = "0.1"
 __maintainer__ = "Moritz Klischat"
 __email__ = "moritz.klischat@tum.de"
 __status__ = "Integration"
-
-from utils.benchmark_id import CRBenchmarkID
 
 
 def get_variable_lists(obstacle: DynamicObstacle):
@@ -128,14 +132,44 @@ def plot_vehicle_trajectories(simulated_scenarios: Dict[int, Scenario], vehicle_
     plt.show()
 
 
-def simulate_scenario(scenario_folder_path: str,
+def translate_scenario(scenario, planning_problem, position=np.array([0, 0])):
+    # translate scenario to center
+    centroid = np.mean(np.concatenate(
+        [l.center_vertices for l in scenario.lanelet_network.lanelets]),
+        axis=0)
+    scenario.translate_rotate(position - centroid, 0)
+    planning_problem.translate_rotate(position - centroid, 0)
+
+
+def generate_sumo_files(scenario_file: str, conf):
+    # Generate network file
+    sumo_files_path, _ = os.path.splitext(scenario_file)
+    os.makedirs(sumo_files_path, exist_ok=True)
+
+    # load CR scenario and translate to origo
+    scenario, planning_problem = CommonRoadFileReader(scenario_file).open()
+    translate_scenario(scenario, planning_problem)
+
+    # convert scenario to SUMO files
+    converter = CR2SumoMapConverter(scenario.lanelet_network, conf)
+    print(f'Write SUMO files for {scenario_file}')
+    conversion_possible = converter.convert_scenario_to_net_file(scenario, sumo_files_path)
+
+    if not conversion_possible:
+        print('Conversion to net file failed!')
+        return None
+
+    return converter
+
+
+def simulate_scenario(scenario_file_path: str,
                       num_of_simulations: int,
                       use_sumo_manager: bool = False,
                       creating_video: bool = False,
                       output_folder_path: str = None) -> Dict[int, Scenario]:
     """
     Simulating a scenario many times for determinsim check and returning the simulated scenarios
-    :param scenario_folder_path: Path to the folder which contains all the necessary files of the interactive scenario
+    :param scenario_file_path: Path to the interactive scenario
     :param num_of_simulations: The number of simulations whioch will be performed for statistics gathering
     :param use_sumo_manager: Indicates whether to use the sumo-manager
     :param creating_video: Indicates whether to create video
@@ -146,47 +180,50 @@ def simulate_scenario(scenario_folder_path: str,
     assert not creating_video or output_folder_path is not None, \
         "The output folder path was not defined for video creation"
 
+    benchmark_id = CRBenchmarkID.from_path(scenario_file_path)
+
     if use_sumo_manager:
+        pass
         # Create Interface to SUMO
-        sumo_interface = SumoInterface()
-
-        create_video_function = create_video_sumo_manager
-
-        # TODO: Currently, the sumo manager is built with an older version of the sumo-interface, therefore the results
-        #  of the simulations with and without sumo-manager won't match.
-        #  Check for differences when the sumo-manager is updated!
+        # sumo_interface = SumoInterface()
+        #
+        # create_video_function = create_video_sumo_manager
+        # conf = SumoManagerCommonRoadConfig()
+        #
+        # # TODO: Currently, the sumo manager is built with an older version of the sumo-interface, therefore the results
+        # #  of the simulations with and without sumo-manager won't match.
+        # #  Check for differences when the sumo-manager is updated!
         def create_simulator():
-            simulator = sumo_interface.start_simulator()
-
-            # upload folder contains all files needed for sumo-simulation
-            simulator.send_sumo_scenario(conf.scenario_name, scenario_folder_path)
-            simulator.initialize(conf)
-            return simulator
-
-        conf = SumoManagerCommonRoadConfig()
+            pass
+        conf = None
+        def create_video_function():
+            pass
+        sumo_interface = None
+        #     simulator = sumo_interface.start_simulator()
+        #
+        #     # upload folder contains all files needed for sumo-simulation
+        #     simulator.send_sumo_scenario(conf.scenario_name, scenario_file_path)
+        #     simulator.initialize(conf)
+        #     return simulator
 
     else:
         sumo_interface = None
 
         create_video_function = creating_video
 
+        conf = get_interactive_scenario_configuration(CONFIG_TYPE.SUMO_CONFIG_1, str(benchmark_id))
+        # conf.scenarios_path = os.path.dirname(scenario_file_path)
+
+        scenario_wrapper = generate_sumo_files(scenario_file_path, conf)
+
         def create_simulator():
             # TODO: This is a workaround for the problem that there is a hardcoded path
             #  in sumo-interface for the cr_map_file: os.path.join(os.path.dirname(__file__),'../../example_scenarios/',
             #                                        config.scenario_name, config.scenario_name + '.maps.xml')
             #  Remove if resolved!
-            cr_map = os.path.join(scenario_folder_path, f"{benchmark_id}.maps.xml")
-            scenario_wrapper = ScenarioWrapper.init_from_scenario(config=conf, cr_map_file=cr_map)
-
             simulator = SumoSimulation()
             simulator.initialize(conf, scenario_wrapper=scenario_wrapper)
             return simulator
-
-        conf = SumoConf()
-        conf.scenarios_path = os.path.dirname(scenario_folder_path)
-
-    benchmark_id = CRBenchmarkID.from_path(scenario_folder_path)
-    conf.scenario_name = str(benchmark_id)  # given scenario name
 
     simulated_scenarios = dict()  # store simulated example_scenarios for every simulation
 

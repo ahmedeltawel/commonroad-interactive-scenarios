@@ -7,6 +7,8 @@ import sys
 from pathlib import Path
 
 from determinism_checker.route_file_checker import rou_file_determinism_check
+from determinism_checker.simulation_checker import simulate_scenario, plot_vehicle_trajectories, \
+    obstacle_determinism_check
 
 __author__ = "Peter Kocsis, Yueming Li"
 __copyright__ = "TUM Cyber-Physical System Group"
@@ -15,9 +17,6 @@ __version__ = "0.1"
 __maintainer__ = "Moritz Klischat"
 __email__ = "moritz.klischat@tum.de"
 __status__ = "Integration"
-
-from determinism_checker.simulation_checker import simulate_scenario, plot_vehicle_trajectories, \
-    obstacle_determinism_check
 
 
 def check_determinism_argsparser() -> argparse.ArgumentParser:
@@ -47,7 +46,7 @@ def check_determinism_argsparser() -> argparse.ArgumentParser:
     return parser
 
 
-def check_determinism(scenario_folder_path: str,
+def check_determinism(scenario_file_path: str,
                       num_of_simulations: int,
                       output_folder_path: str,
                       use_sumo_manager: bool = False,
@@ -58,7 +57,7 @@ def check_determinism(scenario_folder_path: str,
     Steps: 1. Check the rou files for determinism
            2. Check the behaviour of the obstacles by simulating the traffic many times
               and creating statistics from the trajectory of a single obstacle
-    :param scenario_folder_path: Path to the folder which contains all the necessary files of the interactive scenario
+    :param scenario_file_path: Path to the interactive scenario
     :param num_of_simulations: The number of simulations whioch will be performed for statistics gathering
     :param output_folder_path: Path to the output folder for the videos
     :param use_sumo_manager: Indicates whether to use the sumo-manager
@@ -66,7 +65,7 @@ def check_determinism(scenario_folder_path: str,
     :param std_tolerance: Tolerance of the standard deviation of the obstacles' trajectory state values
     :return: True if all the deviations are in the given tolerance
     """
-    simulated_scenarios = simulate_scenario(scenario_folder_path, num_of_simulations,
+    simulated_scenarios = simulate_scenario(scenario_file_path, num_of_simulations,
                                             use_sumo_manager, creating_video, output_folder_path)
 
     # Plot trajectories
@@ -74,7 +73,8 @@ def check_determinism(scenario_folder_path: str,
 
     # Check rou files for determinism
     print("Checking the route files")
-    filenames = list(Path(scenario_folder_path).rglob("*.rou.xml"))
+    sumo_files, _ = os.path.splitext(scenario_file_path)
+    filenames = list(Path(sumo_files).rglob("*.rou.xml"))
     if filenames:
         is_rou_files_deterministic = [rou_file_determinism_check(str(rou_file)) for rou_file in filenames]
         if all(is_rou_files_deterministic):
@@ -85,7 +85,7 @@ def check_determinism(scenario_folder_path: str,
             print("The rou files are not deterministic")
     else:
         is_rou_files_deterministic = False
-        print(f"No rou file has been found in {scenario_folder_path}")
+        print(f"No rou file has been found in {scenario_file_path}")
 
     # Check vehicles for determinism
     print("Checking the obstacles' trajectories")
@@ -100,7 +100,7 @@ def check_determinism(scenario_folder_path: str,
 
 if __name__ == '__main__':
     arguments = check_determinism_argsparser().parse_args(sys.argv[1:])
-    check_determinism(scenario_folder_path=arguments.scenario_folder_path,
+    check_determinism(scenario_file_path=arguments.scenario_folder_path,
                       num_of_simulations=arguments.num_of_simulations,
                       output_folder_path=arguments.output_folder_path,
                       use_sumo_manager=arguments.sumo_manager,

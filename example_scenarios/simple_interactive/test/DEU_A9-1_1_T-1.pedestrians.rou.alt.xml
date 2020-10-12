@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Sat Oct 10 18:25:50 2020 by Eclipse SUMO duarouter Version v1_2_0+5214-53edc58fcd
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/example_scenarios/simple_interactive/interactive_scenario/DEU_A9-1_1_T-1.net.xml"/>
+        <route-files value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/example_scenarios/simple_interactive/interactive_scenario/DEU_A9-1_1_T-1.pedestrian.trips.xml"/>
+    </input>
+
+    <output>
+        <output-file value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/example_scenarios/simple_interactive/interactive_scenario/DEU_A9-1_1_T-1.pedestrians.rou.xml"/>
+        <alternatives-output value="/home/peterkocsis/work/2020_CommonRoad/HiWi/repos/commonroad-interactive-benchmarks/example_scenarios/simple_interactive/interactive_scenario/DEU_A9-1_1_T-1.pedestrians.rou.alt.xml"/>
+    </output>
+
+    <time>
+        <begin value="0.0"/>
+        <end value="30.0"/>
+    </time>
+
+    <report>
+        <no-warnings value="true"/>
+        <ignore-errors value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <person id="0" depart="0.00" departPos="base">
+        <personTrip from="48987" to="48971" modes="public car" departPos="0.00" walkFactor="0.75" costs="55.24"/>
+    </person>
+    <vehicle id="1_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48957 48967 48975 48983"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="1" depart="1.00" departPos="base">
+        <personTrip from="48957" to="48983" modes="public car" walkFactor="0.75" costs="11.06"/>
+    </person>
+    <person id="2" depart="2.00" departPos="base">
+        <personTrip from="48987" to="48975" modes="public car" walkFactor="0.75" costs="55.24"/>
+    </person>
+    <person id="3" depart="3.00" departPos="base">
+        <personTrip from="48979" to="48959" modes="public car" walkFactor="0.75" costs="291.18"/>
+    </person>
+    <person id="4" depart="4.00" departPos="base">
+        <personTrip from="48981" to="48963" modes="public car" walkFactor="0.75" costs="176.23"/>
+    </person>
+    <vehicle id="5_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48957 48963 48971 48981"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="5" depart="5.00" departPos="base">
+        <personTrip from="48957" to="48981" modes="public car" walkFactor="0.75" costs="10.48"/>
+    </person>
+    <person id="6" depart="6.00" departPos="base">
+        <personTrip from="48969" to="48977" modes="public car" walkFactor="0.75" costs="237.22"/>
+    </person>
+    <person id="7" depart="7.00" departPos="base">
+        <personTrip from="48977" to="48959" modes="public car" walkFactor="0.75" costs="395.29"/>
+    </person>
+    <person id="8" depart="8.00" departPos="base">
+        <personTrip from="48963" to="48959" modes="public car" walkFactor="0.75" costs="538.17"/>
+    </person>
+    <vehicle id="9_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48957 48963 48971"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="9" depart="9.00" departPos="base">
+        <personTrip from="48957" to="48971" modes="public car" walkFactor="0.75" costs="9.51"/>
+    </person>
+    <person id="10" depart="10.00" departPos="base">
+        <personTrip from="48987" to="48957" modes="public car" walkFactor="0.75" costs="383.26"/>
+    </person>
+    <person id="11" depart="11.00" departPos="base">
+        <personTrip from="48975" to="48971" modes="public car" walkFactor="0.75" costs="0.00"/>
+    </person>
+    <person id="12" depart="12.00" departPos="base">
+        <personTrip from="48977" to="48959" modes="public car" walkFactor="0.75" costs="395.29"/>
+    </person>
+    <person id="13" depart="13.00" departPos="base">
+        <personTrip from="48975" to="48967" modes="public car" walkFactor="0.75" costs="142.88"/>
+    </person>
+    <person id="14" depart="14.00" departPos="base">
+        <personTrip from="48975" to="48977" modes="public car" walkFactor="0.75" costs="0.00"/>
+    </person>
+    <person id="15" depart="15.00" departPos="base">
+        <personTrip from="48971" to="48969" modes="public car" walkFactor="0.75" costs="237.22"/>
+    </person>
+    <vehicle id="16_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48963 48975 48987"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="16" depart="16.00" departPos="base">
+        <personTrip from="48963" to="48987" modes="public car" walkFactor="0.75" costs="5.76"/>
+    </person>
+    <person id="17" depart="17.00" departPos="base">
+        <personTrip from="48971" to="48975" modes="public car" walkFactor="0.75" costs="0.00"/>
+    </person>
+    <vehicle id="18_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48957 48967 48975"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="18" depart="18.00" departPos="base">
+        <personTrip from="48957" to="48975" modes="public car" walkFactor="0.75" costs="9.47"/>
+    </person>
+    <person id="19" depart="19.00" departPos="base">
+        <personTrip from="48957" to="48959" modes="public car" walkFactor="0.75" costs="723.31"/>
+    </person>
+    <person id="20" depart="20.00" departPos="base">
+        <personTrip from="48971" to="48969" modes="public car" walkFactor="0.75" costs="237.22"/>
+    </person>
+    <vehicle id="21_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48957 48967 48977"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="21" depart="21.00" departPos="base">
+        <personTrip from="48957" to="48977" modes="public car" walkFactor="0.75" costs="9.46"/>
+    </person>
+    <person id="22" depart="22.00" departPos="base">
+        <personTrip from="48959" to="48975" modes="public car" walkFactor="0.75" costs="395.29"/>
+    </person>
+    <vehicle id="23_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48959 48969 48979 48987"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="23" depart="23.00" departPos="base">
+        <personTrip from="48959" to="48987" modes="public car" walkFactor="0.75" costs="11.31"/>
+    </person>
+    <person id="24" depart="24.00" departPos="base">
+        <personTrip from="48981" to="48987" modes="public car" walkFactor="0.75" costs="88.59"/>
+    </person>
+    <person id="25" depart="25.00" departPos="base">
+        <personTrip from="48959" to="48967" modes="public car" walkFactor="0.75" costs="538.17"/>
+    </person>
+    <vehicle id="26_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48957 48967"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="26" depart="26.00" departPos="base">
+        <personTrip from="48957" to="48967" modes="public car" walkFactor="0.75" costs="5.34"/>
+    </person>
+    <person id="27" depart="27.00" departPos="base">
+        <personTrip from="48981" to="48963" modes="public car" walkFactor="0.75" costs="176.23"/>
+    </person>
+    <vehicle id="28_0" depart="triggered">
+        <routeDistribution last="0">
+            <route cost="0.00" probability="1.00000000" edges="48959 48969 48979 48987"/>
+        </routeDistribution>
+    </vehicle>
+    <person id="28" depart="28.00" departPos="base">
+        <personTrip from="48959" to="48987" modes="public car" walkFactor="0.75" costs="11.31"/>
+    </person>
+    <person id="29" depart="29.00" departPos="base">
+        <personTrip from="48959" to="48983" modes="public car" walkFactor="0.75" costs="340.05"/>
+    </person>
+</routes>

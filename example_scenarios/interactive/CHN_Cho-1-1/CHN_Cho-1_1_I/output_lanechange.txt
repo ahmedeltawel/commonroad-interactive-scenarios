@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Wed Sep 23 16:05:16 2020 by Eclipse SUMO Version v1_2_0+5214-53edc58fcd
+<!-- generated on Sa 10 Okt 2020 13:22:13 CEST by Eclipse SUMO GUI Version v1_2_0+5214-53edc58fcd
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -19,8 +19,6 @@
     </time>
 
     <processing>
-        <lateral-resolution value="0"/>
-        <ignore-route-errors value="true"/>
         <time-to-teleport value="-1"/>
         <lanechange.duration value="15"/>
     </processing>
@@ -30,10 +28,6 @@
         <no-step-log value="true"/>
     </report>
 
-    <traci_server>
-        <remote-port value="51531"/>
-    </traci_server>
-
     <gui_only>
         <tracker-interval value="0.1"/>
     </gui_only>
@@ -42,30 +36,4 @@
 -->
 
 <lanechanges>
-    <change id="14" type="passenger@14" time="16.40" from="233_0" to="233_1" dir="1" speed="19.23" pos="178.50" reason="speedGain" leaderGap="11.10" leaderSecureGap="5.42" leaderSpeed="16.97" followerGap="16.78" followerSecureGap="5.38" followerSpeed="8.61" origLeaderGap="15.68" origLeaderSecureGap="12.76" origLeaderSpeed="13.90"/>
-    <change id="14" type="passenger@14" time="16.40" from="233_0" to="233_1" dir="1" speed="19.23" pos="178.50" reason="speedGain" leaderGap="11.10" leaderSecureGap="5.42" leaderSpeed="16.97" followerGap="16.78" followerSecureGap="5.38" followerSpeed="8.61" origLeaderGap="15.68" origLeaderSecureGap="12.76" origLeaderSpeed="13.90"/>
-    <change id="20" type="passenger@20" time="18.10" from="233_0" to="233_1" dir="1" speed="11.41" pos="71.29" reason="speedGain" leaderGap="5.17" leaderSecureGap="0.50" leaderSpeed="8.25" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="6.46" origLeaderSecureGap="2.92" origLeaderSpeed="6.00"/>
-    <change id="20" type="passenger@20" time="18.10" from="233_0" to="233_1" dir="1" speed="11.41" pos="71.29" reason="speedGain" leaderGap="5.17" leaderSecureGap="0.50" leaderSpeed="8.25" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="6.46" origLeaderSecureGap="2.92" origLeaderSpeed="6.00"/>
-    <change id="18" type="passenger@18" time="19.80" from="233_1" to="233_0" dir="-1" speed="18.71" pos="163.80" reason="speedGain" leaderGap="25.65" leaderSecureGap="0.02" leaderSpeed="16.68" followerGap="7.39" followerSecureGap="4.61" followerSpeed="7.41" origLeaderGap="12.97" origLeaderSecureGap="10.08" origLeaderSpeed="12.17"/>
-    <change id="18" type="passenger@18" time="19.80" from="233_1" to="233_0" dir="-1" speed="18.71" pos="163.80" reason="speedGain" leaderGap="25.65" leaderSecureGap="0.02" leaderSpeed="16.68" followerGap="7.39" followerSecureGap="4.61" followerSpeed="7.41" origLeaderGap="12.97" origLeaderSecureGap="10.08" origLeaderSpeed="12.17"/>
-    <change id="22" type="passenger@22" time="20.60" from="233_0" to="233_1" dir="1" speed="12.38" pos="66.35" reason="speedGain" leaderGap="15.19" leaderSecureGap="0.00" leaderSpeed="7.20" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.99" origLeaderSecureGap="0.00" origLeaderSpeed="5.14"/>
-    <change id="22" type="passenger@22" time="20.60" from="233_0" to="233_1" dir="1" speed="12.38" pos="66.35" reason="speedGain" leaderGap="15.19" leaderSecureGap="0.00" leaderSpeed="7.20" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.99" origLeaderSecureGap="0.00" origLeaderSpeed="5.14"/>
-    <change id="24" type="passenger@24" time="24.50" from="233_0" to="233_1" dir="1" speed="15.19" pos="70.66" reason="speedGain" leaderGap="17.62" leaderSecureGap="0.00" leaderSpeed="9.14" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.07" origLeaderSecureGap="0.00" origLeaderSpeed="5.37"/>
-    <change id="24" type="passenger@24" time="24.50" from="233_0" to="233_1" dir="1" speed="15.19" pos="70.66" reason="speedGain" leaderGap="17.62" leaderSecureGap="0.00" leaderSpeed="9.14" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.07" origLeaderSecureGap="0.00" origLeaderSpeed="5.37"/>
-    <change id="26" type="passenger@26" time="28.50" from="233_0" to="233_1" dir="1" speed="15.25" pos="69.46" reason="speedGain" leaderGap="17.57" leaderSecureGap="0.00" leaderSpeed="8.95" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.23" origLeaderSecureGap="0.20" origLeaderSpeed="5.44"/>
-    <change id="26" type="passenger@26" time="28.50" from="233_0" to="233_1" dir="1" speed="15.25" pos="69.46" reason="speedGain" leaderGap="17.57" leaderSecureGap="0.00" leaderSpeed="8.95" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.23" origLeaderSecureGap="0.20" origLeaderSpeed="5.44"/>
-    <change id="21" type="passenger@21" time="31.30" from="233_0" to="233_1" dir="1" speed="23.44" pos="291.07" reason="speedGain" leaderGap="16.49" leaderSecureGap="13.80" leaderSpeed="17.85" followerGap="16.77" followerSecureGap="13.71" followerSpeed="15.89" origLeaderGap="36.47" origLeaderSecureGap="16.04" origLeaderSpeed="17.02"/>
-    <change id="21" type="passenger@21" time="31.30" from="233_0" to="233_1" dir="1" speed="23.44" pos="291.07" reason="speedGain" leaderGap="16.49" leaderSecureGap="13.80" leaderSpeed="17.85" followerGap="16.77" followerSecureGap="13.71" followerSpeed="15.89" origLeaderGap="36.47" origLeaderSecureGap="16.04" origLeaderSpeed="17.02"/>
-    <change id="23" type="passenger@23" time="32.40" from="233_0" to="233_1" dir="1" speed="22.84" pos="261.75" reason="speedGain" leaderGap="18.42" leaderSecureGap="15.29" leaderSpeed="17.38" followerGap="26.36" followerSecureGap="13.45" followerSpeed="15.86" origLeaderGap="39.77" origLeaderSecureGap="11.98" origLeaderSpeed="18.57"/>
-    <change id="23" type="passenger@23" time="32.40" from="233_0" to="233_1" dir="1" speed="22.84" pos="261.75" reason="speedGain" leaderGap="18.42" leaderSecureGap="15.29" leaderSpeed="17.38" followerGap="26.36" followerSecureGap="13.45" followerSpeed="15.86" origLeaderGap="39.77" origLeaderSecureGap="11.98" origLeaderSpeed="18.57"/>
-    <change id="egoVehicle28" type="passenger" time="32.40" from="233_0" to="233_1" dir="1" speed="15.39" pos="69.64" reason="speedGain" leaderGap="17.14" leaderSecureGap="0.00" leaderSpeed="8.71" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.91" origLeaderSecureGap="0.00" origLeaderSpeed="5.43"/>
-    <change id="egoVehicle28" type="passenger" time="32.40" from="233_0" to="233_1" dir="1" speed="15.39" pos="69.64" reason="speedGain" leaderGap="17.14" leaderSecureGap="0.00" leaderSpeed="8.71" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.91" origLeaderSecureGap="0.00" origLeaderSpeed="5.43"/>
-    <change id="30" type="bicycle@30" time="35.50" from="233_0" to="233_1" dir="1" speed="6.94" pos="33.92" reason="speedGain" leaderGap="12.49" leaderSecureGap="0.00" leaderSpeed="7.34" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.30" origLeaderSecureGap="0.19" origLeaderSpeed="3.86"/>
-    <change id="30" type="bicycle@30" time="35.50" from="233_0" to="233_1" dir="1" speed="6.94" pos="33.92" reason="speedGain" leaderGap="12.49" leaderSecureGap="0.00" leaderSpeed="7.34" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="2.30" origLeaderSecureGap="0.19" origLeaderSpeed="3.86"/>
-    <change id="25" type="passenger@25" time="37.80" from="233_0" to="233_1" dir="1" speed="26.00" pos="325.78" reason="speedGain" leaderGap="37.05" leaderSecureGap="22.50" leaderSpeed="22.02" followerGap="39.33" followerSecureGap="5.98" followerSpeed="18.23" origLeaderGap="67.68" origLeaderSecureGap="23.48" origLeaderSpeed="21.73"/>
-    <change id="25" type="passenger@25" time="37.80" from="233_0" to="233_1" dir="1" speed="26.00" pos="325.78" reason="speedGain" leaderGap="37.05" leaderSecureGap="22.50" leaderSpeed="22.02" followerGap="39.33" followerSecureGap="5.98" followerSpeed="18.23" origLeaderGap="67.68" origLeaderSecureGap="23.48" origLeaderSpeed="21.73"/>
-    <change id="27" type="passenger@27" time="38.70" from="233_0" to="233_1" dir="1" speed="30.17" pos="262.71" reason="speedGain" leaderGap="29.11" leaderSecureGap="8.80" leaderSpeed="19.76" followerGap="26.81" followerSecureGap="3.47" followerSpeed="12.85" origLeaderGap="29.11" origLeaderSecureGap="8.80" origLeaderSpeed="19.76"/>
-    <change id="27" type="passenger@27" time="38.70" from="233_0" to="233_1" dir="1" speed="30.17" pos="262.71" reason="speedGain" leaderGap="29.11" leaderSecureGap="8.80" leaderSpeed="19.76" followerGap="26.81" followerSecureGap="3.47" followerSpeed="12.85" origLeaderGap="29.11" origLeaderSecureGap="8.80" origLeaderSpeed="19.76"/>
-    <change id="32" type="passenger@32" time="40.80" from="233_0" to="233_1" dir="1" speed="9.41" pos="55.09" reason="speedGain" leaderGap="14.23" leaderSecureGap="0.00" leaderSpeed="5.44" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.07" origLeaderSecureGap="0.24" origLeaderSpeed="4.43"/>
-    <change id="32" type="passenger@32" time="40.80" from="233_0" to="233_1" dir="1" speed="9.41" pos="55.09" reason="speedGain" leaderGap="14.23" leaderSecureGap="0.00" leaderSpeed="5.44" followerGap="None" followerSecureGap="None" followerSpeed="None" origLeaderGap="3.07" origLeaderSecureGap="0.24" origLeaderSpeed="4.43"/>
 </lanechanges>
