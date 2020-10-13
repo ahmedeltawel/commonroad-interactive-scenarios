@@ -14,12 +14,12 @@ This project uses conda. Make sure it is installed before proceeding with the in
 
 You can use your environment with python version 3.7, or create a new one by running
 ```
-conda env create -n cr37 python=3.7
+conda create -n cr37 python=3.7
 ```
 
 To install the dependencies of the module, simply run
 ```
-bash install.sh cr37
+bash install.sh -e cr37
 ```
 This will create an `install` folder, pull all the dependencies and install them there
 

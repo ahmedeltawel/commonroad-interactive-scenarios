@@ -39,12 +39,11 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+source activate "$ENVIRONMENT"
+which python
 
 PYTHON_VERSION=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 JOBS=$(($(nproc) - 1))
-
-source activate "$ENVIRONMENT"
-which python
 
 function safe_cd() {
   cd "${@}" || exit 255
@@ -95,22 +94,54 @@ echo "Installing ffmpeg"
 require_sudo apt-get install -y ffmpeg
 
 
+echo "Installing CommonRoad-IO"
+git clone https://gitlab.lrz.de/cps/commonroad-io.git
+safe_cd commonroad-io
+git checkout 573343c850bcdf138564c7b90f581a081875bda7
+pip install -r requirements.txt
+pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+back_to_basedir
+
+
+echo "Installing CommonRoad-Drivability-Checker"
+git clone https://gitlab.lrz.de/tum-cps/commonroad-drivability-checker
+safe_cd commonroad-drivability-checker
+git checkout 28686ef451daa91f801f8e6e74959ac21deeced2
+bash build.sh -e ${CONDA_PREFIX} -v 3.7 --cgal --serializer -i -j $JOBS
+pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+# WORKAROUND The place of the pycrcc library has been changed with the new crcc version, but thic change is not followed by pycrccosy
+cp ./commonroad_dc/pycrcc.cpython-${PYTHON_VERSION//./}m-x86_64-linux-gnu.so ./pycrcc.cpython-${PYTHON_VERSION//./}m-x86_64-linux-gnu.so
+cp ./commonroad_dc/libcrcc.a ./libcrcc.a
+back_to_basedir
+
+
 echo "Installing CommonRoad_Scenarios SS19"
 git clone https://gitlab.lrz.de/ss19/commonroad_scenarios.git
 safe_cd commonroad_scenarios
-git checkout 46c86a33b7cdda5f7c8a4847d7780db56bfe2b7d
+git checkout 636caeb08169c9c13d2d87e0619019934037ab07
 git submodule update --init --recursive
-pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 conda install cartopy rtree numba
 pip install -r requirements.txt
+pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 
 echo "Installing CommonRoad scenarios-features"
 safe_cd commonroad-scenario-features
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
-safe_cd ..
+back_to_basedir
+
+
+echo "Installing CommonRoad map-tool"
+git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
+safe_cd commonroad-map-tool
+git checkout 78e2e359648f5c5ade3b33da46c28d405d276a43
+pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+back_to_basedir
+
 
 echo "Installing sumo-interface"
+git clone https://gitlab.lrz.de/cps/sumo-interface.git
 safe_cd sumo-interface
+git checkout ccca18f38b1d771dfb4895de8cba35d57b80b3c0
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 
@@ -123,14 +154,6 @@ if [ $? -eq 0 ]; then
 else
     fail "Could not set SUMO_BINARY in pathConfig.py"
 fi
-back_to_basedir
-
-
-echo "Installing CommonRoad map-tool"
-git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
-safe_cd commonroad-map-tool
-git checkout 7025be62632b5a2c9759acee08c7ffc117173566
-python setup.py install
 back_to_basedir
 
 
@@ -154,19 +177,6 @@ safe_cd ..
 back_to_basedir
 
 
-echo "Installing CommonRoad collision-checker"
-git clone https://gitlab.lrz.de/tum-cps/commonroad-collision-checker.git
-safe_cd commonroad-collision-checker
-git checkout 197589618abc1dab44dffb89aed39b71b78786f4
-mkdir -p build
-safe_cd build
-cmake -DADD_PYTHON_BINDINGS=TRUE -DPATH_TO_PYTHON_ENVIRONMENT="${CONDA_PREFIX}" -DPYTHON_VERSION="${PYTHON_VERSION}" -DCMAKE_BUILD_TYPE=Release ..
-make -j $JOBS
-safe_cd ..
-python setup.py install
-back_to_basedir
-
-
 echo "Installing CommonRoad curvilinear-coordinate-system"
 require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-dev
 get_ifnexist zip https://syncandshare.lrz.de/dl/fiQ9ipcvfy9LFtnmrn1bHQQ7/commonroad-curvilinear-coordinate-system-fork-3211eb346d54b7e3641a3eec634cdc4040ae7213.zip
@@ -174,7 +184,7 @@ safe_cd commonroad-curvilinear-coordinate-system-fork-3211eb346d54b7e3641a3eec63
 pip install pyclipper
 mkdir -p build
 safe_cd build
-cmake -DPYTHON_INCLUDE_DIR="${CONDA_PREFIX}/include/python${PYTHON_VERSION}m" -DPYTHON_LIBRARY="${CONDA_PREFIX}/lib/libpython${PYTHON_VERSION}m.so" -DPYTHON_EXECUTABLE="${CONDA_PREFIX}/bin/python${PYTHON_VERSION}m" -DCRCC_LIBRARY_DIR="$(pwd)/../../commonroad-collision-checker" -DADD_TESTS=False -DUSE_OMP=True -DCMAKE_BUILD_TYPE=Release ..
+cmake -DPYTHON_INCLUDE_DIR="${CONDA_PREFIX}/include/python${PYTHON_VERSION}m" -DPYTHON_LIBRARY="${CONDA_PREFIX}/lib/libpython${PYTHON_VERSION}m.so" -DPYTHON_EXECUTABLE="${CONDA_PREFIX}/bin/python${PYTHON_VERSION}m" -DCRCC_LIBRARY_DIR="$(pwd)/../../commonroad-drivability-checker" -DADD_TESTS=False -DUSE_OMP=True -DCMAKE_BUILD_TYPE=Release ..
 make -j "$JOBS"
 safe_cd ..
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
