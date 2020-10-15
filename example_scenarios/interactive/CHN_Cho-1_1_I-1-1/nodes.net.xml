@@ -1,0 +1,6 @@
+<!-- generated on 2020-10-14 16:39:28.718272 by convert_scenarios.py v1_2_0+5214-53edc58fcd
+-->
+<nodes>
+	<node id="3" type="priority" x="-348.5093836956522" y="-119.92998913043476"/>
+	<node id="4" type="priority" x="203.31199130434783" y="49.861460869565235"/>
+</nodes>

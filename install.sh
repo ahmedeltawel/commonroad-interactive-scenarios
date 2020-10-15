@@ -86,6 +86,9 @@ function back_to_basedir() {
   safe_cd "${BASEDIR}"
 }
 
+echo "Installing dependencies"
+pip install iso3166
+
 echo "Installing build dependencies"
 require_sudo apt-get install -y git unzip cmake
 

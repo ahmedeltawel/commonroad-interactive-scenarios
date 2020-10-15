@@ -2,7 +2,9 @@
 Adapted from main script to generate sumo example_scenarios and convert them to interactive maps example_scenarios for existing maps maps.
 """
 import argparse
+import copy
 import logging
+import os
 import sys
 import traceback
 import random
@@ -10,18 +12,16 @@ from typing import Tuple
 
 import matplotlib as mpl
 
+from commonroad.scenario.scenario import ScenarioID
 from scenario_generation.scenario_util import init_logging
 
-from utils.benchmark_id import CRBenchmarkID
-
-mpl.use('TkAgg')
 from pathlib import Path
 
 from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
 from scenario_generator.interactive_scenarios_generation import GenerateCRScenarios_Interactive
-from sumo2cr.interface.sumo_simulation import SumoSimulation
-from sumo2cr.maps.util import *
-from sumo2cr.maps.sumo_scenario import ScenarioWrapper
+from sumocr.interface.sumo_simulation import SumoSimulation
+from sumocr.maps.util import *
+from sumocr.maps.sumo_scenario import ScenarioWrapper
 import shutil
 import time
 
@@ -29,6 +29,8 @@ import time
 from scenario_generation.config_files.scenario_config import ScenarioConfig
 from scenario_generation.config_files.sumo_config import SumoConf
 from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
+
+mpl.use('TkAgg')
 
 __author__ = "Yueming Li, Peter Kocsis"
 __copyright__ = "TUM Cyber-Physical System Group"
@@ -43,7 +45,7 @@ def generate_scenarios_argsparser() -> argparse.ArgumentParser:
     """Returns a parser for the script's arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-crm", "--cr_maps", type=str, default="./example_scenarios/maps",
+        "-crm", "--cr_maps", type=str, default="./example_scenarios/cr_scenario",
         help="Path to the folder of input maps as CommonRoad example_scenarios"
     )
     parser.add_argument(
@@ -134,7 +136,7 @@ def generate_scenarios(cr_maps_folder_path: str,
 
         # create unique scenario ids for each scenario
         max_num_of_scenarios += scenario_config.scen_per_map
-        benchmark_id = CRBenchmarkID.from_path(map_file)
+        benchmark_id = ScenarioID.from_benchmark_id(os.path.splitext(os.path.basename(map_file))[0], scenario_version="2020a")
         location_name = benchmark_id.country + '_' + benchmark_id.scene
         orig_map_name = location_name + '-' + benchmark_id.config
         scenario_config.map_name = location_name
@@ -148,8 +150,7 @@ def generate_scenarios(cr_maps_folder_path: str,
             # conversion from CommonRoad to SUMO map
             sumo_net_path = os.path.join(dir_path, location_name + '-' + str(map_nr) + ".net.xml")
             cr2sumo_converter = CR2SumoMapConverter.from_file(map_file, cr2net_conf)
-            cr2sumo_converter._convert_map()
-            cr2sumo_converter.write_intermediate_files(sumo_net_path)
+            cr2sumo_converter.convert_to_net_file()
             logger.info(f'write map to path {map_file}')
             conversion_possible = cr2sumo_converter.merge_intermediate_files(sumo_net_path, cleanup=False)
 
@@ -168,7 +169,8 @@ def generate_scenarios(cr_maps_folder_path: str,
 
             scenario_counter = 0
             for j in range(scenario_config.scen_per_map):
-                new_benchmark_id = CRBenchmarkID(benchmark_id.country, benchmark_id.scene, benchmark_id.config, 'I')
+                new_benchmark_id = copy.deepcopy(benchmark_id)
+                new_benchmark_id.prediction_type = 'I'
                 sumo_conf.scenario_name = str(new_benchmark_id)
                 sumo_conf.scenarios_path = dir_path
 

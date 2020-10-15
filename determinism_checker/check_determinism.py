@@ -26,8 +26,7 @@ def check_determinism_argsparser() -> argparse.ArgumentParser:
         "-i", "--scenario_folder_path", type=str, default=os.path.join(os.getcwd(),
                                                                        "example_scenarios",
                                                                        "interactive",
-                                                                       "CHN_Cho-1-1",
-                                                                       "CHN_Cho-1_1_I"),
+                                                                       "DEU_A9-1_1_I-1-1"),
         help="Path to the folder contains the scenario which should be checked"
     )
     parser.add_argument(

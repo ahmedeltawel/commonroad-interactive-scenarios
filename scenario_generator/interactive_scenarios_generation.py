@@ -151,6 +151,8 @@ class GenerateCRScenarios_Interactive(GenerateCRScenarios):
 
         return list_obstacles, list_obstacles_with_ego, list_planning_problem_set
 
+
+
     def write_cr_file_and_video(self, i, scenario_counter, create_video=False, check_validity=True):
         """
         Write commonroad scenario file and create corresponding videos.

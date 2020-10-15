@@ -2,27 +2,22 @@
 Check the determinism of the obstacles by simulating many times
 """
 import os
+import pickle
 import random
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict
 
 import matplotlib.pyplot as plt
 import numpy as np
-from xml.etree import cElementTree as ET
-import pycrccosy
-from commonroad_ccosy.geometry.util import resample_polyline
 
-from commonroad.common.file_reader import CommonRoadFileReader
-from commonroad.scenario.lanelet import Lanelet
 from commonroad.scenario.obstacle import DynamicObstacle
-from commonroad.scenario.scenario import Scenario
+from commonroad.scenario.scenario import Scenario, ScenarioID
 from commonroad.visualization.draw_dispatch_cr import draw_object
+from sumocr.maps.sumo_scenario import ScenarioWrapper
 
-from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
-from example_scenarios.simple_interactive.configuration import CONFIG_TYPE, get_interactive_scenario_configuration
+from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
 
 from sumocr.interface.sumo_simulation import SumoSimulation
-from utils.benchmark_id import CRBenchmarkID
 
 __author__ = "Peter Kocsis, Yueming Li"
 __copyright__ = "TUM Cyber-Physical System Group"
@@ -132,37 +127,7 @@ def plot_vehicle_trajectories(simulated_scenarios: Dict[int, Scenario], vehicle_
     plt.show()
 
 
-def translate_scenario(scenario, planning_problem, position=np.array([0, 0])):
-    # translate scenario to center
-    centroid = np.mean(np.concatenate(
-        [l.center_vertices for l in scenario.lanelet_network.lanelets]),
-        axis=0)
-    scenario.translate_rotate(position - centroid, 0)
-    planning_problem.translate_rotate(position - centroid, 0)
-
-
-def generate_sumo_files(scenario_file: str, conf):
-    # Generate network file
-    sumo_files_path, _ = os.path.splitext(scenario_file)
-    os.makedirs(sumo_files_path, exist_ok=True)
-
-    # load CR scenario and translate to origo
-    scenario, planning_problem = CommonRoadFileReader(scenario_file).open()
-    translate_scenario(scenario, planning_problem)
-
-    # convert scenario to SUMO files
-    converter = CR2SumoMapConverter(scenario.lanelet_network, conf)
-    print(f'Write SUMO files for {scenario_file}')
-    conversion_possible = converter.convert_scenario_to_net_file(scenario, sumo_files_path)
-
-    if not conversion_possible:
-        print('Conversion to net file failed!')
-        return None
-
-    return converter
-
-
-def simulate_scenario(scenario_file_path: str,
+def simulate_scenario(scenario_folder_path: str,
                       num_of_simulations: int,
                       use_sumo_manager: bool = False,
                       creating_video: bool = False,
@@ -179,8 +144,6 @@ def simulate_scenario(scenario_file_path: str,
 
     assert not creating_video or output_folder_path is not None, \
         "The output folder path was not defined for video creation"
-
-    benchmark_id = CRBenchmarkID.from_path(scenario_file_path)
 
     if use_sumo_manager:
         pass
@@ -211,10 +174,11 @@ def simulate_scenario(scenario_file_path: str,
 
         create_video_function = creating_video
 
-        conf = get_interactive_scenario_configuration(CONFIG_TYPE.SUMO_CONFIG_1, str(benchmark_id))
-        # conf.scenarios_path = os.path.dirname(scenario_file_path)
+        with open(os.path.join(scenario_folder_path, "simulation_config.p"), "rb") as input_file:
+            conf = pickle.load(input_file)
 
-        scenario_wrapper = generate_sumo_files(scenario_file_path, conf)
+        with open(os.path.join(scenario_folder_path, "scenario_wrapper.p"), "rb") as input_file:
+            scenario_wrapper = pickle.load(input_file)
 
         def create_simulator():
             # TODO: This is a workaround for the problem that there is a hardcoded path

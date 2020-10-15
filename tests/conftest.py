@@ -89,6 +89,10 @@ def pytest_collection_modifyitems(items, config):
         # Select the tests
         if scope_marker.args[0] in scopes and type_marker.args[0] in types:
             selected_items.append(item)
+
+            item_output_path = output_root(item.fspath.purebasename)
+            if os.path.exists(item_output_path) and os.path.isdir(item_output_path):
+                shutil.rmtree(item_output_path)
         else:
             deselected_items.append(item)
 
@@ -101,9 +105,7 @@ def pytest_runtest_setup(item):
     """
     See https://docs.pytest.org/en/latest/reference.html#_pytest.hookspec.pytest_runtest_setup
     """
-    item_output_path = output_root(item.fspath.purebasename)
-    if os.path.exists(item_output_path) and os.path.isdir(item_output_path):
-        shutil.rmtree(item_output_path)
+    pass
 
 
 def pytest_runtest_call(item):

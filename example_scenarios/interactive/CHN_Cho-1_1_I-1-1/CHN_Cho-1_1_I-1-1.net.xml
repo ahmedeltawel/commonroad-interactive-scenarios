@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Wed Oct 14 16:39:28 2020 by Eclipse SUMO netconvert Version v1_2_0+5214-53edc58fcd
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="./example_scenarios/output/20201014-163927/CHN_Cho-1_1_I-1-1/nodes.net.xml"/>
+        <edge-files value="./example_scenarios/output/20201014-163927/CHN_Cho-1_1_I-1-1/edges.net.xml"/>
+        <connection-files value="./example_scenarios/output/20201014-163927/CHN_Cho-1_1_I-1-1/_connections.net.xml"/>
+        <tllogic-files value="./example_scenarios/output/20201014-163927/CHN_Cho-1_1_I-1-1/_tll.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="./example_scenarios/output/20201014-163927/CHN_Cho-1_1_I-1-1/CHN_Cho-1_1_I-1-1.net.xml"/>
+    </output>
+
+    <processing>
+        <plain.extend-edge-shape value="true"/>
+        <geometry.remove.keep-edges.explicit value="true"/>
+        <geometry.avoid-overlap value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.internal-link-detail value="20"/>
+    </junctions>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+    <random_number>
+        <seed value="1234"/>
+    </random_number>
+
+</configuration>
+-->
+
+<net version="1.6" junctionCornerDetail="5" junctionLinkDetail="20" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-348.51,-119.93,203.31,49.86" origBoundary="-349.18,-121.55,203.79,51.55" projParameter="!"/>
+
+    <edge id="233" from="3" to="4" priority="1" spreadType="center" length="579.70">
+        <lane id="233_0" index="0" disallow="rail_fast" speed="36.11" length="579.70" width="3.50" customShape="1" shape="-347.84,-121.55 -196.99,-58.84 -170.41,-48.33 -128.56,-31.58 -109.40,-24.27 -93.39,-18.55 -78.68,-13.69 -64.33,-9.36 -51.80,-5.95 -38.21,-2.67 -23.05,0.55 -3.87,4.16 33.62,10.67 47.47,12.66 80.84,16.81 93.78,18.76 104.69,20.75 117.47,23.55 131.13,26.96 147.10,31.37 163.45,36.21 194.63,45.57 203.79,48.18"/>
+        <lane id="233_1" index="1" disallow="rail_fast" speed="36.11" length="579.70" width="3.50" customShape="1" shape="-349.18,-118.31 -198.24,-55.58 -171.67,-45.06 -129.78,-28.29 -110.57,-20.97 -94.51,-15.23 -79.75,-10.36 -65.36,-6.01 -52.78,-2.59 -39.13,0.71 -23.93,3.95 -4.71,7.57 32.83,14.09 46.73,16.09 80.06,20.24 92.96,22.17 103.81,24.14 116.54,26.93 130.16,30.32 146.11,34.73 162.46,39.57 193.67,48.93 202.84,51.55"/>
+    </edge>
+
+    <junction id="3" type="dead_end" x="-348.51" y="-119.93" incLanes="" intLanes="" shape="-349.85,-116.70 -347.17,-123.16"/>
+    <junction id="4" type="dead_end" x="203.31" y="49.86" incLanes="233_0 233_1" intLanes="" shape="204.27,46.50 202.35,53.23"/>
+
+</net>

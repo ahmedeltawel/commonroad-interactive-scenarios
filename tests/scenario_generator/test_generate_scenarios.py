@@ -6,9 +6,9 @@ import os
 import pytest
 import time
 import numpy as np
-from scenario_generator.generate_scenarios import generate_scenarios
-from tests.common.marker import *
-from tests.common.path import resource_root, output_root
+# from scenario_generator.generate_scenarios import generate_scenarios
+# from tests.common.marker import *
+# from tests.common.path import resource_root, output_root
 
 __author__ = "Peter Kocsis"
 __copyright__ = "TUM Cyber-Physical System Group"
