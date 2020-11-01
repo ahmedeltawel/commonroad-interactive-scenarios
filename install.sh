@@ -182,12 +182,12 @@ back_to_basedir
 
 echo "Installing CommonRoad curvilinear-coordinate-system"
 require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-dev
-get_ifnexist zip https://syncandshare.lrz.de/dl/fiQ9ipcvfy9LFtnmrn1bHQQ7/commonroad-curvilinear-coordinate-system-fork-3211eb346d54b7e3641a3eec634cdc4040ae7213.zip
-safe_cd commonroad-curvilinear-coordinate-system-fork-3211eb346d54b7e3641a3eec634cdc4040ae7213
+git clone https://gitlab.lrz.de/cps/commonroad-curvilinear-coordinate-system.git
+safe_cd commonroad-curvilinear-coordinate-system
 pip install pyclipper
 mkdir -p build
 safe_cd build
-cmake -DPYTHON_INCLUDE_DIR="${CONDA_PREFIX}/include/python${PYTHON_VERSION}m" -DPYTHON_LIBRARY="${CONDA_PREFIX}/lib/libpython${PYTHON_VERSION}m.so" -DPYTHON_EXECUTABLE="${CONDA_PREFIX}/bin/python${PYTHON_VERSION}m" -DCRCC_LIBRARY_DIR="$(pwd)/../../commonroad-drivability-checker" -DADD_TESTS=False -DUSE_OMP=True -DCMAKE_BUILD_TYPE=Release ..
+cmake -DPYTHON_INCLUDE_DIR="${CONDA_PREFIX}/include/python${PYTHON_VERSION}m" -DPYTHON_LIBRARY="${CONDA_PREFIX}/lib/libpython${PYTHON_VERSION}m.so" -DPYTHON_EXECUTABLE="${CONDA_PREFIX}/bin/python${PYTHON_VERSION}m" -DADD_TESTS=False -DADD_PYTHON_BINDINGS=True -DCMAKE_BUILD_TYPE=Release ..
 make -j "$JOBS"
 safe_cd ..
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"

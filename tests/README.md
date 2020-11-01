@@ -2,6 +2,10 @@
 
 This module contains test system based on the repository [CommonRoad-RL](https://gitlab.lrz.de/ss20-mpfav-rl/commonroad-rl). It uses [pytest](https://docs.pytest.org/en/stable/) for test management with customized markers. 
 
+## Requirements
+* pytest
+* pytest-timeout
+
 ## Test structure
 
 ```
