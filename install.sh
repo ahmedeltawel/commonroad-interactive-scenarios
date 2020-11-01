@@ -136,7 +136,7 @@ back_to_basedir
 echo "Installing CommonRoad map-tool"
 git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
 safe_cd commonroad-map-tool
-git checkout 78e2e359648f5c5ade3b33da46c28d405d276a43
+git checkout ab5cab2cc8782de54ee17ebdaef5e8d9a5f35634
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
 
@@ -184,6 +184,7 @@ echo "Installing CommonRoad curvilinear-coordinate-system"
 require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-dev
 git clone https://gitlab.lrz.de/cps/commonroad-curvilinear-coordinate-system.git
 safe_cd commonroad-curvilinear-coordinate-system
+git checkout 2bc4923db22e3706a55df1f51740bec6dc0f159a
 pip install pyclipper
 mkdir -p build
 safe_cd build
