@@ -13,14 +13,20 @@ Extend the existing non-interactive CommonRoad scenario generation methods to in
 This project uses conda. Make sure it is installed before proceeding with the installation.
 
 You can use your environment with python version 3.7, or create a new one by running
-```
+```bash
 conda create -n cr37 python=3.7
 ```
 
-To install the dependencies of the module, simply run
-```
+**To install the dependencies of the module**, simply run
+```bash
 bash install.sh -e cr37
 ```
+
+If you don't want to enter your git credentials many times, cou can configure `git` to save it automatically:
+```bash
+git config --global credential.helper store
+```
+
 This will create an `install` folder, pull all the dependencies and install them there
 
 **Note:** `cr37` needs to be replaced by the name of your conda environment if needed.
