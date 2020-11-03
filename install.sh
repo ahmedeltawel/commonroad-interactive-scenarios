@@ -144,7 +144,7 @@ back_to_basedir
 echo "Installing sumo-interface"
 git clone https://gitlab.lrz.de/cps/sumo-interface.git
 safe_cd sumo-interface
-git checkout ccca18f38b1d771dfb4895de8cba35d57b80b3c0
+git checkout 03e758b945a043a6c91ef7487c31a176fe030e14
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 
