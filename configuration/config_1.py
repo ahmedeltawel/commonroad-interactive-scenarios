@@ -17,7 +17,7 @@ class SumoConfig_1(SumoConfigBase):
 
         # simulation
         self.dt = 0.1  # length of simulation step of the interface
-        self.delta_steps = 2  # number of sub-steps simulated in SUMO during every dt
+        self.delta_steps = 1  # number of sub-steps simulated in SUMO during every dt
         self.presimulation_steps = 30  # number of time steps before simulation with ego vehicle starts
         self.simulation_steps = 200  # number of simulated (and synchronized) time steps
         self.with_sumo_gui = False
@@ -52,6 +52,8 @@ class SumoConfig_1(SumoConfigBase):
         self.lane_change_sync = False
         # tolerance for detecting start of lane change
         self.lane_change_tol = 0.00
+        self.ego_veh_width = 1.6
+        self.ego_veh_length = 4.3
 
         ##
         ## TRAFFIC GENERATION
@@ -63,19 +65,21 @@ class SumoConfig_1(SumoConfigBase):
 
         # vehicle attributes
         self.veh_params = {
-            # maximum length
+            # length
             'length': {
                 'passenger': 5.0,
                 'truck': 7.5,
                 'bus': 12.4,
+                'motorcycle': 2.5,
                 'bicycle': 2.,
                 'pedestrian': 0.415
             },
-            # maximum width
+            # width
             'width': {
                 'passenger': 2.0,
                 'truck': 2.6,
                 'bus': 2.7,
+                'motorcycle': 0.8,
                 'bicycle': 0.68,
                 'pedestrian': 0.678
             },
@@ -83,6 +87,7 @@ class SumoConfig_1(SumoConfigBase):
                 'passenger': 2.5,
                 'truck': 2.5,
                 'bus': 2.5,
+                'motorcycle': 2.5,
                 # default 0.5
                 'bicycle': 1.,
                 'pedestrian': 0.25
@@ -94,6 +99,8 @@ class SumoConfig_1(SumoConfigBase):
                 'truck': 1.3,
                 # default 1.2
                 'bus': 1.2,
+                # default 2.5
+                'motorcycle': 2.5,
                 # default 1.2
                 'bicycle': 1.2,
                 # default 1.5
@@ -106,6 +113,8 @@ class SumoConfig_1(SumoConfigBase):
                 'truck': 4,
                 # default 4
                 'bus': 4,
+                # default 6
+                'motorcycle': 6,
                 # default 3
                 'bicycle': 3,
                 # default 2
@@ -118,6 +127,8 @@ class SumoConfig_1(SumoConfigBase):
                 'truck': 130 / 3.6,
                 # default 85/3.6
                 'bus': 85 / 3.6,
+                # default 130/3.6
+                'motorcycle': 130 / 3.6,
                 # default 85/3.6
                 'bicycle': 25 / 3.6,
                 # default 5.4/3.6

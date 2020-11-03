@@ -1,89 +1,135 @@
-import os
-from copy import deepcopy
-import matplotlib
+""""
+Script which evaluates a solution trajectory for an interactive scenario
+"""
+import argparse
+import copy
+import pickle
+import sys
 
-matplotlib.use('TkAgg')
-from commonroad.scenario.scenario import Scenario
-from cr2sumo.interface.sumo_interface import SumoInterface
-from cr2sumo.rpc.sumo_client import SumoRPCClient
-from cr2sumo.visualization.video import create_video
-from sumo_config.default import SumoCommonRoadConfig
-from commonroad.common.solution import CommonRoadSolutionReader as sr
+import matplotlib as mpl
+from commonroad.common.file_reader import CommonRoadFileReader
+from commonroad.common.solution import CommonRoadSolutionReader
+from commonroad.scenario.trajectory import State
+from evaluation.visualization import create_gif
+from sumocr.interface.sumo_simulation import SumoSimulation
+from sumocr.visualization.video import create_video
 
-class simulation_solution:
-    scenario: Scenario              #for storing the complete scenario in the end
-    conf: SumoCommonRoadConfig      #to keep possibility to rerun
-    ego_showup = -1                 #default for recognizing
-    solution = None
+mpl.use('TkAgg')
 
+from sumocr.maps.util import *
 
-    def __init__(self, scenario_name: str, visualize: bool):
-        #startup to simulate the scenario (from simualte_scenario)
-        scenario_folder: str = os.path.join(os.getcwd(), "scenarios", scenario_name)
-        print('Simulating {}'.format(scenario_name))
+# load parameters
 
-        conf = SumoCommonRoadConfig()
-        conf.scenario_name = scenario_name
-        self.conf = conf
-
-        sumo_interface = SumoInterface()
-        sumo_client: SumoRPCClient = sumo_interface.start_simulator()
-        solution_path = os.path.join(scenario_folder, conf.scenario_name + 'solution'+'.xml')
-        self.solution = sr.open(solution_path)
-        sumo_client.send_sumo_scenario(self.conf.scenario_name, scenario_folder)
-        sumo_client.initialize(self.conf)
-
-        #for loop iterating through all time steps
-        i = 0           #numer of time step the ego vehicle is currently in
-
-        for t in range(500):
-            ego_vehicles = sumo_client.ego_vehicles
-            if len(ego_vehicles) > 0:
-                if self.ego_showup ==-1:
-                    self.ego_showup=sumo_client.current_time_step
-                for id, ego_vehicle in ego_vehicles.items():
-                    ego_trajectory = self.solution.planning_problem_solutions[0].trajectory  #only one ego vehicle as i could not test with more ego vehicles
-                    if len(ego_trajectory.state_list)>i:
-                        state = deepcopy(ego_trajectory.state_list[i])
-                        state.time_step = 1
-                        ego_vehicle.set_planned_trajectory([state])                         #seting planned trajectory
-
-                i = i +1
-            if i == len(self.solution.planning_problem_solutions[0].trajectory.state_list)+1:   #end of solution
-                break
-            sumo_client.send_ego_vehicles(ego_vehicles)
-            sumo_client.simulate_step()
+__author__ = "Peter Kocsis"
+__copyright__ = "TUM Cyber-Physical System Group"
+__credits__ = []
+__version__ = "0.1"
+__maintainer__ = "Moritz Klischat"
+__email__ = "moritz.klischat@tum.de"
+__status__ = "Integration"
 
 
-        self.scenario = sumo_client.commonroad_scenarios_all_time_steps()
-
-        sumo_client.stop()
-        # Create video and plot the simulation
-        if visualize:
-            output_folder = "./videos"
-            os.makedirs(output_folder, exist_ok=True)
-            print("Creating video")
-            create_video(sumo_client, self.ego_showup, self.ego_showup+len(self.solution.planning_problem_solutions[0].trajectory.state_list), output_folder)
-            print("Video created")
-
-        sumo_interface.stop_simulator()
-
-        #synchronization of scenario and solution time steps
-        for other_vehicle in self.scenario.dynamic_obstacles:
-            for state in other_vehicle.prediction.trajectory.state_list:
-                state.time_step = state.time_step-self.ego_showup
-
-        #removing states and vehicles before the ego vehicle shows up
-        for other_vehicle in self.scenario.dynamic_obstacles:
-            while len(other_vehicle.prediction.trajectory.state_list) > 0 and other_vehicle.prediction.trajectory.state_list[0].time_step < 0:
-                del other_vehicle.prediction.trajectory.state_list[0]
-            if len(other_vehicle.prediction.trajectory.state_list)<1:
-                self.scenario.remove_obstacle(other_vehicle)
+def evaluate_solution_argsparser() -> argparse.ArgumentParser:
+    """Returns a parser for the script's arguments"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-i", "--input_scenario", type=str,
+        default="./example_scenarios/interactive/DEU_A9-2_1_I-1-1",
+        help="Path to the interactive scenario"
+    )
+    parser.add_argument(
+        "-s", "--solution", type=str,
+        default="./example_scenarios/solution/KS1:SA1:DEU_A9-2_1_T-1:2018b.xml",
+        help="Path to the CommonRoad solution file"
+    )
+    parser.add_argument(
+        "-v", "--video", action="store_true", default=False, help="Create video",
+    )
+    return parser
 
 
+def run_simulation(simulator, num_of_steps, solution):
+    for t in range(num_of_steps):
+        # plan trajectories for all ego vehicles
+        if solution is not None:
+            ego_vehicles = simulator.ego_vehicles
+            commonroad_scenario = simulator.commonroad_scenario_at_time_step(
+                simulator.current_time_step)
 
-#s = simulation_solution('DEU_Muehlhausen-13_1_I',False)
-#print(cf.ClosestDistance.evaluate(s.scenario, None, s.solution.planning_problem_solutions[0].trajectory))
-#print(cf.Evaluation.Position(s.scenario, s.scenario, [s.solution.planning_problem_solutions[0].trajectory]))
+            for id, ego_vehicle in ego_vehicles.items():
+                current_state = ego_vehicle.current_state
+
+                # Use the solution trajectory
+                ego_trajectory = solution.planning_problem_solutions[id].trajectory
+                if len(ego_trajectory.state_list) > t:
+                    next_state = copy.deepcopy(ego_trajectory.state_list[t])
+                else:
+                    return
+                next_state.time_step = 1
+                ego_trajectory: List[State] = [next_state]
+                ego_vehicle.set_planned_trajectory(ego_trajectory)
+        else:
+            simulator._dummy_ego_simulation = True
+
+        simulator.simulate_step()
 
 
+def simulate_interactive_solution(interactive_scenario_folder: str,
+                                  solution_file: str,
+                                  output_folder_path: str = None,
+                                  creating_video: bool = False):
+    with open(os.path.join(interactive_scenario_folder, "simulation_config.p"), "rb") as input_file:
+        conf = pickle.load(input_file)
+
+    with open(os.path.join(interactive_scenario_folder, "scenario_wrapper.p"), "rb") as input_file:
+        scenario_wrapper = pickle.load(input_file)
+    scenario_wrapper.sumo_cfg_file = os.path.join(interactive_scenario_folder,
+                                                  f"{conf.scenario_name}.sumo.cfg")
+
+    scenario_file = os.path.join(interactive_scenario_folder, f"{conf.scenario_name}.cr.xml")
+    scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
+
+    solution = CommonRoadSolutionReader.open(solution_file)
+
+    # Simulate with ego
+    ego_simulator = SumoSimulation()
+    ego_simulator.planning_problem_set = planning_problem_set
+    ego_simulator.initialize(conf, scenario_wrapper=scenario_wrapper)
+
+    run_simulation(ego_simulator, conf.simulation_steps, solution)
+    simulated_scenario_with_ego = ego_simulator.commonroad_scenarios_all_time_steps()
+    simulated_scenario_with_ego.scenario_id = scenario.scenario_id
+
+    ego_simulator.stop()
+
+    # Simulate without ego
+    intact_simulator = SumoSimulation()
+    intact_simulator.planning_problem_set = planning_problem_set
+    intact_simulator.initialize(conf, scenario_wrapper=scenario_wrapper)
+
+    run_simulation(intact_simulator, ego_simulator.current_time_step, solution=None)
+    simulated_scenario_without_ego = intact_simulator.commonroad_scenarios_all_time_steps()
+    simulated_scenario_without_ego.scenario_id = scenario.scenario_id
+
+
+    intact_simulator.stop()
+
+    if creating_video:
+        if output_folder_path is None:
+            output_folder_path = os.path.dirname(solution_file)
+        # create_video(ego_simulator, conf.video_start, ego_simulator.current_time_step, output_folder_path)
+        for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
+            create_gif(simulated_scenario_with_ego, output_folder_path,
+                       planning_problem=planning_problem,
+                       trajectory=solution.planning_problem_solutions[idx].trajectory,
+                       secondary_scenario=simulated_scenario_without_ego,
+                       follow_ego=True)
+
+    return simulated_scenario_without_ego, simulated_scenario_with_ego
+
+
+if __name__ == '__main__':
+    arguments = evaluate_solution_argsparser().parse_args(sys.argv[1:])
+    simulate_interactive_solution(interactive_scenario_folder=arguments.input_scenario,
+                                  solution_file=arguments.solution,
+                                  creating_video=arguments.video)

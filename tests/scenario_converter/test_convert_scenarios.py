@@ -20,32 +20,35 @@ __maintainer__ = "Peter Kocsis"
 __email__ = "peter.kocsis@tum.de"
 __status__ = "Integration"
 
-resource_path = os.path.join(resource_root("commonroad-scenarios"), "scenarios")
+resource_path = {"2018b": os.path.join(resource_root("commonroad-scenarios"), "scenarios"),
+                 "2020a": os.path.join(resource_root("commonroad-scenarios_2020"), "scenarios")}
 output_path = output_root("test_convert_scenarios")
 
 exception_whitelist = (ScenarioException,)
 
 
-def collect_trajectory_based_scenarios(root_path: str):
+def collect_trajectory_based_scenarios(root_path: str, commonroad_version: str):
     all_scenarios = [str(path.relative_to(root_path)) for path in Path(root_path).rglob('*.xml')]
     pattern = re.compile(r".+\d+_\d+_T-\d+\.xml")
-    return [scenario for scenario in all_scenarios if pattern.match(scenario)]
+    return [(commonroad_version, scenario) for scenario in all_scenarios if pattern.match(scenario)]
 
 
 @pytest.mark.timeout(300)
 @pytest.mark.parametrize(
-    ("scenario_rel_path"),
+    ("commonroad_version", "scenario_rel_path"),
     # ['hand-crafted/DEU_Muc-2_1_T-1.xml'],
-    collect_trajectory_based_scenarios(resource_path),
+    # collect_trajectory_based_scenarios(resource_path["2018b"], "2018b"),# +
+    collect_trajectory_based_scenarios(resource_path["2020a"], "2020a"),
 )
 @module_test
 @functional
-def test_convert_scenarios(scenario_rel_path):
-    scenario_path = os.path.join(resource_path, scenario_rel_path)
+def test_convert_scenarios(commonroad_version, scenario_rel_path):
+    scenario_path = os.path.join(resource_path[commonroad_version], scenario_rel_path)
+    scenario_output_folder = os.path.join(output_path, commonroad_version, os.path.dirname(scenario_rel_path))
 
     try:
         successful_conversion = convert_scenario(cr_scenario_path=scenario_path,
-                                                 output_folder_path=output_path,
+                                                 output_folder_path=scenario_output_folder,
                                                  config_type=CONFIG_TYPE.SUMO_CONFIG_1,
                                                  use_sumo_manager=False,
                                                  creating_video=False)

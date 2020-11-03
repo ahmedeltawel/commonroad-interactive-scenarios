@@ -27,6 +27,8 @@ __maintainer__ = "Moritz Klischat"
 __email__ = "moritz.klischat@tum.de"
 __status__ = "Integration"
 
+from sumocr.visualization.video import create_video
+
 
 def get_variable_lists(obstacle: DynamicObstacle):
     """
@@ -172,7 +174,7 @@ def simulate_scenario(scenario_folder_path: str,
     else:
         sumo_interface = None
 
-        create_video_function = creating_video
+        create_video_function = create_video
 
         with open(os.path.join(scenario_folder_path, "simulation_config.p"), "rb") as input_file:
             conf = pickle.load(input_file)

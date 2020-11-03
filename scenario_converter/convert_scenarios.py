@@ -1,5 +1,5 @@
 """"
-Adapted from main script to generate sumo example_scenarios and convert them to interactive maps example_scenarios for existing maps maps.
+Script which converts a static CommonRoad scenario with interactive SUMO scenario, where the vehicles are initialized exactly as in the static scenario
 """
 import argparse
 import sys
@@ -9,7 +9,8 @@ import pickle
 import matplotlib as mpl
 
 from commonroad.common.file_reader import CommonRoadFileReader
-from commonroad.scenario.scenario import ScenarioID
+from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
+from commonroad.scenario.scenario import ScenarioID, Scenario
 from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
 from configuration import SumoConfigBase
 
@@ -53,13 +54,18 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
     return parser
 
 
-def translate_scenario(scenario, planning_problem, position=np.array([0, 0])):
-    # translate scenario to center
-    centroid = np.mean(np.concatenate(
-        [l.center_vertices for l in scenario.lanelet_network.lanelets]),
-        axis=0)
-    scenario.translate_rotate(position - centroid, 0)
-    planning_problem.translate_rotate(position - centroid, 0)
+# def translate_scenario(scenario, planning_problem_set, position=np.array([0, 0])):
+#     # translate scenario to center
+#     centroid = np.mean(np.concatenate(
+#         [l.center_vertices for l in scenario.lanelet_network.lanelets]),
+#         axis=0)
+#     scenario.translate_rotate(position - centroid, 0)
+#     planning_problem_set.translate_rotate(position - centroid, 0)
+
+
+def reduce_scenario(scenario: Scenario):
+    for obstacle in scenario.dynamic_obstacles:
+        obstacle.prediction.trajectory.state_list = [obstacle.prediction.trajectory.state_list[0]]
 
 
 def convert_to_sumo_files(scenario_file: str,
@@ -69,13 +75,28 @@ def convert_to_sumo_files(scenario_file: str,
     os.makedirs(output_folder, exist_ok=True)
 
     # load CR scenario and translate to origo
-    scenario, planning_problem = CommonRoadFileReader(scenario_file).open()
-    translate_scenario(scenario, planning_problem)
+    scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
+    # translate_scenario(scenario, planning_problem_set)
 
     # convert scenario to SUMO files
     converter = CR2SumoMapConverter(scenario.lanelet_network, conf)
     print(f'Write SUMO files for {scenario_file}')
     conversion_possible = converter.convert_scenario_to_net_file(scenario, output_folder)
+
+    # save the reduced CR scenario
+    reduce_scenario(scenario)
+    scenario.scenario_id = conf.scenario_name
+    CommonRoadFileWriter(scenario,
+                         planning_problem_set,
+                         author=scenario.author,
+                         affiliation=scenario.affiliation,
+                         source=scenario.source,
+                         tags=scenario.tags,
+                         location=scenario.location).write_to_file(
+        os.path.join(
+            output_folder,
+            conf.scenario_name + ".cr.xml"),
+        overwrite_existing_file=OverwriteExistingFile.ALWAYS)
 
     if not conversion_possible:
         print('Conversion to net file failed!')
