@@ -1,4 +1,5 @@
 # Commonroad Interactive Benchmarks
+![CHN_Sha-16_2_I-1](example_scenarios/solution/CHN_Sha-16_2_I-1.gif)
 
 Extend the existing non-interactive CommonRoad scenario generation methods to interative scenarios.
 
