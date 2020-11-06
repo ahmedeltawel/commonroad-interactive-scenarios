@@ -1,17 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<commonRoad timeStepSize="0.1" commonRoadVersion="2020a" author="Mona Beikirch, Markus Koschi, Sebastian Lutz" affiliation="Technical University of Munich, Germany" source="Bing Maps" benchmarkID="DEU_A9-2_1_I-1-1" date="2020-11-03">
+<commonRoad timeStepSize="0.1" commonRoadVersion="2020a" author="Mona Beikirch, Markus Koschi, Sebastian Lutz" affiliation="Technical University of Munich, Germany" source="Bing Maps" benchmarkID="DEU_A9-2_1_I-1-1" date="2020-11-06">
   <location>
     <geoNameId>-999</geoNameId>
     <gpsLatitude>999</gpsLatitude>
     <gpsLongitude>999</gpsLongitude>
   </location>
   <scenarioTags>
-    <parallel_lanes/>
-    <multi_lane/>
-    <speed_limit/>
-    <lane_change/>
-    <highway/>
     <comfort/>
+    <highway/>
+    <speed_limit/>
+    <parallel_lanes/>
+    <lane_change/>
+    <multi_lane/>
     <no_oncoming_traffic/>
   </scenarioTags>
   <lanelet id="30622">

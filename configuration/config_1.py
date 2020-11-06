@@ -1,6 +1,8 @@
 """
 Default configuration for CommonRoad to SUMO map converter
 """
+from sumocr.sumo_config.default import DefaultConfig
+
 from .configuration_base import SumoConfigBase
 
 
@@ -9,6 +11,7 @@ class SumoConfig_1(SumoConfigBase):
     def __init__(self):
         # logging level for logging module
         super().__init__()
+        self.__class__ = DefaultConfig
         self.config_id = 1
 
         self.logging_level = 'INFO'  # select DEBUG, INFO, WARNING, ERROR, CRITICAL

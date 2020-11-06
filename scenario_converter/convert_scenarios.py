@@ -35,7 +35,7 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
     """Returns a parser for the script's arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-cr", "--cr_scneario", type=str, default="./example_scenarios/cr_scenario/DEU_Ibbenbueren-7_1_T-1.xml",
+        "-cr", "--cr_scneario", type=str, default="./example_scenarios/cr_scenario/DEU_A9-2_1_T-1.xml",
         help="Path to the CommonRoad scenario to be converted"
     )
     parser.add_argument(
@@ -68,6 +68,7 @@ def convert_to_sumo_files(scenario_file: str,
 
     # convert scenario to SUMO files
     converter = CR2SumoMapConverter(scenario.lanelet_network, conf)
+    converter.scenario_name = conf.scenario_name
     print(f'Write SUMO files for {scenario_file}')
     conversion_possible = converter.convert_scenario_to_net_file(scenario, output_folder)
 

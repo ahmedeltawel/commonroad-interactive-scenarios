@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from determinism_checker.route_file_checker import rou_file_determinism_check
-from determinism_checker.simulation_checker import simulate_scenario, plot_vehicle_trajectories, \
+from determinism_checker.simulation_checker import resimulate_scenario, plot_vehicle_trajectories, \
     obstacle_determinism_check
 
 __author__ = "Peter Kocsis, Yueming Li"
@@ -26,7 +26,7 @@ def check_determinism_argsparser() -> argparse.ArgumentParser:
         "-i", "--scenario_folder_path", type=str, default=os.path.join(os.getcwd(),
                                                                        "example_scenarios",
                                                                        "interactive",
-                                                                       "DEU_A9-1_1_I-1-1"),
+                                                                       "DEU_A9-2_1_I-1-1"),
         help="Path to the folder contains the scenario which should be checked"
     )
     parser.add_argument(
@@ -64,11 +64,11 @@ def check_determinism(scenario_file_path: str,
     :param std_tolerance: Tolerance of the standard deviation of the obstacles' trajectory state values
     :return: True if all the deviations are in the given tolerance
     """
-    simulated_scenarios = simulate_scenario(scenario_file_path, num_of_simulations,
-                                            use_sumo_manager, creating_video, output_folder_path)
+    simulated_scenarios = resimulate_scenario(scenario_file_path, num_of_simulations,
+                                              use_sumo_manager, creating_video, output_folder_path)
 
     # Plot trajectories
-    plot_vehicle_trajectories(simulated_scenarios, vehicle_id=33)
+    plot_vehicle_trajectories(simulated_scenarios)
 
     # Check rou files for determinism
     print("Checking the route files")

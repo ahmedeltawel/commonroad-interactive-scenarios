@@ -82,6 +82,7 @@ def simulate_scenario(sumo_conf: SumoConf,
     :param scenario_dir_path: Path to the folder which contains the scenario
     :return CR scenario generator object and vehicle ID mapping between CR and SUMO
     """
+    sumo_interface = None
     if use_sumo_manager:
         sumo_interface = SumoInterface(use_docker=False)
         sumo_sim = sumo_interface.start_simulator()
@@ -96,6 +97,7 @@ def simulate_scenario(sumo_conf: SumoConf,
     for step in range(sumo_conf.simulation_steps):
         sumo_sim.simulate_step()
 
+
     sumo_sim.stop()
     scenario = sumo_sim.commonroad_scenarios_all_time_steps()
 
@@ -104,6 +106,9 @@ def simulate_scenario(sumo_conf: SumoConf,
     vehicle_ids_cr2sumo = sumo_sim.ids_cr2sumo
     # vehicle_ids_sumo2cr = sumo_sim.ids_sumo2cr
     ###########################################
+
+    if use_sumo_manager:
+        sumo_interface.stop_simulator()
 
     # select ego vehicles for planning problems and postprocess final CommonRoad example_scenarios
     cr_scenarios = GenerateCRScenarios_Interactive(scenario, sumo_conf.simulation_steps,

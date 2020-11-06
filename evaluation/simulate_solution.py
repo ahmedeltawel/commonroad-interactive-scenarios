@@ -7,11 +7,13 @@ import pickle
 import sys
 
 import matplotlib as mpl
+
+from common.simulation import simulate_scenario
 from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.solution import CommonRoadSolutionReader
 from commonroad.scenario.trajectory import State
-from evaluation.visualization import create_gif
 from sumocr.interface.sumo_simulation import SumoSimulation
+from sumocr.visualization.gif import create_gif
 from sumocr.visualization.video import create_video
 
 mpl.use('TkAgg')
@@ -45,39 +47,17 @@ def evaluate_solution_argsparser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-v", "--video", action="store_true", default=False, help="Create video",
     )
+    parser.add_argument(
+        "-sm", "--sumo_manager", action="store_true", default=False, help="Using the sumo-manager",
+    )
     return parser
-
-
-def run_simulation(simulator, num_of_steps, solution):
-    for t in range(num_of_steps):
-        # plan trajectories for all ego vehicles
-        if solution is not None:
-            ego_vehicles = simulator.ego_vehicles
-            commonroad_scenario = simulator.commonroad_scenario_at_time_step(
-                simulator.current_time_step)
-
-            for id, ego_vehicle in ego_vehicles.items():
-                current_state = ego_vehicle.current_state
-
-                # Use the solution trajectory
-                ego_trajectory = solution.planning_problem_solutions[id].trajectory
-                if len(ego_trajectory.state_list) > t:
-                    next_state = copy.deepcopy(ego_trajectory.state_list[t])
-                else:
-                    return
-                next_state.time_step = 1
-                ego_trajectory: List[State] = [next_state]
-                ego_vehicle.set_planned_trajectory(ego_trajectory)
-        else:
-            simulator._dummy_ego_simulation = True
-
-        simulator.simulate_step()
 
 
 def simulate_interactive_solution(interactive_scenario_folder: str,
                                   solution_file: str,
                                   output_folder_path: str = None,
-                                  creating_video: bool = False):
+                                  creating_video: bool = False,
+                                  use_sumo_manager: bool = False):
     with open(os.path.join(interactive_scenario_folder, "simulation_config.p"), "rb") as input_file:
         conf = pickle.load(input_file)
 
@@ -92,27 +72,24 @@ def simulate_interactive_solution(interactive_scenario_folder: str,
     solution = CommonRoadSolutionReader.open(solution_file)
 
     # Simulate with ego
-    ego_simulator = SumoSimulation()
-    ego_simulator.planning_problem_set = planning_problem_set
-    ego_simulator.initialize(conf, scenario_wrapper=scenario_wrapper)
-
-    run_simulation(ego_simulator, conf.simulation_steps, solution)
-    simulated_scenario_with_ego = ego_simulator.commonroad_scenarios_all_time_steps()
+    simulated_scenario_with_ego = simulate_scenario(conf,
+                                                    scenario_wrapper,
+                                                    interactive_scenario_folder,
+                                                    num_of_steps=conf.simulation_steps,
+                                                    planning_problem_set=planning_problem_set,
+                                                    solution=solution,
+                                                    use_sumo_manager=use_sumo_manager)
     simulated_scenario_with_ego.scenario_id = scenario.scenario_id
 
-    ego_simulator.stop()
-
     # Simulate without ego
-    intact_simulator = SumoSimulation()
-    intact_simulator.planning_problem_set = planning_problem_set
-    intact_simulator.initialize(conf, scenario_wrapper=scenario_wrapper)
-
-    run_simulation(intact_simulator, ego_simulator.current_time_step, solution=None)
-    simulated_scenario_without_ego = intact_simulator.commonroad_scenarios_all_time_steps()
+    simulated_scenario_without_ego = simulate_scenario(conf,
+                                                    scenario_wrapper,
+                                                    interactive_scenario_folder,
+                                                    num_of_steps=conf.simulation_steps,
+                                                    planning_problem_set=planning_problem_set,
+                                                    solution=None,
+                                                    use_sumo_manager=use_sumo_manager)
     simulated_scenario_without_ego.scenario_id = scenario.scenario_id
-
-
-    intact_simulator.stop()
 
     if creating_video:
         if output_folder_path is None:
@@ -131,4 +108,5 @@ if __name__ == '__main__':
     arguments = evaluate_solution_argsparser().parse_args(sys.argv[1:])
     simulate_interactive_solution(interactive_scenario_folder=arguments.input_scenario,
                                   solution_file=arguments.solution,
-                                  creating_video=arguments.video)
+                                  creating_video=arguments.video,
+                                  use_sumo_manager=arguments.sumo_manager)

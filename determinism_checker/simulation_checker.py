@@ -4,20 +4,30 @@ Check the determinism of the obstacles by simulating many times
 import os
 import pickle
 import random
+import warnings
 from collections import defaultdict
 from typing import Dict
 
 import matplotlib.pyplot as plt
 import numpy as np
 
+from common.simulation import simulate_scenario
 from commonroad.scenario.obstacle import DynamicObstacle
 from commonroad.scenario.scenario import Scenario, ScenarioID
 from commonroad.visualization.draw_dispatch_cr import draw_object
+from scenario_generation.config_files.sumo_config import SumoConf
 from sumocr.maps.sumo_scenario import ScenarioWrapper
 
 from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
 
 from sumocr.interface.sumo_simulation import SumoSimulation
+from sumocr.visualization.gif import create_gif
+
+try:
+    from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
+    from commonroad_sumo_manager.crsumo.rpc.sumo_client import SumoRPCClient
+except ImportError as exp:
+    warnings.warn("CommonRoad-SUMO-Manager is not installed, the usage is not supported!")
 
 __author__ = "Peter Kocsis, Yueming Li"
 __copyright__ = "TUM Cyber-Physical System Group"
@@ -121,19 +131,14 @@ def plot_vehicle_trajectories(simulated_scenarios: Dict[int, Scenario], vehicle_
 
         fig.gca().autoscale()
 
-    # plt.savefig(os.path.join(video_output_folder, conf.scenario_name + '_' + str(n+1) + '.png'),
-    # format='png', dpi=300)
-    # print("Trajectory x of vehicle " + str(vehicle_id_test) + " at " + str(n+1) + "th simulation is:")
-    # print(list_position_x[n][str(vehicle_id_test)])
-
     plt.show()
 
 
-def simulate_scenario(scenario_folder_path: str,
-                      num_of_simulations: int,
-                      use_sumo_manager: bool = False,
-                      creating_video: bool = False,
-                      output_folder_path: str = None) -> Dict[int, Scenario]:
+def resimulate_scenario(scenario_folder_path: str,
+                        num_of_simulations: int,
+                        use_sumo_manager: bool = False,
+                        creating_video: bool = False,
+                        output_folder_path: str = None) -> Dict[int, Scenario]:
     """
     Simulating a scenario many times for determinsim check and returning the simulated scenarios
     :param scenario_file_path: Path to the interactive scenario
@@ -147,49 +152,13 @@ def simulate_scenario(scenario_folder_path: str,
     assert not creating_video or output_folder_path is not None, \
         "The output folder path was not defined for video creation"
 
-    if use_sumo_manager:
-        pass
-        # Create Interface to SUMO
-        # sumo_interface = SumoInterface()
-        #
-        # create_video_function = create_video_sumo_manager
-        # conf = SumoManagerCommonRoadConfig()
-        #
-        # # TODO: Currently, the sumo manager is built with an older version of the sumo-interface, therefore the results
-        # #  of the simulations with and without sumo-manager won't match.
-        # #  Check for differences when the sumo-manager is updated!
-        def create_simulator():
-            pass
-        conf = None
-        def create_video_function():
-            pass
-        sumo_interface = None
-        #     simulator = sumo_interface.start_simulator()
-        #
-        #     # upload folder contains all files needed for sumo-simulation
-        #     simulator.send_sumo_scenario(conf.scenario_name, scenario_file_path)
-        #     simulator.initialize(conf)
-        #     return simulator
+    with open(os.path.join(scenario_folder_path, "simulation_config.p"), "rb") as input_file:
+        conf = pickle.load(input_file)
 
-    else:
-        sumo_interface = None
+    with open(os.path.join(scenario_folder_path, "scenario_wrapper.p"), "rb") as input_file:
+        scenario_wrapper = pickle.load(input_file)
+        scenario_wrapper.rebase_paths(scenario_folder_path)
 
-        create_video_function = create_video
-
-        with open(os.path.join(scenario_folder_path, "simulation_config.p"), "rb") as input_file:
-            conf = pickle.load(input_file)
-
-        with open(os.path.join(scenario_folder_path, "scenario_wrapper.p"), "rb") as input_file:
-            scenario_wrapper = pickle.load(input_file)
-
-        def create_simulator():
-            # TODO: This is a workaround for the problem that there is a hardcoded path
-            #  in sumo-interface for the cr_map_file: os.path.join(os.path.dirname(__file__),'../../example_scenarios/',
-            #                                        config.scenario_name, config.scenario_name + '.maps.xml')
-            #  Remove if resolved!
-            simulator = SumoSimulation()
-            simulator.initialize(conf, scenario_wrapper=scenario_wrapper)
-            return simulator
 
     simulated_scenarios = dict()  # store simulated example_scenarios for every simulation
 
@@ -198,20 +167,10 @@ def simulate_scenario(scenario_folder_path: str,
     #########################
     for simulation_id in range(num_of_simulations):
         print(f"Simulation {simulation_id} start.")
-
-        sumo_sim = create_simulator()
-        sumo_sim._dummy_ego_simulation = True
-        for step in range(conf.simulation_steps):
-            sumo_sim.simulate_step()
-        sumo_sim.stop()
-        # record simulated example_scenarios
-        simulated_scenario = sumo_sim.commonroad_scenarios_all_time_steps()
+        simulated_scenario = simulate_scenario(conf, scenario_wrapper, scenario_folder_path, use_sumo_manager)
         simulated_scenarios.update({simulation_id: simulated_scenario})
 
         if creating_video:
-            create_video_function(sumo_sim, conf.video_start, conf.video_end, output_folder_path)
-
-    if use_sumo_manager:
-        sumo_interface.stop_simulator()
+            create_gif(simulated_scenario, output_folder_path)
 
     return simulated_scenarios
