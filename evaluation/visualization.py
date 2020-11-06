@@ -1,31 +1,23 @@
 """"
 Script which evaluates a solution trajectory for an interactive scenario
 """
-import logging
-import logging.handlers
-import multiprocessing
 import os
 import warnings
-from datetime import datetime
-import numpy as np
-from typing import Tuple, Union, List, Dict
+from typing import Union, List, Dict
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import yaml
-from commonroad.common.solution import VehicleModel, VehicleType, CostFunction
+import numpy as np
 from commonroad.geometry.shape import Rectangle
 from commonroad.planning.planning_problem import PlanningProblem
-from commonroad.prediction.prediction import TrajectoryPrediction, SetBasedPrediction
+from commonroad.prediction.prediction import TrajectoryPrediction
 from commonroad.scenario.obstacle import ObstacleType, DynamicObstacle
 from commonroad.scenario.scenario import Scenario
 from commonroad.scenario.trajectory import Trajectory
 from commonroad.visualization.draw_dispatch_cr import draw_object
-from commonroad.visualization.plot_helper import redraw_obstacles
 from matplotlib.animation import FuncAnimation
 
-
-__author__ = "Peter Kocsis"
+__author__ = "Peter Kocsis, Daniel Tar, Edmond Irani"
 __copyright__ = "TUM Cyber-Physical System Group"
 __credits__ = []
 __version__ = "0.1"

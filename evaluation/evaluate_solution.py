@@ -2,14 +2,11 @@
 Script which evaluates a solution trajectory for an interactive scenario
 """
 import argparse
-import os
 import sys
 
 import matplotlib as mpl
 
-from commonroad.common.solution import CommonRoadSolutionReader
 from evaluation.simulate_solution import simulate_interactive_solution
-from evaluation.visualization import create_gif
 
 mpl.use('TkAgg')
 

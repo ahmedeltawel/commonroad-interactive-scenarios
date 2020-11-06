@@ -198,10 +198,10 @@ back_to_basedir
 if [ "${INSTALL_SUMO_MANAGER}" == "TRUE" ]; then
   echo "Installing CommonRoad-sumo-manager"
   git clone https://gitlab.lrz.de/cps/commonroad-sumo-manager.git
-  pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
   safe_cd commonroad-sumo-manager
   git checkout 47eb544ea85163ba3155a422603137d903de0796
   pip install -r ./requirements.txt
+  pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
   back_to_basedir
 fi
 

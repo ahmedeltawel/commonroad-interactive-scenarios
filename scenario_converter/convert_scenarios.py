@@ -48,19 +48,7 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
         "-c", "--config", type=CONFIG_TYPE, default=CONFIG_TYPE.SUMO_CONFIG_1, choices=list(CONFIG_TYPE),
         help="Configuration type of the simulation"
     )
-    parser.add_argument(
-        "-sm", "--sumo_manager", action="store_true", default=False, help="Using the sumo-manager",
-    )
     return parser
-
-
-# def translate_scenario(scenario, planning_problem_set, position=np.array([0, 0])):
-#     # translate scenario to center
-#     centroid = np.mean(np.concatenate(
-#         [l.center_vertices for l in scenario.lanelet_network.lanelets]),
-#         axis=0)
-#     scenario.translate_rotate(position - centroid, 0)
-#     planning_problem_set.translate_rotate(position - centroid, 0)
 
 
 def reduce_scenario(scenario: Scenario):
@@ -113,16 +101,9 @@ def convert_to_sumo_files(scenario_file: str,
     return converter
 
 
-def convert_to_sumo_files_with_sumo_manager(scenario_file: str,
-                                           output_folder: str,
-                                           conf: SumoConfigBase):
-    raise NotImplementedError()
-
-
 def convert_scenario(cr_scenario_path: str,
                      output_folder_path: str,
                      config_type: CONFIG_TYPE,
-                     use_sumo_manager: bool = False,
                      creating_video: bool = False) -> bool:
     """
     Generates interactive scenarios from CR maps
@@ -140,30 +121,10 @@ def convert_scenario(cr_scenario_path: str,
                                                 scenario_version="2020a")
     benchmark_id.prediction_type = 'I'
 
-    if use_sumo_manager:
-        raise NotImplementedError()
+    conf = get_interactive_scenario_configuration(config_type, str(benchmark_id))
+    output_folder = os.path.join(output_folder_path, conf.scenario_name)
 
-        # Create Interface to SUMO
-        # sumo_interface = SumoInterface()
-        #
-        # create_video_function = create_video_sumo_manager
-        # conf = SumoManagerCommonRoadConfig()
-        #
-        # # TODO: Currently, the sumo manager is built with an older version of the sumo-interface, therefore the results
-        # #  of the simulations with and without sumo-manager won't match.
-        # #  Check for differences when the sumo-manager is updated!
-        #     simulator = sumo_interface.start_simulator()
-        #
-        #     # upload folder contains all files needed for sumo-simulation
-        #     simulator.send_sumo_scenario(conf.scenario_name, scenario_file_path)
-        #     simulator.initialize(conf)
-        #     return simulator
-
-    else:
-        conf = get_interactive_scenario_configuration(config_type, str(benchmark_id))
-        output_folder = os.path.join(output_folder_path, conf.scenario_name)
-
-        scenario_wrapper = convert_to_sumo_files(cr_scenario_path, output_folder, conf)
+    scenario_wrapper = convert_to_sumo_files(cr_scenario_path, output_folder, conf)
     return scenario_wrapper is not None
 
 
@@ -172,5 +133,4 @@ if __name__ == '__main__':
     convert_scenario(cr_scenario_path=arguments.cr_scneario,
                      output_folder_path=arguments.output,
                      config_type=arguments.config,
-                     use_sumo_manager=arguments.sumo_manager,
                      creating_video=arguments.video)

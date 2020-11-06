@@ -117,7 +117,6 @@ def simulate_interactive_solution(interactive_scenario_folder: str,
     if creating_video:
         if output_folder_path is None:
             output_folder_path = os.path.dirname(solution_file)
-        # create_video(ego_simulator, conf.video_start, ego_simulator.current_time_step, output_folder_path)
         for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
             create_gif(simulated_scenario_with_ego, output_folder_path,
                        planning_problem=planning_problem,

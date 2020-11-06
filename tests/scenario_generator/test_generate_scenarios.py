@@ -21,10 +21,11 @@ __status__ = "Integration"
 resource_path = resource_root("test_generate_scenarios")
 output_path = output_root("test_generate_scenarios")
 
+
 @pytest.mark.parametrize(
     ("cr_maps", "expected_num_obtained_scenarios"),
-    [("single_Ibbenbueren", 1),
-     ("batch_SUMO", 3)],
+    [("single_Ibbenbueren", 2),
+     ("batch_SUMO", 4)],
 )
 @module_test
 @functional

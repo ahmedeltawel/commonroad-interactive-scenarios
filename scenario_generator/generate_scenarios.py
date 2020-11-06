@@ -30,6 +30,12 @@ from scenario_generation.config_files.scenario_config import ScenarioConfig
 from scenario_generation.config_files.sumo_config import SumoConf
 from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
 
+try:
+    from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
+    from commonroad_sumo_manager.crsumo.rpc.sumo_client import SumoRPCClient
+except ImportError as exp:
+    warnings.warn("CommonRoad-SUMO-Manager is not installed, the usage is not supported!")
+
 mpl.use('TkAgg')
 
 __author__ = "Yueming Li, Peter Kocsis"
@@ -55,6 +61,9 @@ def generate_scenarios_argsparser() -> argparse.ArgumentParser:
         "-v", "--video", action="store_true", default=False, help="Create video",
     )
     parser.add_argument(
+        "-sm", "--sumo_manager", action="store_true", default=False, help="Use SUMO-Manager",
+    )
+    parser.add_argument(
         "-nmr", "--num_max_resimulation", type=int, default=10, help="Maximum number of resimulation",
     )
     return parser
@@ -63,7 +72,8 @@ def generate_scenarios_argsparser() -> argparse.ArgumentParser:
 def simulate_scenario(sumo_conf: SumoConf,
                       scenario_wrapper: ScenarioWrapper,
                       scenario_config: ScenarioConfig,
-                      scenario_dir_path: str) -> Tuple[GenerateCRScenarios_Interactive, dict]:
+                      scenario_dir_path: str,
+                      use_sumo_manager: bool = False) -> Tuple[GenerateCRScenarios_Interactive, dict]:
     """
     Simulates traffic for a scenario
     :param sumo_conf: The SUMO configuration for the traffic simulation
@@ -72,9 +82,16 @@ def simulate_scenario(sumo_conf: SumoConf,
     :param scenario_dir_path: Path to the folder which contains the scenario
     :return CR scenario generator object and vehicle ID mapping between CR and SUMO
     """
-    # simulate sumo scenario and extract scenario files
-    sumo_sim = SumoSimulation()
-    sumo_sim.initialize(sumo_conf, scenario_wrapper=scenario_wrapper)
+    if use_sumo_manager:
+        sumo_interface = SumoInterface(use_docker=False)
+        sumo_sim = sumo_interface.start_simulator()
+
+        sumo_sim.send_sumo_scenario(sumo_conf.scenario_name,
+                                       scenario_dir_path)
+    else:
+        sumo_sim = SumoSimulation()
+
+    sumo_sim.initialize(sumo_conf, scenario_wrapper)
 
     for step in range(sumo_conf.simulation_steps):
         sumo_sim.simulate_step()
@@ -101,7 +118,8 @@ def simulate_scenario(sumo_conf: SumoConf,
 def generate_scenarios(cr_maps_folder_path: str,
                        output_folder_path: str,
                        create_video: bool = False,
-                       num_max_resimulation: int = 10) -> int:
+                       num_max_resimulation: int = 10,
+                       use_sumo_manager: bool = False) -> int:
     """
     Generates interactive scenarios from CR maps
     :param cr_maps_folder_path: Path to the folder which contains the CR scenarios
@@ -136,21 +154,21 @@ def generate_scenarios(cr_maps_folder_path: str,
 
         # create unique scenario ids for each scenario
         max_num_of_scenarios += scenario_config.scen_per_map
-        benchmark_id = ScenarioID.from_benchmark_id(os.path.splitext(os.path.basename(map_file))[0], scenario_version="2020a")
-        location_name = benchmark_id.country + '_' + benchmark_id.scene
-        orig_map_name = location_name + '-' + benchmark_id.config
+        benchmark_id = ScenarioID.from_benchmark_id(f"{os.path.splitext(os.path.basename(map_file))[0]}-0", scenario_version="2020a")
+        location_name = benchmark_id.country_id + '_' + benchmark_id.map_name
+        orig_map_name = location_name + '-' + str(benchmark_id.configuration_id)
         scenario_config.map_name = location_name
 
         dir_path = os.path.join(output_folder_path, timestr, orig_map_name)
         os.makedirs(dir_path, exist_ok=True)
 
-        map_nr = int(benchmark_id.config)
+        map_nr = int(benchmark_id.configuration_id)
 
         try:
             # conversion from CommonRoad to SUMO map
             sumo_net_path = os.path.join(dir_path, location_name + '-' + str(map_nr) + ".net.xml")
             cr2sumo_converter = CR2SumoMapConverter.from_file(map_file, cr2net_conf)
-            cr2sumo_converter.convert_to_net_file()
+            cr2sumo_converter.convert_to_net_file(dir_path)
             logger.info(f'write map to path {map_file}')
             conversion_possible = cr2sumo_converter.merge_intermediate_files(sumo_net_path, cleanup=False)
 
@@ -178,19 +196,19 @@ def generate_scenarios(cr_maps_folder_path: str,
                 if os.path.exists(scenario_dir_name) == False:
                     os.mkdir(scenario_dir_name)
                 sumo_net_copy = os.path.join(scenario_dir_name, str(new_benchmark_id) + ".net.xml")
-                cr_map_copy = os.path.join(scenario_dir_name, str(new_benchmark_id) + ".maps.xml")
+                cr_map_copy = os.path.join(scenario_dir_name, str(new_benchmark_id) + ".cr.xml")
                 shutil.copy(sumo_net_path, sumo_net_copy)
                 shutil.copy(map_file, cr_map_copy)
 
                 # generate route file and additional files for SUMO simulation
                 scenario_wrapper = ScenarioWrapper.init_from_net_file(net_file=sumo_net_copy,
-                                                                      cr_map_path=map_file,
+                                                                      cr_map_path=cr_map_copy,
                                                                       conf=sumo_conf)
 
                 simulation_rem_num_of_trials = num_max_resimulation
                 while simulation_rem_num_of_trials > 0:
                     simulation_rem_num_of_trials -= 1
-                    cr_scenarios, vehicle_ids_cr2sumo = simulate_scenario(sumo_conf, scenario_wrapper, scenario_config, scenario_dir_name)
+                    cr_scenarios, vehicle_ids_cr2sumo = simulate_scenario(sumo_conf, scenario_wrapper, scenario_config, scenario_dir_name, use_sumo_manager=use_sumo_manager)
                     ego_ids_cr = cr_scenarios.ego_id_list
                     if len(ego_ids_cr) != 0:
                         break
@@ -222,4 +240,5 @@ if __name__ == '__main__':
     generate_scenarios(cr_maps_folder_path=arguments.cr_maps,
                        output_folder_path=arguments.output,
                        create_video=arguments.video,
-                       num_max_resimulation=arguments.num_max_resimulation)
+                       num_max_resimulation=arguments.num_max_resimulation,
+                       use_sumo_manager=arguments.sumo_manager)
