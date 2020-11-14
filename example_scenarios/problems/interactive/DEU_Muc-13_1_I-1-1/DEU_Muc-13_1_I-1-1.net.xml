@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Sat Nov 14 16:55:41 2020 by Eclipse SUMO netconvert Version v1_2_0+5214-53edc58fcd
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="./example_scenarios/output/DEU_Muc-13_1_I-1-1/nodes.net.xml"/>
+        <edge-files value="./example_scenarios/output/DEU_Muc-13_1_I-1-1/edges.net.xml"/>
+        <connection-files value="./example_scenarios/output/DEU_Muc-13_1_I-1-1/_connections.net.xml"/>
+        <tllogic-files value="./example_scenarios/output/DEU_Muc-13_1_I-1-1/_tll.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="./example_scenarios/output/DEU_Muc-13_1_I-1-1/DEU_Muc-13_1_I-1-1.net.xml"/>
+    </output>
+
+    <processing>
+        <plain.extend-edge-shape value="true"/>
+        <geometry.remove.keep-edges.explicit value="true"/>
+        <geometry.avoid-overlap value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.internal-link-detail value="20"/>
+    </junctions>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+    <random_number>
+        <seed value="1234"/>
+    </random_number>
+
+</configuration>
+-->
+
+<net version="1.6" junctionCornerDetail="5" junctionLinkDetail="20" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-60.69,-115.75,141.46,145.38" origBoundary="-60.69,-115.75,141.46,145.38" projParameter="!"/>
+
+    <edge id=":25_0" function="internal">
+        <lane id=":25_0_0" index="0" disallow="bus truck rail_fast" speed="6.64" length="10.28" width="2.50" shape="82.65,-11.04 81.71,-11.68 80.69,-12.20 79.60,-12.53 78.46,-12.60 77.35,-12.35 76.34,-11.82 75.45,-11.09 74.69,-10.24 74.02,-9.31"/>
+    </edge>
+    <edge id=":25_1" function="internal">
+        <lane id=":25_1_0" index="0" disallow="bus truck rail_fast" speed="18.87" length="91.86" width="2.50" shape="82.65,-11.04 76.88,-15.42 71.08,-19.81 44.07,-39.91 17.05,-60.02 16.03,-60.71 15.00,-61.25 13.95,-61.60 12.92,-61.72 11.94,-61.56 11.02,-61.13 10.18,-60.45 9.42,-59.59 8.74,-58.58"/>
+    </edge>
+    <edge id=":25_2" function="internal">
+        <lane id=":25_2_0" index="0" disallow="rail_fast" speed="36.11" length="96.75" width="2.50" shape="82.65,-11.04 76.88,-15.42 71.08,-19.81 44.07,-39.91 17.05,-60.02 11.10,-64.48 5.14,-68.94"/>
+    </edge>
+    <edge id=":25_3" function="internal">
+        <lane id=":25_3_0" index="0" disallow="rail_fast" speed="20.21" length="96.54" width="2.50" shape="82.65,-11.04 76.88,-15.42 71.08,-19.81 44.07,-39.91 17.05,-60.02 15.80,-61.05 14.69,-62.21 13.77,-63.52 13.14,-64.99 12.89,-66.57 13.05,-68.16 13.54,-69.69 14.28,-71.11 15.34,-72.62"/>
+    </edge>
+    <edge id=":25_4" function="internal">
+        <lane id=":25_4_0" index="0" disallow="rail_fast" speed="19.79" length="92.53" width="2.50" shape="17.32,-71.09 16.47,-69.89 15.92,-68.83 15.57,-67.75 15.46,-66.68 15.63,-65.63 16.07,-64.63 16.73,-63.69 17.57,-62.82 18.54,-62.03 45.56,-41.92 72.60,-21.80 78.39,-17.41 84.16,-13.04"/>
+    </edge>
+    <edge id=":25_5" function="internal">
+        <lane id=":25_5_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="92.20" width="2.50" shape="17.32,-71.09 16.47,-69.89 15.92,-68.83 15.57,-67.75 15.46,-66.68 15.63,-65.63 16.07,-64.63 16.73,-63.69 17.57,-62.82 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 73.68,-20.89 74.64,-19.84 75.41,-18.66 75.94,-17.34 76.18,-15.95 76.13,-14.53 75.85,-13.14 75.37,-11.81 74.75,-10.53 74.02,-9.31"/>
+    </edge>
+    <edge id=":25_6" function="internal">
+        <lane id=":25_6_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="15.17" width="2.50" shape="17.32,-71.09 15.89,-69.21 12.19,-63.99 8.74,-58.58"/>
+    </edge>
+    <edge id=":25_7" function="internal">
+        <lane id=":25_7_0" index="0" disallow="rail_fast" speed="7.97" length="14.16" width="2.50" shape="17.32,-71.09 16.17,-69.72 15.04,-68.66 13.78,-67.78 12.37,-67.14 10.85,-66.86 9.31,-66.96 7.83,-67.38 6.44,-68.07 5.14,-68.94"/>
+    </edge>
+    <edge id=":25_8" function="internal">
+        <lane id=":25_8_0" index="0" disallow="rail_fast" speed="6.84" length="10.22" width="2.50" shape="6.64,-70.93 7.63,-70.27 8.64,-69.77 9.67,-69.47 10.70,-69.41 11.70,-69.61 12.66,-70.06 13.57,-70.71 14.42,-71.52 15.34,-72.62"/>
+    </edge>
+    <edge id=":25_9" function="internal">
+        <lane id=":25_9_0" index="0" disallow="rail_fast" speed="36.11" length="96.75" width="2.50" shape="6.64,-70.93 12.59,-66.48 18.54,-62.03 45.56,-41.92 72.60,-21.80 78.39,-17.41 84.16,-13.04"/>
+    </edge>
+    <edge id=":25_10" function="internal">
+        <lane id=":25_10_0" index="0" disallow="bus truck rail_fast" speed="20.77" length="96.42" width="2.50" shape="6.64,-70.93 12.59,-66.48 18.54,-62.03 45.56,-41.92 72.60,-21.80 73.68,-20.89 74.64,-19.84 75.41,-18.66 75.94,-17.34 76.18,-15.95 76.13,-14.53 75.85,-13.14 75.37,-11.81 74.75,-10.53 74.02,-9.31"/>
+    </edge>
+    <edge id=":25_11" function="internal">
+        <lane id=":25_11_0" index="0" disallow="bus truck rail_fast" speed="8.25" length="14.05" width="2.50" shape="6.64,-70.93 7.85,-69.91 8.90,-68.76 9.74,-67.46 10.32,-66.01 10.55,-64.48 10.45,-62.92 10.08,-61.41 9.49,-59.97 8.74,-58.58"/>
+    </edge>
+    <edge id=":25_12" function="internal">
+        <lane id=":25_12_0" index="0" disallow="bus truck rail_fast" speed="7.15" length="10.37" width="2.50" shape="6.59,-59.85 7.20,-60.97 7.65,-62.07 7.93,-63.19 8.01,-64.29 7.86,-65.35 7.46,-66.35 6.85,-67.29 6.07,-68.15 5.14,-68.94"/>
+    </edge>
+    <edge id=":25_13" function="internal">
+        <lane id=":25_13_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="15.48" width="2.50" shape="6.59,-59.85 10.12,-65.38 13.88,-70.70 15.34,-72.62"/>
+    </edge>
+    <edge id=":25_14" function="internal">
+        <lane id=":25_14_0" index="0" disallow="bus truck rail_fast" speed="19.31" length="96.14" width="2.50" shape="6.59,-59.85 7.50,-61.20 8.55,-62.38 9.78,-63.37 11.20,-64.04 12.75,-64.30 14.32,-64.14 15.82,-63.64 17.22,-62.92 18.54,-62.03 45.56,-41.92 72.60,-21.80 78.39,-17.41 84.16,-13.04"/>
+    </edge>
+    <edge id=":25_15" function="internal">
+        <lane id=":25_15_0" index="0" disallow="bus truck rail_fast" speed="13.75" length="95.81" width="2.50" shape="6.59,-59.85 7.50,-61.20 8.55,-62.38 9.78,-63.37 11.20,-64.04 12.75,-64.30 14.32,-64.14 15.82,-63.64 17.22,-62.92 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 73.68,-20.89 74.64,-19.84 75.41,-18.66 75.94,-17.34 76.18,-15.95 76.13,-14.53 75.85,-13.14 75.37,-11.81 74.75,-10.53 74.02,-9.31"/>
+    </edge>
+    <edge id=":25_16" function="internal">
+        <lane id=":25_16_0" index="0" disallow="bus truck rail_fast" speed="13.17" length="87.74" width="2.50" shape="71.93,-10.67 72.50,-11.64 72.99,-12.64 73.37,-13.65 73.59,-14.66 73.64,-15.66 73.49,-16.61 73.15,-17.51 72.62,-18.34 71.92,-19.11 71.08,-19.81 44.07,-39.91 17.05,-60.02 16.03,-60.71 15.00,-61.25 13.95,-61.60 12.92,-61.72 11.94,-61.56 11.02,-61.13 10.18,-60.45 9.42,-59.59 8.74,-58.58"/>
+    </edge>
+    <edge id=":25_17" function="internal">
+        <lane id=":25_17_0" index="0" disallow="bus truck rail_fast" speed="20.36" length="92.62" width="2.50" shape="71.93,-10.67 72.50,-11.64 72.99,-12.64 73.37,-13.65 73.59,-14.66 73.64,-15.66 73.49,-16.61 73.15,-17.51 72.62,-18.34 71.92,-19.11 71.08,-19.81 44.07,-39.91 17.05,-60.02 11.10,-64.48 5.14,-68.94"/>
+    </edge>
+    <edge id=":25_18" function="internal">
+        <lane id=":25_18_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="92.41" width="2.50" shape="71.93,-10.67 72.50,-11.64 72.99,-12.64 73.37,-13.65 73.59,-14.66 73.64,-15.66 73.49,-16.61 73.15,-17.51 72.62,-18.34 71.92,-19.11 71.08,-19.81 71.08,-19.81 44.07,-39.91 17.05,-60.02 17.05,-60.02 15.80,-61.05 14.69,-62.21 13.77,-63.52 13.14,-64.99 12.89,-66.57 13.05,-68.16 13.54,-69.69 14.28,-71.11 15.34,-72.62"/>
+    </edge>
+    <edge id=":25_19" function="internal">
+        <lane id=":25_19_0" index="0" disallow="bus truck rail_fast" speed="7.79" length="14.45" width="2.50" shape="71.93,-10.67 72.81,-11.90 73.85,-13.04 75.10,-14.05 76.59,-14.81 78.26,-15.17 79.95,-15.07 81.51,-14.60 82.91,-13.88 84.16,-13.04"/>
+    </edge>
+
+    <edge id="239" from="25" to="2" priority="1" spreadType="center" length="72.29" shape="40.13,-44.54 141.46,31.04">
+        <lane id="239_0" index="0" disallow="rail_fast" speed="36.11" length="72.29" width="2.50" customShape="1" shape="84.16,-13.04 112.82,9.01 141.46,31.04"/>
+    </edge>
+    <edge id="240" from="3" to="25" priority="1" spreadType="center" length="72.27" shape="139.93,33.03 38.64,-42.53">
+        <lane id="240_0" index="0" disallow="rail_fast" speed="36.11" length="72.27" width="2.50" customShape="1" shape="139.93,33.03 111.29,10.99 82.63,-11.06"/>
+    </edge>
+    <edge id="241" from="25" to="6" priority="1" spreadType="center" length="163.30" shape="40.64,-43.47 30.60,145.38">
+        <lane id="241_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="163.30" width="2.50" customShape="1" shape="74.02,-9.31 65.31,4.14 60.09,12.69 55.73,20.59 51.93,28.20 49.11,34.62 46.45,41.65 43.96,49.27 41.96,56.51 40.19,64.33 38.30,74.68 36.61,86.07 35.05,99.51 32.32,128.94 30.60,145.38"/>
+    </edge>
+    <edge id="242" from="7" to="25" priority="1" spreadType="center" length="164.46" shape="28.12,145.10 38.15,-43.60">
+        <lane id="242_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="164.46" width="2.50" customShape="1" shape="28.12,145.10 29.84,128.61 32.58,99.07 34.16,85.56 35.86,74.08 37.78,63.65 39.57,55.76 41.60,48.43 44.12,40.74 46.82,33.63 49.67,27.13 53.52,19.43 57.91,11.47 63.17,2.84 71.93,-10.67"/>
+    </edge>
+    <edge id="245" from="13" to="25" priority="1" spreadType="center" length="74.54" shape="-52.92,-115.75 40.17,-44.51">
+        <lane id="245_0" index="0" disallow="rail_fast" speed="36.11" length="74.54" width="2.50" customShape="1" shape="-52.92,-115.75 -23.13,-93.34 6.64,-70.93"/>
+    </edge>
+    <edge id="246" from="25" to="16" priority="1" spreadType="center" length="74.54" shape="38.65,-42.53 -54.42,-113.76">
+        <lane id="246_0" index="0" disallow="rail_fast" speed="36.11" length="74.54" width="2.50" customShape="1" shape="5.14,-68.93 -24.63,-91.34 -54.42,-113.76"/>
+    </edge>
+    <edge id="247" from="17" to="25" priority="1" spreadType="center" length="199.71" shape="-60.69,126.85 38.32,-44.16">
+        <lane id="247_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="199.71" width="2.50" customShape="1" shape="-60.69,126.85 -55.25,97.60 -52.50,84.26 -50.83,77.40 -47.22,65.32 -42.04,49.50 -33.17,23.75 -28.42,10.99 -22.35,-3.97 -17.10,-15.98 -11.69,-27.37 -7.50,-35.43 -0.30,-48.16 6.61,-59.88"/>
+    </edge>
+    <edge id="248" from="25" to="20" priority="1" spreadType="center" length="198.82" shape="40.48,-42.91 -58.23,127.32">
+        <lane id="248_0" index="0" disallow="bus truck rail_fast" speed="36.11" length="198.82" width="2.50" customShape="1" shape="8.74,-58.58 1.87,-46.92 -5.30,-34.24 -9.46,-26.24 -14.84,-14.92 -20.07,-2.96 -26.11,11.93 -30.83,24.63 -39.68,50.30 -44.83,66.06 -48.42,78.07 -50.07,84.87 -52.81,98.14 -58.23,127.32"/>
+    </edge>
+    <edge id="249" from="25" to="22" priority="1" spreadType="center" length="34.15" shape="38.15,-43.45 36.08,-99.47">
+        <lane id="249_0" index="0" disallow="rail_fast" speed="36.11" length="34.15" width="2.50" customShape="1" shape="15.34,-72.62 25.64,-85.95 36.08,-99.47"/>
+    </edge>
+    <edge id="250" from="23" to="25" priority="1" spreadType="center" length="34.15" shape="38.06,-97.94 40.65,-43.56">
+        <lane id="250_0" index="0" disallow="rail_fast" speed="36.11" length="34.15" width="2.50" customShape="1" shape="38.06,-97.94 27.62,-84.42 17.32,-71.09"/>
+    </edge>
+
+    <junction id="13" type="dead_end" x="-52.92" y="-115.75" incLanes="" intLanes="" shape="-53.67,-114.76 -52.17,-116.75"/>
+    <junction id="16" type="dead_end" x="-54.42" y="-113.76" incLanes="246_0" intLanes="" shape="-55.17,-112.76 -53.67,-114.76"/>
+    <junction id="17" type="dead_end" x="-60.69" y="126.85" incLanes="" intLanes="" shape="-59.46,127.08 -61.92,126.63"/>
+    <junction id="2" type="dead_end" x="141.46" y="31.04" incLanes="239_0" intLanes="" shape="142.22,30.05 140.69,32.04"/>
+    <junction id="20" type="dead_end" x="-58.23" y="127.32" incLanes="248_0" intLanes="" shape="-57.00,127.55 -59.46,127.09"/>
+    <junction id="22" type="dead_end" x="36.08" y="-99.47" incLanes="249_0" intLanes="" shape="35.09,-100.24 37.07,-98.71"/>
+    <junction id="23" type="dead_end" x="38.06" y="-97.94" incLanes="" intLanes="" shape="37.07,-98.71 39.05,-97.18"/>
+    <junction id="25" type="priority" x="39.40" y="-43.53" incLanes="240_0 250_0 245_0 247_0 242_0" intLanes=":25_0_0 :25_1_0 :25_2_0 :25_3_0 :25_4_0 :25_5_0 :25_6_0 :25_7_0 :25_8_0 :25_9_0 :25_10_0 :25_11_0 :25_12_0 :25_13_0 :25_14_0 :25_15_0 :25_16_0 :25_17_0 :25_18_0 :25_19_0" shape="81.87,-10.07 84.92,-14.03 63.89,-30.35 46.83,-43.90 33.74,-54.67 24.62,-62.66 19.48,-67.88 18.31,-70.32 14.35,-73.38 12.13,-71.34 10.98,-70.90 9.81,-70.86 8.61,-71.20 7.39,-71.93 4.39,-67.94 6.21,-65.83 6.58,-64.63 6.59,-63.35 6.23,-61.96 5.51,-60.48 9.82,-57.95 70.88,-11.35 75.07,-8.63 77.11,-10.77 78.21,-11.22 79.37,-11.25 80.59,-10.86">
+        <request index="0"  response="00000000000000000000" foes="00001000010000100000" cont="0"/>
+        <request index="1"  response="00000000000000000000" foes="11111000110001100000" cont="0"/>
+        <request index="2"  response="00000000000000000000" foes="11100111110011100000" cont="0"/>
+        <request index="3"  response="00001000011100000000" foes="11001110011111100000" cont="0"/>
+        <request index="4"  response="00000000001000000000" foes="10000100001000000000" cont="0"/>
+        <request index="5"  response="00000000011000001111" foes="10001100011000001111" cont="0"/>
+        <request index="6"  response="01110000111000001110" foes="01111100111000001110" cont="0"/>
+        <request index="7"  response="01100011111000001100" foes="01100011111000001100" cont="0"/>
+        <request index="8"  response="00000000000000000000" foes="01000010000000001000" cont="0"/>
+        <request index="9"  response="00000000000000000000" foes="11000110000011111000" cont="0"/>
+        <request index="10" response="00000000000000000111" foes="11001110000011101111" cont="0"/>
+        <request index="11" response="00000000000000000110" foes="00111110000011000110" cont="0"/>
+        <request index="12" response="00000000000000000100" foes="00100000000010000100" cont="0"/>
+        <request index="13" response="00000000111100001100" foes="01100000111110001100" cont="0"/>
+        <request index="14" response="01000000111001111100" foes="11100000111001111100" cont="0"/>
+        <request index="15" response="01000000110001100011" foes="11100000110001101011" cont="0"/>
+        <request index="16" response="00000000100000000010" foes="00000000100001000010" cont="0"/>
+        <request index="17" response="00001111100000000110" foes="00001111100011000110" cont="0"/>
+        <request index="18" response="00000010011100001110" foes="00001110011111001110" cont="0"/>
+        <request index="19" response="00001100011000111110" foes="00001100011000111110" cont="0"/>
+    </junction>
+    <junction id="3" type="dead_end" x="139.93" y="33.03" incLanes="" intLanes="" shape="140.69,32.04 139.17,34.02"/>
+    <junction id="6" type="dead_end" x="30.60" y="145.38" incLanes="241_0" intLanes="" shape="31.85,145.51 29.36,145.25"/>
+    <junction id="7" type="dead_end" x="28.12" y="145.10" incLanes="" intLanes="" shape="29.36,145.23 26.88,144.97"/>
+
+    <connection from="240" to="241" fromLane="0" toLane="0" contPos="-4.00" shape="82.65,-11.04 81.71,-11.68 80.69,-12.20 79.60,-12.53 78.46,-12.60 77.35,-12.35 76.34,-11.82 75.45,-11.09 74.69,-10.24 74.02,-9.31" via=":25_0_0" dir="r" state="M"/>
+    <connection from="240" to="248" fromLane="0" toLane="0" contPos="-4.00" shape="82.65,-11.04 76.88,-15.42 71.08,-19.81 71.08,-19.81 44.07,-39.91 17.05,-60.02 17.05,-60.02 16.03,-60.71 15.00,-61.25 13.95,-61.60 12.92,-61.72 11.94,-61.56 11.02,-61.13 10.18,-60.45 9.42,-59.59 8.74,-58.58" via=":25_1_0" dir="r" state="M"/>
+    <connection from="240" to="246" fromLane="0" toLane="0" contPos="-4.00" shape="82.65,-11.04 76.88,-15.42 71.08,-19.81 71.08,-19.81 44.07,-39.91 17.05,-60.02 17.05,-60.02 11.10,-64.48 5.14,-68.94" via=":25_2_0" dir="s" state="M"/>
+    <connection from="240" to="249" fromLane="0" toLane="0" contPos="-4.00" shape="82.65,-11.04 76.88,-15.42 71.08,-19.81 71.08,-19.81 44.07,-39.91 17.05,-60.02 17.05,-60.02 15.80,-61.05 14.69,-62.21 13.77,-63.52 13.14,-64.99 12.89,-66.57 13.05,-68.16 13.54,-69.69 14.28,-71.11 15.21,-72.44" via=":25_3_0" dir="l" state="m"/>
+    <connection from="242" to="248" fromLane="0" toLane="0" contPos="-4.00" shape="71.93,-10.67 72.50,-11.64 72.99,-12.64 73.37,-13.65 73.59,-14.66 73.64,-15.66 73.49,-16.61 73.15,-17.51 72.62,-18.34 71.92,-19.11 71.08,-19.81 71.08,-19.81 44.07,-39.91 17.05,-60.02 17.05,-60.02 16.03,-60.71 15.00,-61.25 13.95,-61.60 12.92,-61.72 11.94,-61.56 11.02,-61.13 10.18,-60.45 9.42,-59.59 8.74,-58.58" via=":25_16_0" dir="r" state="m"/>
+    <connection from="242" to="246" fromLane="0" toLane="0" contPos="-4.00" shape="71.93,-10.67 72.50,-11.64 72.99,-12.64 73.37,-13.65 73.59,-14.66 73.64,-15.66 73.49,-16.61 73.15,-17.51 72.62,-18.34 71.92,-19.11 71.08,-19.81 71.08,-19.81 44.07,-39.91 17.05,-60.02 17.05,-60.02 11.10,-64.48 5.14,-68.94" via=":25_17_0" dir="R" state="m"/>
+    <connection from="242" to="249" fromLane="0" toLane="0" contPos="-4.00" shape="71.93,-10.67 72.50,-11.64 72.99,-12.64 73.37,-13.65 73.59,-14.66 73.64,-15.66 73.49,-16.61 73.15,-17.51 72.62,-18.34 71.92,-19.11 71.08,-19.81 71.08,-19.81 44.07,-39.91 17.05,-60.02 17.05,-60.02 15.80,-61.05 14.69,-62.21 13.77,-63.52 13.14,-64.99 12.89,-66.57 13.05,-68.16 13.54,-69.69 14.28,-71.11 15.21,-72.44" via=":25_18_0" dir="s" state="m"/>
+    <connection from="242" to="239" fromLane="0" toLane="0" contPos="-4.00" shape="71.93,-10.67 72.81,-11.90 73.85,-13.04 75.10,-14.05 76.59,-14.81 78.26,-15.17 79.95,-15.07 81.51,-14.60 82.91,-13.88 84.16,-13.04" via=":25_19_0" dir="l" state="m"/>
+    <connection from="245" to="249" fromLane="0" toLane="0" contPos="-4.00" shape="6.64,-70.93 7.63,-70.27 8.64,-69.77 9.67,-69.47 10.70,-69.41 11.70,-69.61 12.66,-70.06 13.57,-70.71 14.42,-71.52 15.21,-72.44" via=":25_8_0" dir="r" state="M"/>
+    <connection from="245" to="239" fromLane="0" toLane="0" contPos="-4.00" shape="6.64,-70.93 12.59,-66.48 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 78.39,-17.41 84.16,-13.04" via=":25_9_0" dir="s" state="M"/>
+    <connection from="245" to="241" fromLane="0" toLane="0" contPos="-4.00" shape="6.64,-70.93 12.59,-66.48 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 73.68,-20.89 74.64,-19.84 75.41,-18.66 75.94,-17.34 76.18,-15.95 76.13,-14.53 75.85,-13.14 75.37,-11.81 74.75,-10.53 74.02,-9.31" via=":25_10_0" dir="L" state="m"/>
+    <connection from="245" to="248" fromLane="0" toLane="0" contPos="-4.00" shape="6.64,-70.93 7.85,-69.91 8.90,-68.76 9.74,-67.46 10.32,-66.01 10.55,-64.48 10.45,-62.92 10.08,-61.41 9.49,-59.97 8.74,-58.58" via=":25_11_0" dir="l" state="m"/>
+    <connection from="247" to="246" fromLane="0" toLane="0" contPos="-4.00" shape="6.61,-59.88 7.20,-60.97 7.65,-62.07 7.93,-63.19 8.01,-64.29 7.86,-65.35 7.46,-66.35 6.85,-67.29 6.07,-68.15 5.14,-68.94" via=":25_12_0" dir="r" state="m"/>
+    <connection from="247" to="249" fromLane="0" toLane="0" contPos="-4.00" shape="6.61,-59.88 10.12,-65.38 13.88,-70.70 15.21,-72.44" via=":25_13_0" dir="s" state="m"/>
+    <connection from="247" to="239" fromLane="0" toLane="0" contPos="-4.00" shape="6.61,-59.88 7.50,-61.20 8.55,-62.38 9.78,-63.37 11.20,-64.04 12.75,-64.30 14.32,-64.14 15.82,-63.64 17.22,-62.92 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 78.39,-17.41 84.16,-13.04" via=":25_14_0" dir="l" state="m"/>
+    <connection from="247" to="241" fromLane="0" toLane="0" contPos="-4.00" shape="6.61,-59.88 7.50,-61.20 8.55,-62.38 9.78,-63.37 11.20,-64.04 12.75,-64.30 14.32,-64.14 15.82,-63.64 17.22,-62.92 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 73.68,-20.89 74.64,-19.84 75.41,-18.66 75.94,-17.34 76.18,-15.95 76.13,-14.53 75.85,-13.14 75.37,-11.81 74.75,-10.53 74.02,-9.31" via=":25_15_0" dir="l" state="m"/>
+    <connection from="250" to="239" fromLane="0" toLane="0" contPos="-4.00" shape="17.19,-70.92 16.47,-69.89 15.92,-68.83 15.57,-67.75 15.46,-66.68 15.63,-65.63 16.07,-64.63 16.73,-63.69 17.57,-62.82 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 78.39,-17.41 84.16,-13.04" via=":25_4_0" dir="r" state="m"/>
+    <connection from="250" to="241" fromLane="0" toLane="0" contPos="-4.00" shape="17.19,-70.92 16.47,-69.89 15.92,-68.83 15.57,-67.75 15.46,-66.68 15.63,-65.63 16.07,-64.63 16.73,-63.69 17.57,-62.82 18.54,-62.03 18.54,-62.03 45.56,-41.92 72.60,-21.80 72.60,-21.80 73.68,-20.89 74.64,-19.84 75.41,-18.66 75.94,-17.34 76.18,-15.95 76.13,-14.53 75.85,-13.14 75.37,-11.81 74.75,-10.53 74.02,-9.31" via=":25_5_0" dir="s" state="m"/>
+    <connection from="250" to="248" fromLane="0" toLane="0" contPos="-4.00" shape="17.19,-70.92 15.89,-69.21 12.19,-63.99 8.74,-58.58" via=":25_6_0" dir="L" state="m"/>
+    <connection from="250" to="246" fromLane="0" toLane="0" contPos="-4.00" shape="17.19,-70.92 16.17,-69.72 15.04,-68.66 13.78,-67.78 12.37,-67.14 10.85,-66.86 9.31,-66.96 7.83,-67.38 6.44,-68.07 5.14,-68.94" via=":25_7_0" dir="l" state="m"/>
+
+    <connection from=":25_0" to="241" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":25_1" to="248" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":25_2" to="246" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":25_3" to="249" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":25_4" to="239" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":25_5" to="241" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":25_6" to="248" fromLane="0" toLane="0" dir="L" state="M"/>
+    <connection from=":25_7" to="246" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":25_8" to="249" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":25_9" to="239" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":25_10" to="241" fromLane="0" toLane="0" dir="L" state="M"/>
+    <connection from=":25_11" to="248" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":25_12" to="246" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":25_13" to="249" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":25_14" to="239" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":25_15" to="241" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":25_16" to="248" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":25_17" to="246" fromLane="0" toLane="0" dir="R" state="M"/>
+    <connection from=":25_18" to="249" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":25_19" to="239" fromLane="0" toLane="0" dir="l" state="M"/>
+
+</net>

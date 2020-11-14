@@ -95,10 +95,6 @@ def convert_to_sumo_files(scenario_file: str,
     with open(os.path.join(output_folder, "simulation_config.p"), 'wb') as f:
         pickle.dump(conf, f)
 
-    # Save the scenario_wrapper
-    with open(os.path.join(output_folder, "scenario_wrapper.p"), 'wb') as f:
-        pickle.dump(converter, f)
-
     return converter
 
 

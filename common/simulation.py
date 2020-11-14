@@ -52,7 +52,7 @@ def simulate_scenario(conf: SumoConf,
 
     sumo_interface = None
     if use_sumo_manager:
-        sumo_interface = SumoInterface(use_docker=False)
+        sumo_interface = SumoInterface(use_docker=True)
         sumo_sim = sumo_interface.start_simulator()
 
         sumo_sim.send_sumo_scenario(conf.scenario_name,

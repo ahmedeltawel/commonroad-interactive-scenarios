@@ -13,6 +13,7 @@ from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.solution import CommonRoadSolutionReader
 from commonroad.scenario.trajectory import State
 from sumocr.interface.sumo_simulation import SumoSimulation
+from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
 from sumocr.visualization.gif import create_gif
 from sumocr.visualization.video import create_video
 
@@ -45,6 +46,9 @@ def evaluate_solution_argsparser() -> argparse.ArgumentParser:
         help="Path to the CommonRoad solution file"
     )
     parser.add_argument(
+        "-o", "--output", type=str, default="./example_scenarios/gif", help="Output folder path",
+    )
+    parser.add_argument(
         "-v", "--video", action="store_true", default=False, help="Create video",
     )
     parser.add_argument(
@@ -61,13 +65,13 @@ def simulate_interactive_solution(interactive_scenario_folder: str,
     with open(os.path.join(interactive_scenario_folder, "simulation_config.p"), "rb") as input_file:
         conf = pickle.load(input_file)
 
-    with open(os.path.join(interactive_scenario_folder, "scenario_wrapper.p"), "rb") as input_file:
-        scenario_wrapper = pickle.load(input_file)
-    scenario_wrapper.sumo_cfg_file = os.path.join(interactive_scenario_folder,
-                                                  f"{conf.scenario_name}.sumo.cfg")
-
     scenario_file = os.path.join(interactive_scenario_folder, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
+
+    scenario_wrapper = AbstractScenarioWrapper()
+    scenario_wrapper.sumo_cfg_file = os.path.join(interactive_scenario_folder,
+                                                  f"{conf.scenario_name}.sumo.cfg")
+    scenario_wrapper.lanelet_network = scenario.lanelet_network
 
     solution = CommonRoadSolutionReader.open(solution_file)
 
@@ -108,5 +112,6 @@ if __name__ == '__main__':
     arguments = evaluate_solution_argsparser().parse_args(sys.argv[1:])
     simulate_interactive_solution(interactive_scenario_folder=arguments.input_scenario,
                                   solution_file=arguments.solution,
+                                  output_folder_path=arguments.output,
                                   creating_video=arguments.video,
                                   use_sumo_manager=arguments.sumo_manager)

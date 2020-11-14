@@ -21,7 +21,7 @@ class SumoConfig_1(SumoConfigBase):
         # simulation
         self.dt = 0.1  # length of simulation step of the interface
         self.delta_steps = 1  # number of sub-steps simulated in SUMO during every dt
-        self.presimulation_steps = 30  # number of time steps before simulation with ego vehicle starts
+        self.presimulation_steps = 2  # number of time steps before simulation with ego vehicle starts
         self.simulation_steps = 200  # number of simulated (and synchronized) time steps
         self.with_sumo_gui = False
         # lateral resolution > 0 enables SUMO'S sublane model, see https://sumo.dlr.de/docs/Simulation/SublaneModel.html
@@ -87,7 +87,7 @@ class SumoConfig_1(SumoConfigBase):
                 'pedestrian': 0.678
             },
             'minGap': {
-                'passenger': 2.5,
+                'passenger': 1.0,
                 'truck': 2.5,
                 'bus': 2.5,
                 'motorcycle': 2.5,

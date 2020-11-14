@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<commonRoad timeStepSize="0.1" commonRoadVersion="2020a" author="Xiaoyu Zhao, Chuxuan Li, Alessio Tofani, Moritz Klischat, Maximilian Rieger" affiliation="Technical University of Munich, Germany" source="OpenStreetMaps, SUMO Traffic Simulator" benchmarkID="CHN_Sha-16_2_I-1-1" date="2020-11-03">
+<commonRoad timeStepSize="0.1" commonRoadVersion="2020a" author="Xiaoyu Zhao, Chuxuan Li, Alessio Tofani, Moritz Klischat, Maximilian Rieger" affiliation="Technical University of Munich, Germany" source="OpenStreetMaps, SUMO Traffic Simulator" benchmarkID="CHN_Sha-16_2_I-1-1" date="2020-11-14">
   <location>
     <geoNameId>-999</geoNameId>
     <gpsLatitude>999</gpsLatitude>
     <gpsLongitude>999</gpsLongitude>
   </location>
   <scenarioTags>
-    <urban/>
     <intersection/>
-    <comfort/>
     <simulated/>
+    <comfort/>
+    <urban/>
   </scenarioTags>
   <lanelet id="558">
     <leftBound>
