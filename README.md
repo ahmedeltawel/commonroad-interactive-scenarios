@@ -1,5 +1,5 @@
 # Commonroad Interactive Benchmarks
-![CHN_Sha-16_2_I-1](example_scenarios/solution/CHN_Sha-16_2_I-1.gif)
+![CHN_Sha-16_2_I-1](example_scenarios/gif/CHN_Sha-16_2_I-1.gif)
 
 Extend the existing non-interactive CommonRoad scenario generation methods to interative scenarios.
 
@@ -82,6 +82,13 @@ python determinism_checker.check_determinism.py
 **Default:** `False`
 
 
-
-## sumo-manager
-The first determinism checker is also implemented to sumo-manger, scenarios are simulated through sumo-manager. Script `simulate_and_check.py`.
+## Examples
+![DEU_A9-2_1_I-1](example_scenarios/gif/DEU_A9-2_1_I-1.gif)
+![DEU_BadEssen-2_5_I-1](example_scenarios/gif/DEU_BadEssen-2_5_I-1.gif)
+![DEU_Guetersloh-16_1_I-1](example_scenarios/gif/DEU_Guetersloh-16_1_I-1.gif)
+![DEU_Guetersloh-20_4_I-1](example_scenarios/gif/DEU_Guetersloh-20_4_I-1.gif)
+![DEU_Muehlhausen-5_1_I-1](example_scenarios/gif/DEU_Muehlhausen-5_1_I-1.gif)
+![DEU_Muehlhausen-6_1_I-1](example_scenarios/gif/DEU_Muehlhausen-6_1_I-1.gif)
+![DEU_Speyer-4_2_I-1](example_scenarios/gif/DEU_Speyer-4_2_I-1.gif)
+![USA_US101-7_3_I-1](example_scenarios/gif/USA_US101-7_3_I-1.gif)
+![USA_US101-26_2_I-1](example_scenarios/gif/USA_US101-26_2_I-1.gif)
