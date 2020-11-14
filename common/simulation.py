@@ -17,6 +17,7 @@ from commonroad.scenario.scenario import Scenario, ScenarioID
 from commonroad.scenario.trajectory import State
 from commonroad.visualization.draw_dispatch_cr import draw_object
 from scenario_generation.config_files.sumo_config import SumoConf
+from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
 from sumocr.maps.sumo_scenario import ScenarioWrapper
 
 from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
@@ -40,7 +41,7 @@ __status__ = "Integration"
 
 
 def simulate_scenario(conf: SumoConf,
-                      scenario_wrapper: ScenarioWrapper,
+                      scenario_wrapper: AbstractScenarioWrapper,
                       scenario_dir_path: str,
                       num_of_steps=None,
                       planning_problem_set=None,

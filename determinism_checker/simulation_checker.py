@@ -12,10 +12,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from common.simulation import simulate_scenario
+from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.scenario.obstacle import DynamicObstacle
 from commonroad.scenario.scenario import Scenario, ScenarioID
 from commonroad.visualization.draw_dispatch_cr import draw_object
 from scenario_generation.config_files.sumo_config import SumoConf
+from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
 from sumocr.maps.sumo_scenario import ScenarioWrapper
 
 from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
@@ -155,10 +157,13 @@ def resimulate_scenario(scenario_folder_path: str,
     with open(os.path.join(scenario_folder_path, "simulation_config.p"), "rb") as input_file:
         conf = pickle.load(input_file)
 
-    with open(os.path.join(scenario_folder_path, "scenario_wrapper.p"), "rb") as input_file:
-        scenario_wrapper = pickle.load(input_file)
-        scenario_wrapper.rebase_paths(scenario_folder_path)
+    scenario_file = os.path.join(scenario_folder_path, f"{conf.scenario_name}.cr.xml")
+    scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
+    scenario_wrapper = AbstractScenarioWrapper()
+    scenario_wrapper.sumo_cfg_file = os.path.join(scenario_folder_path,
+                                                  f"{conf.scenario_name}.sumo.cfg")
+    scenario_wrapper.lanelet_network = scenario.lanelet_network
 
     simulated_scenarios = dict()  # store simulated example_scenarios for every simulation
 
@@ -167,7 +172,7 @@ def resimulate_scenario(scenario_folder_path: str,
     #########################
     for simulation_id in range(num_of_simulations):
         print(f"Simulation {simulation_id} start.")
-        simulated_scenario = simulate_scenario(conf, scenario_wrapper, scenario_folder_path, use_sumo_manager)
+        simulated_scenario = simulate_scenario(conf, scenario_wrapper, scenario_folder_path, use_sumo_manager=use_sumo_manager)
         simulated_scenarios.update({simulation_id: simulated_scenario})
 
         if creating_video:
