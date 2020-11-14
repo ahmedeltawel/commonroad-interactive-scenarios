@@ -61,7 +61,8 @@ def simulate_scenario(conf: SumoConf,
     else:
         sumo_sim = SumoSimulation()
 
-    sumo_sim.planning_problem_set = planning_problem_set
+    if planning_problem_set is not None:
+        sumo_sim.planning_problem_set = planning_problem_set
     sumo_sim.initialize(conf, scenario_wrapper)
 
     def run_simulation():

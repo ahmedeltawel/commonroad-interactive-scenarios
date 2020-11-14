@@ -57,7 +57,6 @@ def evaluate_interactive_solution_file(interactive_scenario_folder: str,
     return evaluate_interactive_solution(simulated_scenario_without_ego, simulated_scenario_with_ego)
 
 
-
 if __name__ == '__main__':
     arguments = evaluate_solution_argsparser().parse_args(sys.argv[1:])
     evaluate_interactive_solution_file(interactive_scenario_folder=arguments.input_scenario,
