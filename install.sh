@@ -4,6 +4,7 @@
 
 # Constants
 INSTALL_SUMO_MANAGER="FALSE"
+INSTALL_SUMO="FALSE"
 
 USAGE="
 $(basename "$0") [options] -- installs the dependencies for the commonroad-interactive-benchmark repo.
@@ -11,6 +12,7 @@ Options:
     -h | --help   show this help text
     -e ANACONDA_ENV | --env ANACONDA_ENV   name of the environment
     --sumo_manager   install the sumo-manager, default: false
+    --sumo           install SUMO, default: false
 "
 # Parse args
 while [[ $# -gt 0 ]]; do
@@ -29,6 +31,12 @@ while [[ $# -gt 0 ]]; do
 
   --sumo_manager)
     INSTALL_SUMO_MANAGER="TRUE"
+    shift # past argument
+    shift # past value
+    ;;
+
+  --sumo)
+    INSTALL_SUMO="TRUE"
     shift # past argument
     shift # past value
     ;;
@@ -160,26 +168,6 @@ fi
 back_to_basedir
 
 
-echo "Installing SUMO"
-require_sudo apt-get install python3 wget curl g++ libxerces-c-dev libfox-1.6-0 libfox-1.6-dev cmake libsqlite3-dev libgdal-dev libproj-dev libgl2ps-dev
-git clone --recursive https://github.com/mo-kli/sumo.git
-safe_cd sumo
-git checkout 53edc58fcda9d534f9e95a7b66e127a766ed19d8
-mkdir -p build/cmake-build
-safe_cd build/cmake-build
-cmake ../..
-make -j $JOBS
-safe_cd ../..
-export SUMO_HOME="$PWD"
-export PATH=$PATH:$SUMO_HOME/bin
-echo "export SUMO_HOME=$SUMO_HOME" >> ~/.profile
-echo "export PATH=$PATH:$SUMO_HOME/bin" >> ~/.profile
-safe_cd tools
-pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
-safe_cd ..
-back_to_basedir
-
-
 echo "Installing CommonRoad curvilinear-coordinate-system"
 require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-dev
 git clone https://gitlab.lrz.de/cps/commonroad-curvilinear-coordinate-system.git
@@ -193,6 +181,28 @@ make -j "$JOBS"
 safe_cd ..
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
+
+
+if [ "${INSTALL_SUMO}" == "TRUE" ]; then
+  echo "Installing SUMO"
+  require_sudo apt-get install python3 wget curl g++ libxerces-c-dev libfox-1.6-0 libfox-1.6-dev cmake libsqlite3-dev libgdal-dev libproj-dev libgl2ps-dev
+  git clone --recursive https://github.com/mo-kli/sumo.git
+  safe_cd sumo
+  git checkout 53edc58fcda9d534f9e95a7b66e127a766ed19d8
+  mkdir -p build/cmake-build
+  safe_cd build/cmake-build
+  cmake ../..
+  make -j $JOBS
+  safe_cd ../..
+  export SUMO_HOME="$PWD"
+  export PATH=$PATH:$SUMO_HOME/bin
+  echo "export SUMO_HOME=$SUMO_HOME" >> ~/.profile
+  echo "export PATH=$PATH:$SUMO_HOME/bin" >> ~/.profile
+  safe_cd tools
+  pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+  safe_cd ..
+  back_to_basedir
+fi
 
 
 if [ "${INSTALL_SUMO_MANAGER}" == "TRUE" ]; then

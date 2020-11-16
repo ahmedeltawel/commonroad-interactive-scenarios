@@ -47,58 +47,68 @@ def simulate_scenario(conf: SumoConf,
                       planning_problem_set=None,
                       solution=None,
                       use_sumo_manager: bool = False):
+    simulated_scenario = None
+    num_of_trials = 3
+    for _ in range(num_of_trials):
+        try:
+            if num_of_steps is None:
+                num_of_steps = conf.simulation_steps
 
-    if num_of_steps is None:
-        num_of_steps = conf.simulation_steps
+            sumo_interface = None
+            if use_sumo_manager:
+                sumo_interface = SumoInterface(use_docker=True)
+                sumo_sim = sumo_interface.start_simulator()
 
-    sumo_interface = None
-    if use_sumo_manager:
-        sumo_interface = SumoInterface(use_docker=True)
-        sumo_sim = sumo_interface.start_simulator()
-
-        sumo_sim.send_sumo_scenario(conf.scenario_name,
-                                       scenario_dir_path)
-    else:
-        sumo_sim = SumoSimulation()
-
-    if planning_problem_set is not None:
-        sumo_sim.planning_problem_set = planning_problem_set
-    sumo_sim.initialize(conf, scenario_wrapper)
-
-    def run_simulation():
-        for step in range(num_of_steps):
-            # plan trajectories for all ego vehicles
-            if solution is not None:
-                ego_vehicles = sumo_sim.ego_vehicles
-                commonroad_scenario = sumo_sim.commonroad_scenario_at_time_step(
-                    sumo_sim.current_time_step)
-
-                for idx, ego_vehicle in enumerate(ego_vehicles.values()):
-                    current_state = ego_vehicle.current_state
-
-                    # Use the solution trajectory
-                    ego_trajectory = solution.planning_problem_solutions[idx].trajectory
-                    if len(ego_trajectory.state_list) > step:
-                        next_state = copy.deepcopy(ego_trajectory.state_list[step])
-                    else:
-                        return
-                    next_state.time_step = 1
-                    ego_trajectory: List[State] = [next_state]
-                    ego_vehicle.set_planned_trajectory(ego_trajectory)
-
-                # Set the modified ego vehicles to synchronize in case of sumo-manager
-                sumo_sim.ego_vehicles = ego_vehicles
+                sumo_sim.send_sumo_scenario(conf.scenario_name,
+                                               scenario_dir_path)
             else:
-                sumo_sim.dummy_ego_simulation = True
+                sumo_sim = SumoSimulation()
 
-            sumo_sim.simulate_step()
+            if planning_problem_set is not None:
+                sumo_sim.planning_problem_set = planning_problem_set
 
-    run_simulation()
 
-    simulated_scenario = sumo_sim.commonroad_scenarios_all_time_steps()
-    sumo_sim.stop()
+            sumo_sim.initialize(conf, scenario_wrapper)
 
-    if use_sumo_manager:
-        sumo_interface.stop_simulator()
+            def run_simulation():
+                for step in range(num_of_steps):
+                    # plan trajectories for all ego vehicles
+                    if solution is not None:
+                        ego_vehicles = sumo_sim.ego_vehicles
+                        commonroad_scenario = sumo_sim.commonroad_scenario_at_time_step(
+                            sumo_sim.current_time_step)
 
-    return simulated_scenario
+                        for idx, ego_vehicle in enumerate(ego_vehicles.values()):
+                            current_state = ego_vehicle.current_state
+
+                            # Use the solution trajectory
+                            ego_trajectory = solution.planning_problem_solutions[idx].trajectory
+                            if len(ego_trajectory.state_list) > step:
+                                next_state = copy.deepcopy(ego_trajectory.state_list[step])
+                            else:
+                                return
+                            next_state.time_step = 1
+                            ego_trajectory: List[State] = [next_state]
+                            ego_vehicle.set_planned_trajectory(ego_trajectory)
+
+                        # Set the modified ego vehicles to synchronize in case of sumo-manager
+                        sumo_sim.ego_vehicles = ego_vehicles
+                    else:
+                        sumo_sim.dummy_ego_simulation = True
+
+                    sumo_sim.simulate_step()
+
+            run_simulation()
+
+            simulated_scenario = sumo_sim.commonroad_scenarios_all_time_steps()
+            sumo_sim.stop()
+
+            if use_sumo_manager:
+                sumo_interface.stop_simulator()
+
+            return simulated_scenario
+        except Exception as exp:
+            warnings.warn(f"Unsuccessful simulation, trying again: {exp}")
+
+    if simulated_scenario is None:
+        raise RuntimeError("Unexpected errors occured during the simulation!")

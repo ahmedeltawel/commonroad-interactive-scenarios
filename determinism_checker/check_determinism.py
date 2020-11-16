@@ -47,7 +47,7 @@ def check_determinism_argsparser() -> argparse.ArgumentParser:
 
 def check_determinism(scenario_file_path: str,
                       num_of_simulations: int,
-                      output_folder_path: str,
+                      output_folder_path: str = None,
                       use_sumo_manager: bool = False,
                       creating_video: bool = False,
                       std_tolerance: float = 0.1) -> bool:
@@ -64,11 +64,15 @@ def check_determinism(scenario_file_path: str,
     :param std_tolerance: Tolerance of the standard deviation of the obstacles' trajectory state values
     :return: True if all the deviations are in the given tolerance
     """
+    assert not creating_video or output_folder_path is not None, \
+        "The output folder path was not defined for video creation"
+
     simulated_scenarios = resimulate_scenario(scenario_file_path, num_of_simulations,
                                               use_sumo_manager, creating_video, output_folder_path)
 
     # Plot trajectories
-    plot_vehicle_trajectories(simulated_scenarios)
+    if creating_video:
+        plot_vehicle_trajectories(simulated_scenarios)
 
     # Check rou files for determinism
     print("Checking the route files")

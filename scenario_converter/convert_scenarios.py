@@ -5,6 +5,7 @@ import argparse
 import sys
 import time
 import pickle
+from typing import Tuple
 
 import matplotlib as mpl
 
@@ -101,7 +102,7 @@ def convert_to_sumo_files(scenario_file: str,
 def convert_scenario(cr_scenario_path: str,
                      output_folder_path: str,
                      config_type: CONFIG_TYPE,
-                     creating_video: bool = False) -> bool:
+                     creating_video: bool = False) -> Tuple[bool, str]:
     """
     Generates interactive scenarios from CR maps
     :param cr_maps_folder_path: Path to the folder which contains the CR scenarios
@@ -122,7 +123,7 @@ def convert_scenario(cr_scenario_path: str,
     output_folder = os.path.join(output_folder_path, conf.scenario_name)
 
     scenario_wrapper = convert_to_sumo_files(cr_scenario_path, output_folder, conf)
-    return scenario_wrapper is not None
+    return scenario_wrapper is not None, output_folder
 
 
 if __name__ == '__main__':
