@@ -108,7 +108,7 @@ require_sudo apt-get install -y ffmpeg
 echo "Installing CommonRoad-IO"
 git clone https://gitlab.lrz.de/cps/commonroad-io.git
 safe_cd commonroad-io
-git checkout 573343c850bcdf138564c7b90f581a081875bda7
+git checkout b773a70df0c5e304352ef96fa3816bbcba6e2116
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
@@ -129,7 +129,7 @@ back_to_basedir
 echo "Installing CommonRoad_Scenarios SS19"
 git clone https://gitlab.lrz.de/ss19/commonroad_scenarios.git
 safe_cd commonroad_scenarios
-git checkout 636caeb08169c9c13d2d87e0619019934037ab07
+git checkout 2096e05a326d95c142e2f534bfb90df9db499e11
 git submodule update --init --recursive
 conda install cartopy rtree numba
 pip install -r requirements.txt
@@ -144,7 +144,7 @@ back_to_basedir
 echo "Installing CommonRoad map-tool"
 git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
 safe_cd commonroad-map-tool
-git checkout ab5cab2cc8782de54ee17ebdaef5e8d9a5f35634
+git checkout 7ec71353a6d2a327b96bb2b31e01e2097bdb36ef
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
 
@@ -152,7 +152,7 @@ back_to_basedir
 echo "Installing sumo-interface"
 git clone https://gitlab.lrz.de/cps/sumo-interface.git
 safe_cd sumo-interface
-git checkout 03e758b945a043a6c91ef7487c31a176fe030e14
+git checkout 1de3bdd708b5d6feb4407621c36681973a318b82
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 
@@ -172,7 +172,7 @@ echo "Installing CommonRoad curvilinear-coordinate-system"
 require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-dev
 git clone https://gitlab.lrz.de/cps/commonroad-curvilinear-coordinate-system.git
 safe_cd commonroad-curvilinear-coordinate-system
-git checkout 2bc4923db22e3706a55df1f51740bec6dc0f159a
+git checkout 0f21a760e8afa76fa62332c8556902d9122fc4f4
 pip install pyclipper
 mkdir -p build
 safe_cd build
@@ -209,7 +209,7 @@ if [ "${INSTALL_SUMO_MANAGER}" == "TRUE" ]; then
   echo "Installing CommonRoad-sumo-manager"
   git clone https://gitlab.lrz.de/cps/commonroad-sumo-manager.git
   safe_cd commonroad-sumo-manager
-  git checkout 47eb544ea85163ba3155a422603137d903de0796
+  git checkout 1eb05880682f4281e06b618b2befd2ab59b229a3
   pip install -r ./requirements.txt
   pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
   back_to_basedir
