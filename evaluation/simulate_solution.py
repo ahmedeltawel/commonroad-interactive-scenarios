@@ -1,21 +1,19 @@
 """"
-Script which evaluates a solution trajectory for an interactive scenario
+Script which simulates a solution trajectory for an interactive scenario
 """
 import argparse
-import copy
 import pickle
 import sys
+from typing import Tuple
 
 import matplotlib as mpl
-
-from common.simulation import simulate_scenario
 from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.solution import CommonRoadSolutionReader
-from commonroad.scenario.trajectory import State
-from sumocr.interface.sumo_simulation import SumoSimulation
+from commonroad.scenario.scenario import Scenario
 from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
 from sumocr.visualization.gif import create_gif
-from sumocr.visualization.video import create_video
+
+from common.simulation import simulate_scenario
 
 mpl.use('TkAgg')
 
@@ -61,7 +59,16 @@ def simulate_interactive_solution(interactive_scenario_folder: str,
                                   solution_file: str,
                                   output_folder_path: str = None,
                                   creating_video: bool = False,
-                                  use_sumo_manager: bool = False):
+                                  use_sumo_manager: bool = False) -> Tuple[Scenario, Scenario]:
+    """
+    Simulate an interactive scenario with a solution trajectory
+    :param interactive_scenario_folder: The path to the interactive scenario
+    :param solution_file: The path to the solution file
+    :param output_folder_path: The path to the output folder path for the videos
+    :param creating_video: Indicates whether to create video or not
+    :param use_sumo_manager: Indicates whether to use the SUMO-Manager or not
+    :return: Tuple of the intact and with ego simulated scenarios
+    """
     with open(os.path.join(interactive_scenario_folder, "simulation_config.p"), "rb") as input_file:
         conf = pickle.load(input_file)
 
@@ -87,12 +94,12 @@ def simulate_interactive_solution(interactive_scenario_folder: str,
 
     # Simulate without ego
     simulated_scenario_without_ego = simulate_scenario(conf,
-                                                    scenario_wrapper,
-                                                    interactive_scenario_folder,
-                                                    num_of_steps=conf.simulation_steps,
-                                                    planning_problem_set=planning_problem_set,
-                                                    solution=None,
-                                                    use_sumo_manager=use_sumo_manager)
+                                                       scenario_wrapper,
+                                                       interactive_scenario_folder,
+                                                       num_of_steps=conf.simulation_steps,
+                                                       planning_problem_set=planning_problem_set,
+                                                       solution=None,
+                                                       use_sumo_manager=use_sumo_manager)
     simulated_scenario_without_ego.scenario_id = scenario.scenario_id
 
     if creating_video:

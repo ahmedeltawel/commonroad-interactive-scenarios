@@ -1,17 +1,17 @@
 """"
-Script which converts a static CommonRoad scenario with interactive SUMO scenario, where the vehicles are initialized exactly as in the static scenario
+Script which converts a static CommonRoad scenario with interactive SUMO scenario,
+where the vehicles are initialized exactly as in the static scenario
 """
 import argparse
-import sys
-import time
 import pickle
+import sys
 from typing import Tuple
 
 import matplotlib as mpl
-
 from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
 from commonroad.scenario.scenario import ScenarioID, Scenario
+
 from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
 from configuration import SumoConfigBase
 
@@ -19,7 +19,6 @@ mpl.use('TkAgg')
 
 from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
 from sumocr.maps.util import *
-import numpy as np
 
 # load parameters
 
@@ -36,7 +35,8 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
     """Returns a parser for the script's arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-cr", "--cr_scneario", type=str, default="./example_scenarios/cr_scenario/DEU_A9-2_1_T-1.xml",
+        "-cr", "--cr_scneario", type=str,
+        default="./example_scenarios/cr_scenario/DEU_A9-2_1_T-1.xml",
         help="Path to the CommonRoad scenario to be converted"
     )
     parser.add_argument(
@@ -46,20 +46,32 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
         "-v", "--video", action="store_true", default=False, help="Create video",
     )
     parser.add_argument(
-        "-c", "--config", type=CONFIG_TYPE, default=CONFIG_TYPE.SUMO_CONFIG_1, choices=list(CONFIG_TYPE),
+        "-c", "--config", type=CONFIG_TYPE, default=CONFIG_TYPE.SUMO_CONFIG_1,
+        choices=list(CONFIG_TYPE),
         help="Configuration type of the simulation"
     )
     return parser
 
 
 def reduce_scenario(scenario: Scenario):
+    """
+    Reduces a scenario from static interactive by dropping all the obstacle states except the first
+    :param scenario: The scenario to reduce
+    """
     for obstacle in scenario.dynamic_obstacles:
         obstacle.prediction.trajectory.state_list = [obstacle.prediction.trajectory.state_list[0]]
 
 
 def convert_to_sumo_files(scenario_file: str,
                           output_folder: str,
-                          conf: SumoConfigBase) -> CR2SumoMapConverter:
+                          conf: SumoConfigBase) -> CR2SumoMapConverter or None:
+    """
+    Convert a static scenario to SUMO files
+    :param scenario_file: The path to the static CommonRoad scenario
+    :param output_folder: The path to the output folder
+    :param conf: The configuration used by the SUMO files
+    :return: Converter object if the conversion was successful
+    """
     # Generate network file
     os.makedirs(output_folder, exist_ok=True)
 
@@ -104,19 +116,19 @@ def convert_scenario(cr_scenario_path: str,
                      config_type: CONFIG_TYPE,
                      creating_video: bool = False) -> Tuple[bool, str]:
     """
-    Generates interactive scenarios from CR maps
-    :param cr_maps_folder_path: Path to the folder which contains the CR scenarios
-    :param output_folder_path: Path of the output folder
-    :param create_video: Indicates whether to create video about the new scenario or not
-    :param num_max_resimulation: The number of maximum resimulation which is used in cases
-    when no interesting ego vehicle has been found in the generated traffic
-    :return Num of generated scenarios
+    Convert a static CommonRoad scenario to interactive
+    :param cr_scenario_path: The path to the static CommonRoad scenario
+    :param output_folder_path: The path to the output folder
+    :param config_type: The type of the configuration, which will be used by SUMO
+    :param creating_video: Indicates whether to create vieo or not
+    :return: Indicator of successful conversion and the path to the converted interactive scenario
     """
     if creating_video:
         raise NotImplementedError()
 
-    benchmark_id = ScenarioID.from_benchmark_id(os.path.splitext(os.path.basename(cr_scenario_path))[0],
-                                                scenario_version="2020a")
+    benchmark_id = ScenarioID.from_benchmark_id(
+        os.path.splitext(os.path.basename(cr_scenario_path))[0],
+        scenario_version="2020a")
     benchmark_id.prediction_type = 'I'
 
     conf = get_interactive_scenario_configuration(config_type, str(benchmark_id))

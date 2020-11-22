@@ -10,20 +10,14 @@ from typing import Dict
 
 import matplotlib.pyplot as plt
 import numpy as np
-
-from common.simulation import simulate_scenario
 from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.scenario.obstacle import DynamicObstacle
-from commonroad.scenario.scenario import Scenario, ScenarioID
+from commonroad.scenario.scenario import Scenario
 from commonroad.visualization.draw_dispatch_cr import draw_object
-from scenario_generation.config_files.sumo_config import SumoConf
 from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
-from sumocr.maps.sumo_scenario import ScenarioWrapper
-
-from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
-
-from sumocr.interface.sumo_simulation import SumoSimulation
 from sumocr.visualization.gif import create_gif
+
+from common.simulation import simulate_scenario
 
 try:
     from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
@@ -39,14 +33,12 @@ __maintainer__ = "Moritz Klischat"
 __email__ = "moritz.klischat@tum.de"
 __status__ = "Integration"
 
-from sumocr.visualization.video import create_video
 
-
-def get_variable_lists(obstacle: DynamicObstacle):
+def get_variable_lists(obstacle: DynamicObstacle) -> Dict[str, list]:
     """
     Get necessary variables from dynamic obstacle states
     :param obstacle: The dynamic obstacle
-    :return List of states
+    :return: Dictionary of list of states
     """
     state_list = obstacle.prediction.trajectory.state_list
     variable_lists = {'accel': [state.acceleration for state in state_list],
@@ -57,7 +49,8 @@ def get_variable_lists(obstacle: DynamicObstacle):
     return variable_lists
 
 
-def obstacle_determinism_check(simulated_scenarios: Dict[int, Scenario], std_tolerance: float = 0.1) -> bool:
+def obstacle_determinism_check(simulated_scenarios: Dict[int, Scenario],
+                               std_tolerance: float = 0.1) -> bool:
     """
     Check determinism by comparing states of all vehicles between simulated scenarios
     :param simulated_scenarios: The simulated scenarios
@@ -80,7 +73,8 @@ def obstacle_determinism_check(simulated_scenarios: Dict[int, Scenario], std_tol
 
         if obstacle_trajectory_values.ndim != 3:
             is_deterministic = False
-            trajectory_shapes = [np.array(list(obstacle_simulation_values)).shape for obstacle_simulation_values in
+            trajectory_shapes = [np.array(list(obstacle_simulation_values)).shape for
+                                 obstacle_simulation_values in
                                  obstacle_trajectory_values]
             print(f"Obstacle found with different number of states: "
                   f"{obstacle_id} - "
@@ -88,12 +82,14 @@ def obstacle_determinism_check(simulated_scenarios: Dict[int, Scenario], std_tol
             continue
 
         # Calculate the average standard deviation of the positions
-        determinism_statistics.update({obstacle_id: np.average(np.std(obstacle_trajectory_values, axis=0), axis=1)})
+        determinism_statistics.update(
+            {obstacle_id: np.average(np.std(obstacle_trajectory_values, axis=0), axis=1)})
 
     if len(determinism_statistics) > 0:
         if np.max(np.array(list(determinism_statistics.values()))) > std_tolerance:
             is_deterministic = False
-            print(f"The vehicles are not deterministic, average standard deviation values: {determinism_statistics}")
+            print(
+                f"The vehicles are not deterministic, average standard deviation values: {determinism_statistics}")
 
     if is_deterministic:
         print("The vehicles are deterministic.")
@@ -115,7 +111,8 @@ def plot_vehicle_trajectories(simulated_scenarios: Dict[int, Scenario], vehicle_
     dpi = 200
 
     if vehicle_id is None:
-        vehicle_id_list = [obstacle.obstacle_id for obstacle in list(simulated_scenarios.values())[0].dynamic_obstacles]
+        vehicle_id_list = [obstacle.obstacle_id for obstacle in
+                           list(simulated_scenarios.values())[0].dynamic_obstacles]
         vehicle_id = random.choice(vehicle_id_list)  # choose an arbitrary vehicle id
     # TODO: Implement feature to merge plots
     for simulation_id, scenario in simulated_scenarios.items():
@@ -123,7 +120,8 @@ def plot_vehicle_trajectories(simulated_scenarios: Dict[int, Scenario], vehicle_
 
         fig = plt.figure(figsize=(figsize[0] / inch_in_cm, figsize[1] / inch_in_cm), dpi=dpi)
         fig.gca().axis('equal')
-        plt.title(f"Trajectory of vehicle {vehicle_id} in simulation {simulation_id}", fontsize=12, color='k')
+        plt.title(f"Trajectory of vehicle {vehicle_id} in simulation {simulation_id}", fontsize=12,
+                  color='k')
 
         handles = {}  # collects handles of obstacle patches, plotted by matplotlib
         draw_object(scenario, handles=handles, draw_params={'time_begin': -1, 'time_end': -1})
@@ -172,7 +170,8 @@ def resimulate_scenario(scenario_folder_path: str,
     #########################
     for simulation_id in range(num_of_simulations):
         print(f"Simulation {simulation_id} start.")
-        simulated_scenario = simulate_scenario(conf, scenario_wrapper, scenario_folder_path, use_sumo_manager=use_sumo_manager)
+        simulated_scenario = simulate_scenario(conf, scenario_wrapper, scenario_folder_path,
+                                               use_sumo_manager=use_sumo_manager)
         simulated_scenarios.update({simulation_id: simulated_scenario})
 
         if creating_video:

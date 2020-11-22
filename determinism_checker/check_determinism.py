@@ -30,10 +30,12 @@ def check_determinism_argsparser() -> argparse.ArgumentParser:
         help="Path to the folder contains the scenario which should be checked"
     )
     parser.add_argument(
-        "-ns", "--num_of_simulations", type=int, default=5, help="Number of simulations used during determinism check"
+        "-ns", "--num_of_simulations", type=int, default=5,
+        help="Number of simulations used during determinism check"
     )
     parser.add_argument(
-        "-o", "--output_folder_path", type=str, default=os.path.join(os.getcwd(), "determinism_check"),
+        "-o", "--output_folder_path", type=str,
+        default=os.path.join(os.getcwd(), "determinism_check"),
         help="Path to the output folder for the videos"
     )
     parser.add_argument(
@@ -79,7 +81,8 @@ def check_determinism(scenario_file_path: str,
     sumo_files, _ = os.path.splitext(scenario_file_path)
     filenames = list(Path(sumo_files).rglob("*.rou.xml"))
     if filenames:
-        is_rou_files_deterministic = [rou_file_determinism_check(str(rou_file)) for rou_file in filenames]
+        is_rou_files_deterministic = [rou_file_determinism_check(str(rou_file)) for rou_file in
+                                      filenames]
         if all(is_rou_files_deterministic):
             is_rou_files_deterministic = True
             print("The rou files are deterministic")

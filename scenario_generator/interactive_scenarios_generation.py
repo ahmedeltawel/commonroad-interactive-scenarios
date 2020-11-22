@@ -1,5 +1,6 @@
 """
 This class inherits from the class GenerateCRScenarios
+Implementation of the practical group SS20
 """
 
 import os

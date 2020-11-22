@@ -16,14 +16,16 @@ def rou_file_determinism_check(rou_file: str) -> bool:
     """
     This function gathers info from route files and checks if there are any settings,
     which can let vehicles spawn randomly.
+    :param rou_file: The path to the rou file
+    :return: True if the rou file is deterministic
     """
 
     # Read rou.xml file
     tree = ElementTree.parse(rou_file)
     root = tree.getroot()
-    
+
     deterministic = True
-    
+
     vehicles = root.findall('vehicle')
     flows = root.findall('flow')
     trips = root.findall('trip')
@@ -45,7 +47,7 @@ def rou_file_determinism_check(rou_file: str) -> bool:
     if len(list_random_params) != 0:
         deterministic = False
         print(f"Found parameters set to 'random': {list_random_params}.")
-            
+
     # Check if there exists route distributions
     list_route_dist = root.findall('routeDistribution')
     if len(list_route_dist) != 0:
@@ -61,7 +63,8 @@ def rou_file_determinism_check(rou_file: str) -> bool:
     # Check if there exists speed distributions or stochastic car-following described in 'vType'
     vType_elements = root.findall('vType')
 
-    list_random_speedFactor = [vType for vType in vType_elements if "norm" in vType.get('speedFactor')]
+    list_random_speedFactor = [vType for vType in vType_elements if
+                               "norm" in vType.get('speedFactor')]
     if len(list_random_speedFactor) != 0:
         deterministic = False
         print(f"Found random speed factor: {list_random_speedFactor}.")
@@ -75,5 +78,5 @@ def rou_file_determinism_check(rou_file: str) -> bool:
     if len(list_random_sigma) != 0:
         deterministic = False
         print(f"Found car following stochastic behaviour: {list_random_sigma}.")
-        
+
     return deterministic

@@ -1,34 +1,30 @@
 """"
-Adapted from main script to generate sumo example_scenarios and convert them to interactive maps example_scenarios for existing maps maps.
+Script to generate new scenarios using SUMO
 """
 import argparse
 import copy
 import logging
-import os
-import sys
-import traceback
 import random
+import shutil
+import sys
+import time
+import traceback
+from pathlib import Path
 from typing import Tuple
 
 import matplotlib as mpl
-
 from commonroad.scenario.scenario import ScenarioID
-from scenario_generation.scenario_util import init_logging
-
-from pathlib import Path
-
 from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
-from scenario_generator.interactive_scenarios_generation import GenerateCRScenarios_Interactive
-from sumocr.interface.sumo_simulation import SumoSimulation
-from sumocr.maps.util import *
-from sumocr.maps.sumo_scenario import ScenarioWrapper
-import shutil
-import time
-
+from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
 # load parameters
 from scenario_generation.config_files.scenario_config import ScenarioConfig
 from scenario_generation.config_files.sumo_config import SumoConf
-from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
+from scenario_generation.scenario_util import init_logging
+from sumocr.interface.sumo_simulation import SumoSimulation
+from sumocr.maps.sumo_scenario import ScenarioWrapper
+from sumocr.maps.util import *
+
+from scenario_generator.interactive_scenarios_generation import GenerateCRScenarios_Interactive
 
 try:
     from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
@@ -64,7 +60,8 @@ def generate_scenarios_argsparser() -> argparse.ArgumentParser:
         "-sm", "--sumo_manager", action="store_true", default=False, help="Use SUMO-Manager",
     )
     parser.add_argument(
-        "-nmr", "--num_max_resimulation", type=int, default=10, help="Maximum number of resimulation",
+        "-nmr", "--num_max_resimulation", type=int, default=10,
+        help="Maximum number of resimulation",
     )
     return parser
 
@@ -73,13 +70,15 @@ def simulate_scenario(sumo_conf: SumoConf,
                       scenario_wrapper: ScenarioWrapper,
                       scenario_config: ScenarioConfig,
                       scenario_dir_path: str,
-                      use_sumo_manager: bool = False) -> Tuple[GenerateCRScenarios_Interactive, dict]:
+                      use_sumo_manager: bool = False) \
+        -> Tuple[GenerateCRScenarios_Interactive, dict]:
     """
     Simulates traffic for a scenario
     :param sumo_conf: The SUMO configuration for the traffic simulation
     :param scenario_wrapper: Object contains scenario-relevant information
     :param scenario_config: The configuration of the scenario generation
     :param scenario_dir_path: Path to the folder which contains the scenario
+    :param use_sumo_manager: Indicates whether to use the SUMO-Manager or not
     :return CR scenario generator object and vehicle ID mapping between CR and SUMO
     """
     sumo_interface = None
@@ -88,7 +87,7 @@ def simulate_scenario(sumo_conf: SumoConf,
         sumo_sim = sumo_interface.start_simulator()
 
         sumo_sim.send_sumo_scenario(sumo_conf.scenario_name,
-                                       scenario_dir_path)
+                                    scenario_dir_path)
     else:
         sumo_sim = SumoSimulation()
 
@@ -96,7 +95,6 @@ def simulate_scenario(sumo_conf: SumoConf,
 
     for step in range(sumo_conf.simulation_steps):
         sumo_sim.simulate_step()
-
 
     sumo_sim.stop()
     scenario = sumo_sim.commonroad_scenarios_all_time_steps()
@@ -115,7 +113,7 @@ def simulate_scenario(sumo_conf: SumoConf,
                                                    sumo_conf.scenario_name,
                                                    scenario_config, scenario_dir_path)
 
-    cr_scenarios.create_cr_scenarios(delete_collising_obstacles=True)
+    cr_scenarios.create_cr_scenarios()
 
     return cr_scenarios, vehicle_ids_cr2sumo
 
@@ -132,6 +130,7 @@ def generate_scenarios(cr_maps_folder_path: str,
     :param create_video: Indicates whether to create video about the new scenario or not
     :param num_max_resimulation: The number of maximum resimulation which is used in cases
     when no interesting ego vehicle has been found in the generated traffic
+    :param use_sumo_manager: Indicates whether to use the SUMO-Manager or not
     :return Num of generated scenarios
     """
     # Use vehicle parameters from sumo_config
@@ -159,7 +158,8 @@ def generate_scenarios(cr_maps_folder_path: str,
 
         # create unique scenario ids for each scenario
         max_num_of_scenarios += scenario_config.scen_per_map
-        benchmark_id = ScenarioID.from_benchmark_id(f"{os.path.splitext(os.path.basename(map_file))[0]}-0", scenario_version="2020a")
+        benchmark_id = ScenarioID.from_benchmark_id(
+            f"{os.path.splitext(os.path.basename(map_file))[0]}-0", scenario_version="2020a")
         location_name = benchmark_id.country_id + '_' + benchmark_id.map_name
         orig_map_name = location_name + '-' + str(benchmark_id.configuration_id)
         scenario_config.map_name = location_name
@@ -175,7 +175,8 @@ def generate_scenarios(cr_maps_folder_path: str,
             cr2sumo_converter = CR2SumoMapConverter.from_file(map_file, cr2net_conf)
             cr2sumo_converter.convert_to_net_file(dir_path)
             logger.info(f'write map to path {map_file}')
-            conversion_possible = cr2sumo_converter.merge_intermediate_files(sumo_net_path, cleanup=False)
+            conversion_possible = cr2sumo_converter.merge_intermediate_files(sumo_net_path,
+                                                                             cleanup=False)
 
             if not conversion_possible:
                 logger.warning('Conversion to net file failed!')
@@ -213,14 +214,20 @@ def generate_scenarios(cr_maps_folder_path: str,
                 simulation_rem_num_of_trials = num_max_resimulation
                 while simulation_rem_num_of_trials > 0:
                     simulation_rem_num_of_trials -= 1
-                    cr_scenarios, vehicle_ids_cr2sumo = simulate_scenario(sumo_conf, scenario_wrapper, scenario_config, scenario_dir_name, use_sumo_manager=use_sumo_manager)
+                    cr_scenarios, vehicle_ids_cr2sumo = simulate_scenario(sumo_conf,
+                                                                          scenario_wrapper,
+                                                                          scenario_config,
+                                                                          scenario_dir_name,
+                                                                          use_sumo_manager=use_sumo_manager)
                     ego_ids_cr = cr_scenarios.ego_id_list
                     if len(ego_ids_cr) != 0:
                         break
                 else:
-                    raise RuntimeError("Couldn't generate traffic which contains interesting ego vehicles")
+                    raise RuntimeError(
+                        "Couldn't generate traffic which contains interesting ego vehicles")
 
-                scenario_nr_new = cr_scenarios.write_cr_file_and_video(map_nr, scenario_counter, create_video,
+                scenario_nr_new = cr_scenarios.write_cr_file_and_video(map_nr, scenario_counter,
+                                                                       create_video,
                                                                        check_validity=False)
                 ###############################################
                 # write ego vehicle id to sumo route file
@@ -234,9 +241,11 @@ def generate_scenarios(cr_maps_folder_path: str,
                 scenario_counter += scenario_nr_new
                 obtained_num_of_scenarios += scenario_nr_new
         except BaseException as e:
-            logger.warning(f'UNEXPECTED ERROR, continue with next scenario: {traceback.format_exc()}')
+            logger.warning(
+                f'UNEXPECTED ERROR, continue with next scenario: {traceback.format_exc()}')
 
-    logger.info(f'max_num_of_scenarios: {max_num_of_scenarios}, obtained_num_of_scenarios: {obtained_num_of_scenarios}')
+    logger.info(
+        f'max_num_of_scenarios: {max_num_of_scenarios}, obtained_num_of_scenarios: {obtained_num_of_scenarios}')
     return obtained_num_of_scenarios
 
 

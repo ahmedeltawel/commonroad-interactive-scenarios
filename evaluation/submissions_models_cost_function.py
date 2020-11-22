@@ -1,9 +1,14 @@
+"""
+Implementation of the Practical Group SS20
+TODO: Revise (reimplement) this part using appropriate metrics for the evaluation
+"""
+import math
 import sys
 from abc import abstractmethod, ABC, abstractproperty
-import math
+
 import numpy as np
-#from pycrcc import Circle
-#from commonroad_cc.collision_detection.pycrcc_collision_dispatch import create_collision_checker
+# from pycrcc import Circle
+# from commonroad_cc.collision_detection.pycrcc_collision_dispatch import create_collision_checker
 from scipy.integrate import simps
 from scipy.spatial import distance
 
@@ -131,7 +136,8 @@ class LaneCenterOffset(PartialCostFunction):
             closest_lanelets = lanelet_network.find_lanelet_by_position([position])[0]
 
             if len(closest_lanelets) == 0:
-                raise Exception("No closest lanelet found for state at timestep " + str(state.time_step))
+                raise Exception(
+                    "No closest lanelet found for state at timestep " + str(state.time_step))
 
             closest_lanelet = lanelet_network.find_lanelet_by_id(closest_lanelets[0])
             cv = closest_lanelet.center_vertices
@@ -164,7 +170,8 @@ class VelocityOffset(PartialCostFunction):
             closest_lanelets = lanelet_network.find_lanelet_by_position([position])[0]
 
             if len(closest_lanelets) == 0:
-                raise Exception("No closest lanelet found for state at timestep " + str(state.time_step))
+                raise Exception(
+                    "No closest lanelet found for state at timestep " + str(state.time_step))
 
             closest_lanelet = lanelet_network.find_lanelet_by_id(closest_lanelets[0])
             speed_limit = closest_lanelet.speed_limit
@@ -191,7 +198,8 @@ class OrientationOffset(PartialCostFunction):
             closest_lanelets = lanelet_network.find_lanelet_by_position([position])[0]
 
             if len(closest_lanelets) == 0:
-                raise Exception("No closest lanelet found for state at timestep " + str(state.time_step))
+                raise Exception(
+                    "No closest lanelet found for state at timestep " + str(state.time_step))
 
             closest_lanelet = lanelet_network.find_lanelet_by_id(closest_lanelets[0])
             goal_orientation = cls._find_lane_segment_orientation(closest_lanelet, state)
@@ -226,7 +234,8 @@ class DistanceToObstacles(PartialCostFunction):
         xis = []
         for state in trajectory.state_list:
             collision_checker = create_collision_checker(scenario)
-            xis.append(np.math.exp(-cls._measure_distance_to_obstacles(state, width, length, collision_checker)))
+            xis.append(np.math.exp(
+                -cls._measure_distance_to_obstacles(state, width, length, collision_checker)))
 
         cost = simps(xis, dx=scenario.dt)
         return cost
@@ -257,7 +266,8 @@ class DistanceToObstacles(PartialCostFunction):
         return d_min - r
 
     @classmethod
-    def _find_collision_free_circle(cls, collision_checker, pt, min_radius=1.8, max_radius=1000.0, precision=0.125):
+    def _find_collision_free_circle(cls, collision_checker, pt, min_radius=1.8, max_radius=1000.0,
+                                    precision=0.125):
         """
         The returned radius is collision free, the radius + stepsize_abort collides if it is < max_radius.
         """
@@ -371,11 +381,12 @@ class CostFunction:
         return True
 
     def evaluate(self, scenario, vehicle_model, trajectory) -> (float, dict):
-        partial_cost_results = {pcost.id: (pcost.evaluate(scenario, vehicle_model, trajectory), weight)
-                                for pcost, weight in self.partial_costs}
-        total_cost = sum([cost * weight for cost_id, (cost, weight) in partial_cost_results.items()])
+        partial_cost_results = {
+            pcost.id: (pcost.evaluate(scenario, vehicle_model, trajectory), weight)
+            for pcost, weight in self.partial_costs}
+        total_cost = sum(
+            [cost * weight for cost_id, (cost, weight) in partial_cost_results.items()])
         return {'cost': total_cost, 'partial_cost_results': partial_cost_results}
-
 
 
 class ClosestDistance(PartialCostFunction):
@@ -383,26 +394,27 @@ class ClosestDistance(PartialCostFunction):
 
     @classmethod
     def evaluate(cls, scenario, vehicle_model, trajectory):
-        a = 9001        #current minimal distance
-        i = 0           #current time step
-        t = 0           #time step the near collision happend
+        a = 9001  # current minimal distance
+        i = 0  # current time step
+        t = 0  # time step the near collision happend
         for state in trajectory.state_list:
             position = state.position
             for dyn_obs in scenario.dynamic_obstacles:
                 b = dyn_obs.prediction.trajectory.state_at_time_step(i)
-                if b is not None :
-                    if distance.euclidean(position, b.position) < a :
+                if b is not None:
+                    if distance.euclidean(position, b.position) < a:
                         a = distance.euclidean(position, b.position)
-                        t =i
+                        t = i
             i = i + 1
-        #print(t)
+        # print(t)
         return a
 
-class ClosestDistanceExtended(PartialCostFunction):  #under development
-    #the idea is the delete random spawning and other nonderministic behavior as an other condition is added.
-    #The distance had to get smaller from time step i-1 to time step i
-    #to ignore e.g. vehicles spawning next to each other.
-    #as scenarios should get 100% deterministic in the futute this function is not needed
+
+class ClosestDistanceExtended(PartialCostFunction):  # under development
+    # the idea is the delete random spawning and other nonderministic behavior as an other condition is added.
+    # The distance had to get smaller from time step i-1 to time step i
+    # to ignore e.g. vehicles spawning next to each other.
+    # as scenarios should get 100% deterministic in the futute this function is not needed
     id = 'CD'
 
     @classmethod
@@ -415,20 +427,18 @@ class ClosestDistanceExtended(PartialCostFunction):  #under development
             position = state.position
             for dyn_obs in scenario.dynamic_obstacles:
                 b = dyn_obs.prediction.trajectory.state_at_time_step(i)
-                d = dyn_obs.prediction.trajectory.state_at_time_step(i-1)
+                d = dyn_obs.prediction.trajectory.state_at_time_step(i - 1)
                 if b is not None and d is not None:
                     k = distance.euclidean(position, b.position)
-                    if k < a : #distance has to be smaller than the old maximum
-                        c = distance.euclidean(trajectory.state_list[i-1].position, d.position )
-                        if k<c: #distance has to be larger in the last time step
+                    if k < a:  # distance has to be smaller than the old maximum
+                        c = distance.euclidean(trajectory.state_list[i - 1].position, d.position)
+                        if k < c:  # distance has to be larger in the last time step
                             a = distance.euclidean(position, b.position)
                             t = i
                             id = dyn_obs.obstacle_id
             i = i + 1
-        print("Ego vehicle is close to "+str(id)+" at time step "+str(t)+" with "+str(a))
+        print("Ego vehicle is close to " + str(id) + " at time step " + str(t) + " with " + str(a))
         return a
-
-
 
 
 class AvgSpeed(PartialCostFunction):
@@ -444,8 +454,8 @@ class AvgSpeed(PartialCostFunction):
             if state is not None:
                 sum_of_data = sum_of_data + state.velocity
                 counted_data = counted_data + 1
-            i = i+1
-        return sum_of_data/counted_data
+            i = i + 1
+        return sum_of_data / counted_data
 
 
 class StrongesBreake(PartialCostFunction):
@@ -459,29 +469,29 @@ class StrongesBreake(PartialCostFunction):
         for dyn_obs in scenario.dynamic_obstacles:
             state = dyn_obs.prediction.trajectory.state_at_time_step(current_timestep)
             if state is not None:
-                if current_strongest_break > state.acceleration and distance.euclidean(trajectory.state_at_time_step(current_timestep).position, state.position)<distance:
+                if current_strongest_break > state.acceleration and distance.euclidean(
+                        trajectory.state_at_time_step(current_timestep).position,
+                        state.position) < distance:
                     current_strongest_break = state.acceleration
-                    #print('new strong brake found')
-            current_timestep = current_timestep+1
+                    # print('new strong brake found')
+            current_timestep = current_timestep + 1
         return current_strongest_break
 
 
-
-
-#no sufficient testing done!
-class Evaluation:    #meant for testing with more ego vehicles and more scenarios.
+# no sufficient testing done!
+class Evaluation:  # meant for testing with more ego vehicles and more scenarios.
 
     @classmethod
-    def Distance(cls,scenario, trajectory_list):
-        a=0
+    def Distance(cls, scenario, trajectory_list):
+        a = 0
         for trajectory in trajectory_list:
-            b= ClosestDistance.evaluate(scenario, None, trajectory)
-            if b>a:
-                a=b
+            b = ClosestDistance.evaluate(scenario, None, trajectory)
+            if b > a:
+                a = b
         return a
 
     @classmethod
-    def Breake(cls,scenario, trajectory_list):
+    def Breake(cls, scenario, trajectory_list):
         a = 0
         for trajectory in trajectory_list:
             b = StrongesBreake.evaluate(scenario, None, trajectory)
@@ -490,40 +500,27 @@ class Evaluation:    #meant for testing with more ego vehicles and more scenario
         return a
 
     @classmethod
-    def Speed(cls,scenario, scenario_without_ego):
-        return AvgSpeed.evaluate(scenario_without_ego, None, None) - AvgSpeed.evaluate(scenario, None, None)
+    def Speed(cls, scenario, scenario_without_ego):
+        return AvgSpeed.evaluate(scenario_without_ego, None, None) - AvgSpeed.evaluate(scenario,
+                                                                                       None, None)
 
     @classmethod
-    def Position(cls,scenario, scenario_without_ego, trajectory_list):
+    def Position(cls, scenario, scenario_without_ego, trajectory_list):
 
         a = 0
         b = 0
         t = 0
 
         while t < len(trajectory_list[0].state_list):
-            for i in range (len(scenario.dynamic_obstacles)):
+            for i in range(len(scenario.dynamic_obstacles)):
                 with_ego = scenario.dynamic_obstacles[i].prediction.trajectory.state_at_time_step(t)
-                without_ego = scenario_without_ego.dynamic_obstacles[i].prediction.trajectory.state_at_time_step(t)
+                without_ego = scenario_without_ego.dynamic_obstacles[
+                    i].prediction.trajectory.state_at_time_step(t)
                 if with_ego is not None and without_ego is not None:
                     a = a + distance.euclidean(without_ego.position, with_ego.position)
-                    b = b +1
-            t = t+1
+                    b = b + 1
+            t = t + 1
 
-        return a/b
+        return a / b
 
-    #with no testing possibility it does not make sense to extend this approach
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # with no testing possibility it does not make sense to extend this approach
