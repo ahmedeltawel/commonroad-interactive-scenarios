@@ -144,7 +144,7 @@ back_to_basedir
 echo "Installing CommonRoad map-tool"
 git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
 safe_cd commonroad-map-tool
-git checkout 7ec71353a6d2a327b96bb2b31e01e2097bdb36ef
+git checkout c735de1fbbbfaecf5c281b30af870fabf5489191
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
 
