@@ -33,8 +33,8 @@ list_states_nodes = None
 
 def visualize_solution(scenario: Scenario, planning_problem_set: PlanningProblemSet, trajectory: Trajectory) -> None:
     from IPython import display
-#     num_time_steps = len(trajectory.state_list)
-    num_time_steps = len(scenario.obstacles[0].prediction.trajectory.state_list)
+    num_time_steps = max(len(trajectory.state_list),len(scenario.obstacles[0].prediction.trajectory.state_list))
+#     num_time_steps = len(scenario.obstacles[0].prediction.trajectory.state_list)
     # create the ego vehicle prediction using the trajectory and the shape of the obstacle
     dynamic_obstacle_initial_state = trajectory.state_list[0]
     dynamic_obstacle_shape = Rectangle(width=1.8, length=4.3)
