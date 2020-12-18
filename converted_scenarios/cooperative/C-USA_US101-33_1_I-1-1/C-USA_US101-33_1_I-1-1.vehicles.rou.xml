@@ -1,0 +1,65 @@
+<routes>
+	<vehicle depart="0.1" departLane="4" departPos="127.62191923190964" departSpeed="20.068" id="552" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="178.9405409269581" departSpeed="19.6261" id="560" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="159.32281775560435" departSpeed="19.0591" id="564" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="2" departPos="162.43276704266677" departSpeed="17.843" id="567" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="141.9601904118202" departSpeed="19.1933" id="568" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="2" departPos="140.7557759376219" departSpeed="18.0777" id="569" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="0" departPos="171.37806260255164" departSpeed="17.6052" id="574" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="110.21773179851348" departSpeed="19.2756" id="576" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="1" departPos="149.35468712509424" departSpeed="18.4343" id="578" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="67.11855299487297" departSpeed="16.6116" id="579" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="0" departPos="111.94129905361473" departSpeed="17.1298" id="580" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="37.35183573089338" departSpeed="15.4259" id="581" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="1" departPos="111.0004684165163" departSpeed="19.2603" id="582" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="97.93699646739084" departSpeed="19.8912" id="583" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="0" departPos="93.2884078052551" departSpeed="15.5722" id="584" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="0" departPos="77.96733691311036" departSpeed="17.2151" id="586" type="passenger">
+		<route edges="303 303 303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="3" departPos="8.494764448274385" departSpeed="15.2309" id="587" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="2" departPos="17.242207967049158" departSpeed="15.2613" id="588" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="1" departPos="58.159209261363216" departSpeed="18.861" id="593" type="passenger">
+		<route edges="303 303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="0" departPos="37.58129761479643" departSpeed="16.8859" id="594" type="passenger">
+		<route edges="303"/>
+	</vehicle>
+	<vehicle depart="0.1" departLane="0" departPos="15.433390502437422" departSpeed="16.764" id="596" type="passenger">
+		<route edges="303 303"/>
+	</vehicle>
+</routes>
