@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Fri Dec 18 15:48:14 2020 by Eclipse SUMO netconvert Version 1.8.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="./converted_scenarios/cooperative/C-USA_US101-30_1_I-1-1/nodes.net.xml"/>
+        <edge-files value="./converted_scenarios/cooperative/C-USA_US101-30_1_I-1-1/edges.net.xml"/>
+        <connection-files value="./converted_scenarios/cooperative/C-USA_US101-30_1_I-1-1/_connections.net.xml"/>
+        <tllogic-files value="./converted_scenarios/cooperative/C-USA_US101-30_1_I-1-1/_tll.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="./converted_scenarios/cooperative/C-USA_US101-30_1_I-1-1/C-USA_US101-30_1_I-1-1.net.xml"/>
+    </output>
+
+    <processing>
+        <plain.extend-edge-shape value="true"/>
+        <geometry.remove.keep-edges.explicit value="true"/>
+        <geometry.avoid-overlap value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.internal-link-detail value="20"/>
+    </junctions>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+    <random_number>
+        <seed value="1234"/>
+    </random_number>
+
+</configuration>
+-->
+
+<net version="1.6" junctionCornerDetail="5" junctionLinkDetail="20" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-24.37,6.20,100.81,8.92" origBoundary="-24.42,-1.85,101.15,17.41" projParameter="!"/>
+
+    <edge id=":2_0" function="internal">
+        <lane id=":2_0_0" index="0" disallow="rail_fast" speed="36.11" length="8.02" width="3.53" shape="51.79,1.55 59.81,1.95"/>
+        <lane id=":2_0_1" index="1" disallow="rail_fast" speed="36.11" length="8.02" width="3.18" shape="51.62,5.03 59.64,5.43"/>
+        <lane id=":2_0_2" index="2" disallow="rail_fast" speed="36.11" length="8.02" width="3.23" shape="51.46,8.40 59.47,8.76"/>
+        <lane id=":2_0_3" index="3" disallow="rail_fast" speed="36.11" length="8.02" width="3.22" shape="51.30,11.72 59.31,12.08"/>
+        <lane id=":2_0_4" index="4" disallow="rail_fast" speed="36.11" length="8.02" width="3.40" shape="51.13,15.17 59.13,15.55"/>
+    </edge>
+
+    <edge id="11" from="2" to="3" priority="1" spreadType="center" length="45.20">
+        <lane id="11_0" index="0" disallow="rail_fast" speed="36.11" length="45.20" width="3.60" customShape="1" shape="59.99,-1.65 60.49,-1.63 65.03,-1.46 69.62,-1.28 74.14,-1.06 78.72,-0.84 83.24,-0.66 87.87,-0.45 92.25,-0.22 101.23,0.20"/>
+        <lane id="11_1" index="1" disallow="rail_fast" speed="36.11" length="45.20" width="3.53" customShape="1" shape="59.81,1.95 63.92,2.12 68.52,2.32 73.02,2.51 77.61,2.70 82.12,2.93 86.74,3.14 91.11,3.35 95.66,3.62 101.06,3.81"/>
+        <lane id="11_2" index="2" disallow="rail_fast" speed="36.11" length="45.20" width="3.18" customShape="1" shape="59.64,5.43 60.96,5.50 74.43,6.10 100.89,7.35"/>
+        <lane id="11_3" index="3" disallow="rail_fast" speed="36.11" length="45.20" width="3.23" customShape="1" shape="59.47,8.76 64.36,8.99 79.03,9.68 100.75,10.70"/>
+        <lane id="11_4" index="4" disallow="rail_fast" speed="36.11" length="45.20" width="3.22" customShape="1" shape="59.31,12.08 72.06,12.70 100.62,14.03"/>
+        <lane id="11_5" index="5" disallow="rail_fast" speed="36.11" length="45.20" width="3.40" customShape="1" shape="59.13,15.55 72.16,16.14 86.64,16.89 100.49,17.41"/>
+    </edge>
+    <edge id="9" from="1" to="2" priority="1" spreadType="center" length="79.61">
+        <lane id="9_0" index="0" disallow="rail_fast" speed="36.11" length="79.61" width="3.53" customShape="1" shape="-24.32,-0.43 9.50,-0.02 31.86,0.61 44.16,1.20 51.79,1.55"/>
+        <lane id="9_1" index="1" disallow="rail_fast" speed="36.11" length="79.61" width="3.19" customShape="1" shape="-24.34,2.82 -16.85,2.88 -5.87,3.13 8.68,3.50 23.61,3.92 37.98,4.45 51.62,5.03"/>
+        <lane id="9_2" index="2" disallow="rail_fast" speed="36.11" length="79.61" width="3.20" customShape="1" shape="-24.37,6.18 -19.69,6.21 -8.86,6.40 5.61,6.77 20.73,7.21 35.10,7.71 51.46,8.40"/>
+        <lane id="9_3" index="3" disallow="rail_fast" speed="36.11" length="79.61" width="3.30" customShape="1" shape="-24.41,9.50 -12.80,9.63 -1.48,9.94 13.11,10.28 27.97,10.72 51.30,11.72"/>
+        <lane id="9_4" index="4" disallow="rail_fast" speed="36.11" length="79.61" width="3.40" customShape="1" shape="-24.45,12.91 -16.66,13.01 -1.93,13.34 12.80,13.65 27.64,14.12 51.13,15.17"/>
+    </edge>
+
+    <junction id="1" type="dead_end" x="-24.37" y="6.20" incLanes="" intLanes="" shape="-24.47,14.61 -24.27,-2.19"/>
+    <junction id="2" type="priority" x="55.48" y="8.55" incLanes="9_0 9_1 9_2 9_3 9_4" intLanes=":2_0_0 :2_0_1 :2_0_2 :2_0_3 :2_0_4" shape="59.05,17.24 60.07,-3.45 56.97,-2.66 54.98,-1.01 53.71,-0.40 51.88,-0.21 51.05,16.87">
+        <request index="0" response="00000" foes="00000" cont="0"/>
+        <request index="1" response="00000" foes="00000" cont="0"/>
+        <request index="2" response="00000" foes="00000" cont="0"/>
+        <request index="3" response="00000" foes="00000" cont="0"/>
+        <request index="4" response="00000" foes="00000" cont="0"/>
+    </junction>
+    <junction id="3" type="dead_end" x="100.81" y="8.92" incLanes="11_0 11_1 11_2 11_3 11_4 11_5" intLanes="" shape="101.31,-1.60 100.33,19.10"/>
+
+    <connection from="9" to="11" fromLane="0" toLane="1" contPos="-4.00" via=":2_0_0" dir="s" state="M"/>
+    <connection from="9" to="11" fromLane="1" toLane="2" contPos="-4.00" via=":2_0_1" dir="s" state="M"/>
+    <connection from="9" to="11" fromLane="2" toLane="3" contPos="-4.00" via=":2_0_2" dir="s" state="M"/>
+    <connection from="9" to="11" fromLane="3" toLane="4" contPos="-4.00" via=":2_0_3" dir="s" state="M"/>
+    <connection from="9" to="11" fromLane="4" toLane="5" contPos="-4.00" via=":2_0_4" dir="s" state="M"/>
+
+    <connection from=":2_0" to="11" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":2_0" to="11" fromLane="1" toLane="2" dir="s" state="M"/>
+    <connection from=":2_0" to="11" fromLane="2" toLane="3" dir="s" state="M"/>
+    <connection from=":2_0" to="11" fromLane="3" toLane="4" dir="s" state="M"/>
+    <connection from=":2_0" to="11" fromLane="4" toLane="5" dir="s" state="M"/>
+
+</net>

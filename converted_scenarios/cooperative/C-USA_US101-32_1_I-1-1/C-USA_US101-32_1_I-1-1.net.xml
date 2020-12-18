@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Fri Dec 18 15:48:14 2020 by Eclipse SUMO netconvert Version 1.8.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="./converted_scenarios/cooperative/C-USA_US101-32_1_I-1-1/nodes.net.xml"/>
+        <edge-files value="./converted_scenarios/cooperative/C-USA_US101-32_1_I-1-1/edges.net.xml"/>
+        <connection-files value="./converted_scenarios/cooperative/C-USA_US101-32_1_I-1-1/_connections.net.xml"/>
+        <tllogic-files value="./converted_scenarios/cooperative/C-USA_US101-32_1_I-1-1/_tll.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="./converted_scenarios/cooperative/C-USA_US101-32_1_I-1-1/C-USA_US101-32_1_I-1-1.net.xml"/>
+    </output>
+
+    <processing>
+        <plain.extend-edge-shape value="true"/>
+        <geometry.remove.keep-edges.explicit value="true"/>
+        <geometry.avoid-overlap value="true"/>
+        <offset.disable-normalization value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.internal-link-detail value="20"/>
+    </junctions>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+    <random_number>
+        <seed value="1234"/>
+    </random_number>
+
+</configuration>
+-->
+
+<net version="1.6" junctionCornerDetail="5" junctionLinkDetail="20" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="-13.95,4.25,140.64,4.55" origBoundary="-14.05,-3.98,140.75,11.14" projParameter="!"/>
+
+    <edge id="84" from="1" to="2" priority="1" spreadType="center" length="154.44">
+        <lane id="84_0" index="0" disallow="rail_fast" speed="36.11" length="154.44" width="3.53" customShape="1" shape="-14.05,-2.08 -10.79,-2.16 -0.02,-2.49 3.75,-2.58 6.20,-2.63 13.74,-2.77 17.63,-2.85 27.75,-3.03 29.84,-3.07 31.68,-3.10 42.17,-3.35 46.03,-3.41 51.26,-3.51 56.14,-3.63 59.96,-3.72 63.87,-3.80 70.70,-3.91 74.56,-3.97 76.23,-3.98 81.34,-3.94 84.73,-3.92 88.59,-3.96 98.44,-3.82 100.28,-3.83 102.55,-3.84 112.97,-3.65 114.81,-3.62 117.00,-3.54 127.92,-2.96 128.84,-2.93 131.74,-2.85 140.90,-2.50"/>
+        <lane id="84_1" index="1" disallow="bus truck rail_fast" speed="36.11" length="154.44" width="3.04" customShape="1" shape="-14.00,1.30 -12.65,1.26 -10.62,1.22 -8.90,1.18 -0.15,1.01 1.60,0.98 3.93,0.94 5.57,0.91 13.86,0.76 15.89,0.72 17.71,0.68 19.76,0.65 27.88,0.50 30.49,0.45 31.74,0.43 34.23,0.36 42.25,0.10 44.45,0.04 46.09,0.01 48.25,-0.04 56.22,-0.25 58.76,-0.31 60.07,-0.33 62.62,-0.38 70.76,-0.54 72.80,-0.58 74.62,-0.61 76.70,-0.63 84.52,-0.49 87.55,-0.48 88.60,-0.49 91.88,-0.47 98.64,-0.33 102.18,-0.33 102.45,-0.33 113.01,-0.11 116.33,-0.06 116.87,-0.05 120.27,0.07 127.64,0.51 130.06,0.60 130.43,0.62 131.64,0.64 134.36,0.72 140.77,1.00"/>
+        <lane id="84_2" index="2" disallow="bus truck rail_fast" speed="36.11" length="154.44" width="3.00" customShape="1" shape="-13.95,4.55 -12.68,4.50 -8.71,4.41 -3.54,4.31 0.32,4.26 1.77,4.24 5.63,4.16 11.07,4.04 14.93,3.96 15.96,3.94 19.82,3.85 24.95,3.74 28.81,3.66 30.57,3.62 34.42,3.54 39.08,3.40 42.89,3.30 44.41,3.26 48.37,3.19 53.52,3.07 57.38,2.97 58.65,2.95 62.58,2.89 68.18,2.81 72.12,2.74 72.84,2.72 76.72,2.65 82.79,2.68 86.65,2.70 87.76,2.74 91.23,2.79 91.52,2.79 96.88,2.96 100.74,2.96 111.31,3.21 115.17,3.21 116.04,3.23 119.87,3.35 120.17,3.36 125.64,3.65 129.50,3.80 130.34,3.85 133.85,3.99 134.13,4.00 140.45,4.32 140.64,4.33"/>
+        <lane id="84_3" index="3" disallow="bus truck rail_fast" speed="36.11" length="154.44" width="3.18" customShape="1" shape="-13.90,7.85 -4.00,7.63 -3.58,7.62 -0.01,7.55 0.36,7.55 10.29,7.33 11.10,7.31 14.18,7.25 15.02,7.23 25.02,6.95 28.88,6.88 39.12,6.67 43.08,6.59 53.38,6.34 53.67,6.33 57.24,6.26 57.44,6.26 67.68,6.16 68.34,6.15 71.52,6.09 72.09,6.08 82.26,5.94 82.78,5.93 86.19,5.87 86.48,5.87 96.80,6.27 100.73,6.20 111.21,6.54 114.74,6.54 125.47,6.96 129.37,7.03 129.66,7.04 140.03,7.57 140.35,7.58 140.59,7.59"/>
+        <lane id="84_4" index="4" disallow="bus truck rail_fast" speed="36.11" length="154.44" width="3.36" customShape="1" shape="-13.85,11.14 -3.81,10.99 -3.33,10.98 0.06,10.92 0.55,10.91 10.39,10.70 10.89,10.69 14.25,10.63 14.62,10.62 25.11,10.29 25.60,10.27 28.95,10.21 29.46,10.20 39.30,10.05 39.77,10.04 43.16,9.98 43.55,9.97 53.47,9.67 53.95,9.65 57.31,9.59 57.83,9.58 67.71,9.47 68.16,9.47 71.58,9.40 72.10,9.39 82.38,9.30 82.81,9.30 86.26,9.23 86.85,9.24 96.84,9.55 97.13,9.55 100.78,9.49 101.38,9.50 111.15,9.86 111.63,9.87 115.04,9.92 115.70,9.94 125.61,10.33 126.08,10.34 129.51,10.40 130.18,10.42 139.87,10.84 140.39,10.86"/>
+    </edge>
+
+    <junction id="1" type="dead_end" x="-13.95" y="4.55" incLanes="" intLanes="" shape="-13.82,12.82 -14.07,-3.85"/>
+    <junction id="2" type="dead_end" x="140.64" y="4.25" incLanes="84_0 84_1 84_2 84_3 84_4" intLanes="" shape="140.97,-4.27 140.32,12.54"/>
+
+</net>
