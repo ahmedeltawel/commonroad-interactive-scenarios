@@ -117,8 +117,8 @@ def convert_scenario(cr_scenario_path: str,
    
     benchmark_id = ScenarioID.from_benchmark_id(os.path.splitext(os.path.basename(cr_scenario_path))[0],
                                                 scenario_version="2020a")
-#    Why is here I?
-#     benchmark_id.prediction_type = 'I'
+#   I means interactive, I-X-Y, Y means the number of configuration id
+    benchmark_id.prediction_type = 'I'
     
     conf = get_interactive_scenario_configuration(config_type, str(benchmark_id))
     output_folder = os.path.join(output_folder_path, conf.scenario_name)
