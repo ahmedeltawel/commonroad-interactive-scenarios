@@ -108,7 +108,7 @@ require_sudo apt-get install -y ffmpeg
 echo "Installing CommonRoad-IO"
 git clone https://gitlab.lrz.de/cps/commonroad-io.git
 safe_cd commonroad-io
-git checkout b773a70df0c5e304352ef96fa3816bbcba6e2116
+git checkout develop
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
@@ -129,7 +129,7 @@ back_to_basedir
 echo "Installing CommonRoad_Scenarios SS19"
 git clone https://gitlab.lrz.de/ss19/commonroad_scenarios.git
 safe_cd commonroad_scenarios
-git checkout 2096e05a326d95c142e2f534bfb90df9db499e11
+git checkout develop
 git submodule update --init --recursive
 conda install cartopy rtree numba
 pip install -r requirements.txt
@@ -144,7 +144,7 @@ back_to_basedir
 echo "Installing CommonRoad map-tool"
 git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
 safe_cd commonroad-map-tool
-git checkout 3449bea09bf81cfe92d3fb228018879ebf33a1ba
+git checkout develop
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 back_to_basedir
 
@@ -152,7 +152,7 @@ back_to_basedir
 echo "Installing sumo-interface"
 git clone https://gitlab.lrz.de/cps/sumo-interface.git
 safe_cd sumo-interface
-git checkout 6c40548833daf4cd7e9c99c274c21a9cdd28653d
+git checkout develop
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 
@@ -172,7 +172,7 @@ echo "Installing CommonRoad curvilinear-coordinate-system"
 require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-dev
 git clone https://gitlab.lrz.de/cps/commonroad-curvilinear-coordinate-system.git
 safe_cd commonroad-curvilinear-coordinate-system
-git checkout 0f21a760e8afa76fa62332c8556902d9122fc4f4
+git checkout 2bc4923db22e3706a55df1f51740bec6dc0f159a
 pip install pyclipper
 mkdir -p build
 safe_cd build
@@ -209,10 +209,13 @@ if [ "${INSTALL_SUMO_MANAGER}" == "TRUE" ]; then
   echo "Installing CommonRoad-sumo-manager"
   git clone https://gitlab.lrz.de/cps/commonroad-sumo-manager.git
   safe_cd commonroad-sumo-manager
-  git checkout 1eb05880682f4281e06b618b2befd2ab59b229a3
+  git checkout development
   pip install -r ./requirements.txt
   pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
   back_to_basedir
 fi
+
+echo "uninstalling additional commonroad-io in site-packages"
+pip uninstall commonroad-io
 
 echo "Done"
