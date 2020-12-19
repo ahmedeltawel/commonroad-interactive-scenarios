@@ -105,9 +105,52 @@ echo "Installing ffmpeg"
 require_sudo apt-get install -y ffmpeg
 
 
+# echo "Installing CommonRoad-IO"
+# git clone https://gitlab.lrz.de/cps/commonroad-io.git
+# safe_cd commonroad-io
+# git checkout develop
+# pip install -r requirements.txt
+# pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+# back_to_basedir
+
+
+# echo "Installing CommonRoad-Drivability-Checker"
+# git clone https://gitlab.lrz.de/tum-cps/commonroad-drivability-checker
+# safe_cd commonroad-drivability-checker
+# git checkout 28686ef451daa91f801f8e6e74959ac21deeced2
+# bash build.sh -e ${CONDA_PREFIX} -v 3.7 --cgal --serializer -i -j $JOBS
+# pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+# # WORKAROUND The place of the pycrcc library has been changed with the new crcc version, but thic change is not followed by pycrccosy
+# cp ./commonroad_dc/pycrcc.cpython-${PYTHON_VERSION//./}m-x86_64-linux-gnu.so ./pycrcc.cpython-${PYTHON_VERSION//./}m-x86_64-linux-gnu.so
+# cp ./commonroad_dc/libcrcc.a ./libcrcc.a
+# back_to_basedir
+
+
+# echo "Installing CommonRoad_Scenarios SS19"
+# git clone https://gitlab.lrz.de/ss19/commonroad_scenarios.git
+# safe_cd commonroad_scenarios
+# git checkout develop
+# git submodule update --init --recursive
+# conda install cartopy rtree numba
+# pip install -r requirements.txt
+# pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+
+# echo "Installing CommonRoad scenarios-features"
+# safe_cd commonroad-scenario-features
+# pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+# back_to_basedir
+
+
+# echo "Installing CommonRoad map-tool"
+# git clone https://gitlab.lrz.de/cps/commonroad-map-tool.git
+# safe_cd commonroad-map-tool
+# git checkout develop
+# pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+# back_to_basedir
+
+
 echo "Installing sumo-interface"
 git clone https://gitlab.lrz.de/cps/sumo-interface.git
-mv sumo-interface sumo_interface
 safe_cd sumo_interface
 git checkout develop
 pip install -r requirements.txt
@@ -123,6 +166,21 @@ else
     fail "Could not set SUMO_BINARY in pathConfig.py"
 fi
 back_to_basedir
+
+
+# echo "Installing CommonRoad curvilinear-coordinate-system"
+# require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-dev
+# git clone https://gitlab.lrz.de/cps/commonroad-curvilinear-coordinate-system.git
+# safe_cd commonroad-curvilinear-coordinate-system
+# git checkout 2bc4923db22e3706a55df1f51740bec6dc0f159a
+# pip install pyclipper
+# mkdir -p build
+# safe_cd build
+# cmake -DPYTHON_INCLUDE_DIR="${CONDA_PREFIX}/include/python${PYTHON_VERSION}m" -DPYTHON_LIBRARY="${CONDA_PREFIX}/lib/libpython${PYTHON_VERSION}m.so" -DPYTHON_EXECUTABLE="${CONDA_PREFIX}/bin/python${PYTHON_VERSION}m" -DADD_TESTS=False -DADD_PYTHON_BINDINGS=True -DCMAKE_BUILD_TYPE=Release ..
+# make -j "$JOBS"
+# safe_cd ..
+# pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+# back_to_basedir
 
 
 if [ "${INSTALL_SUMO}" == "TRUE" ]; then

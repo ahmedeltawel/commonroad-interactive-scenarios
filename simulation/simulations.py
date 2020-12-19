@@ -26,16 +26,16 @@ from commonroad.scenario.trajectory import Trajectory
 mpl.use('TkAgg')
 
 from config.sumo_config import SumoConf
-from sumocr.interface.sumo_simulation import SumoSimulation
-from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
-from sumocr.visualization.gif import create_gif
+from install.sumo_interface.sumocr.interface.sumo_simulation import SumoSimulation
+from install.sumo_interface.sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
+from install.sumo_interface.sumocr.visualization.gif import create_gif
 
 from commonroad.scenario.scenario import Scenario
 from commonroad.planning.planning_problem import PlanningProblemSet
 from commonroad.common.solution import Solution
 from commonroad.common.file_reader import CommonRoadFileReader
 
-from utility import create_trajectory_from_list_states, create_obstacle_from_trajectory
+from simulation.utility import create_trajectory_from_list_states, create_obstacle_from_trajectory
 
 
 @unique
@@ -68,7 +68,7 @@ def simulate_scenario(mode: SimulationOption,
     """
 
     if use_sumo_manager:
-        raise NotImplementedError("Usage of SUMO Manager not supported yet.")
+        raise NotImplementedError("Usage of SUMO Manager is not supported yet.")
 
     if num_of_steps is None:
         num_of_steps = conf.simulation_steps
@@ -115,9 +115,6 @@ def simulate_scenario(mode: SimulationOption,
 
                 # specify planning parameters
                 duration_planning = 80
-                a = -5.0
-                dt = 0.1
-
                 def run_simulation():
                     ego_vehicles = sumo_sim.ego_vehicles
                     for step in range(num_of_steps):
@@ -135,9 +132,10 @@ def simulate_scenario(mode: SimulationOption,
                                 return
 
                             next_state = copy.deepcopy(state_current_ego)
-
                             # ====== plug in your motion planner here
                             # example motion planner which decelerates to full stop
+                            a = -5.0
+                            dt = 0.1
                             if next_state.velocity > 0:
                                 v = next_state.velocity
                                 x, y = next_state.position
@@ -337,7 +335,7 @@ def simulate_with_planner(interactive_scenario_path: str,
     :param output_folder_path: path to the output folder
     :param create_GIF: indicates whether to create a GIF of the simulated scenario
     :param use_sumo_manager: indicates whether to use the SUMO Manager
-    :param create_ego_obstacle: indicates whether to create obstacles as the ego vehicles
+    :param create_ego_obstacle: indicates whether to create obstacles from the planned trajectories as the ego vehicles
     :return: Tuple of the simulated scenario and the planning problem set
     """
     with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
