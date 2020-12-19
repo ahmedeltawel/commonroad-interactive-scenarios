@@ -1,3 +1,0 @@
-[submodule "tests/resources/commonroad-scenarios_2020"]
-	path = tests/resources/commonroad-scenarios_2020
-	url = https://gitlab.lrz.de/cps/commonroad-scenarios.git
