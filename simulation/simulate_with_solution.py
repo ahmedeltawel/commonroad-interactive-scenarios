@@ -32,31 +32,6 @@ from commonroad.common.file_writer import CommonRoadFileWriter
 from commonroad.common.file_writer import OverwriteExistingFile
 
 
-def evaluate_solution_argsparser() -> argparse.ArgumentParser:
-    """Returns a parser for the script's arguments"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-i", "--input_scenario", type=str,
-        default="../example_scenarios/interactive/DEU_A9-2_1_I-1-1",
-        help="Path to the interactive scenario"
-    )
-    parser.add_argument(
-        "-s", "--solution", type=str,
-        default="../example_scenarios/solution/KS1:SA1:DEU_A9-2_1_T-1:2018b.xml",
-        help="Path to the CommonRoad solution file"
-    )
-    parser.add_argument(
-        "-o", "--output", type=str, default="../example_scenarios/gif", help="Output folder path",
-    )
-    parser.add_argument(
-        "-v", "--video", action="store_true", default=False, help="Create video",
-    )
-    parser.add_argument(
-        "-sm", "--sumo_manager", action="store_true", default=False, help="Using the sumo-manager",
-    )
-    return parser
-
-
 def simulate_with_solution(interactive_scenario_path: str,
                            solution_file: str = None,
                            output_folder_path: str = None,
