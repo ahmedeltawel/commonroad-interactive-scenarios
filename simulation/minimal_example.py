@@ -15,21 +15,16 @@ from commonroad.common.solution import CommonRoadSolutionReader
 mpl.use('TkAgg')
 
 from commonroad.scenario.scenario import Tag
-
-from simulation import simulate_without_ego, simulate_with_solution
-
-# import necessary classes from different modules
-from commonroad.common.file_writer import CommonRoadFileWriter
-from commonroad.common.file_writer import OverwriteExistingFile
+from simulation import simulate_without_ego, simulate_with_solution, simulate_with_planner
 
 
 def main():
     # specify required arguments
-    name_scenario = "USA_US101-7_3_I-1-1"
+    name_scenario = "USA_US101-26_2_I-1-1"
     path_scenario = "../scenarios/interactive/NGSIM/US101/" + name_scenario
 
     # for simulation with a given solution trajectory
-    name_solution = "KS2:SM1:USA_US101-7_3_T-1:2020a"
+    name_solution = "KS2:SM1:USA_US101-26_2_T-1:2020a"
     path_solution = "../scenarios/solutions/" + name_solution + ".xml"
     solution = CommonRoadSolutionReader.open(path_solution)
 
@@ -47,7 +42,10 @@ def main():
                                                          create_GIF=True,
                                                          use_sumo_manager=False)
 
-    # scenario_with_planner, trajectory_planner = simulate_with_planner()
+    # scenario_with_solution, pps = simulate_with_planner(interactive_scenario_path=path_scenario,
+    #                                                     output_folder_path=path_output,
+    #                                                     create_GIF=True,
+    #                                                     use_sumo_manager=False)
     #
     # # simulate interactive scenario with and without ego vehicle
     # scenario_without_ego, scenario_with_ego, pps = simulate_with_solution(interactive_scenario_path=path_scenario,
@@ -67,10 +65,10 @@ def main():
     # fw = CommonRoadFileWriter(scenario_without_ego, pps, author, affiliation, source, tags)
     # fw.write_to_file(f"{path_scenarios_simulated}{name_scenario}_no_ego.xml", OverwriteExistingFile.ALWAYS)
 
-    # with solution
-    if scenario_with_solution:
-        fw = CommonRoadFileWriter(scenario_with_solution, pps, author, affiliation, source, tags)
-        fw.write_to_file(f"{path_scenarios_simulated}{name_scenario}_solution.xml", OverwriteExistingFile.ALWAYS)
+    # # with solution
+    # if scenario_with_solution:
+    #     fw = CommonRoadFileWriter(scenario_with_solution, pps, author, affiliation, source, tags)
+    #     fw.write_to_file(f"{path_scenarios_simulated}{name_scenario}_solution.xml", OverwriteExistingFile.ALWAYS)
 
 
 if __name__ == '__main__':
