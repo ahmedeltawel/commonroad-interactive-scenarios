@@ -215,7 +215,6 @@ if [ "${INSTALL_SUMO_MANAGER}" == "TRUE" ]; then
   back_to_basedir
 fi
 
-echo "uninstalling additional commonroad-io in site-packages"
-pip uninstall commonroad-io
+
 
 echo "Done"
