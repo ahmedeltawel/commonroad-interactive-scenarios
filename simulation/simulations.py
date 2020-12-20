@@ -113,12 +113,13 @@ def simulate_scenario(mode: SimulationOption,
             elif mode is SimulationOption.MOTION_PLANNER:
                 # simulation with plugged in planner
 
-                # specify planning parameters
+                # specify planning duration (1 step = 0.1 seconds)
                 duration_planning = 80
+
                 def run_simulation():
                     ego_vehicles = sumo_sim.ego_vehicles
                     for step in range(num_of_steps):
-                        # retrieve the scenario at the current time step
+                        # retrieve the CommonRoad scenario at the current time step
                         commonroad_scenario = sumo_sim.commonroad_scenario_at_time_step(sumo_sim.current_time_step)
                         for idx, ego_vehicle in enumerate(ego_vehicles.values()):
                             # retrieve the current state of the ego vehicle
