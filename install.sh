@@ -112,6 +112,7 @@ safe_cd sumo_interface
 git checkout interactive
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
+python setup.py install
 
 cp pathConfig_DEFAULT.py pathConfig.py
 search="SUMO_BINARY = '/home/user/sumo/bin/sumo'"
@@ -123,6 +124,7 @@ else
     fail "Could not set SUMO_BINARY in pathConfig.py"
 fi
 back_to_basedir
+rm sumo_interface
 
 
 if [ "${INSTALL_SUMO}" == "TRUE" ]; then

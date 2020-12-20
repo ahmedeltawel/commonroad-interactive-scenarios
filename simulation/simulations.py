@@ -26,9 +26,9 @@ from commonroad.scenario.trajectory import Trajectory
 mpl.use('TkAgg')
 
 from config.sumo_config import SumoConf
-from install.sumo_interface.sumocr.interface.sumo_simulation import SumoSimulation
-from install.sumo_interface.sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
-from install.sumo_interface.sumocr.visualization.gif import create_gif
+from sumocr.interface.sumo_simulation import SumoSimulation
+from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
+from sumocr.visualization.gif import create_gif
 
 from commonroad.scenario.scenario import Scenario
 from commonroad.planning.planning_problem import PlanningProblemSet
