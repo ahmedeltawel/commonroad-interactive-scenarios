@@ -1,7 +1,7 @@
 # CommonRoad Interactive Scenarios
 This package provides the functionality of simulating  interactive scenarios by coupling CommonRoad with [SUMO](https://sumo.dlr.de/docs/index.html) traffic simulator. 
 
-The code is written in Python 3.7 and has been tested on Ubuntu 18.04.
+The code is written in Python 3.7 and has been tested on Ubuntu 18.04. If you encounter any issue, please raise it in our [forum](https://commonroad.in.tum.de/forum/c/interactive-scenarios/15).
 
 ## Installation
 This project uses Conda, thus it should be installed before proceeding with the installation.
@@ -50,9 +50,9 @@ This project uses Conda, thus it should be installed before proceeding with the 
 
 Follow `tutorial/1_tutorial_scenario_simulation.ipynb` to learn how to simulate interactive scenarios without ego vehicle, with plugged-in motion planners, and with given solution trajectories. Additionally, a minimal example python script is provided at `tutorial/minimal_example.py`.
 
-## Examples
+## Example
 
-Below, we compare a selection of scenarios. The `Main` and `Secondary` plots show the scenario with and without the ego vehicle, respectively.
+The `Main` and `Secondary` plots show the scenario with and without the ego vehicle, respectively.
 
 <img src="outputs/gifs/README/USA_US101-26_2_I-1.gif" alt="USA_US101-26_2_I-1" style="zoom:80%;" />
 
