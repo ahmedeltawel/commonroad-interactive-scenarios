@@ -106,10 +106,10 @@ require_sudo apt-get install -y ffmpeg
 
 
 echo "Installing sumo-interface"
-git clone https://gitlab.lrz.de/cps/sumo-interface.git
-mv sumo-interface sumo_interface
+git clone https://gitlab.lrz.de/tum-cps/commonroad-sumo-interface.git
+mv commonroad-sumo-interface sumo_interface
 safe_cd sumo_interface
-git checkout develop
+git checkout interactive
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
 

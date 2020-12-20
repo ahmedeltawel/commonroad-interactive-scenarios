@@ -29,18 +29,12 @@ This project uses Conda, thus it should be installed before proceeding with the 
    - [CommonRoad-SUMO Interface](https://gitlab.lrz.de/tum-cps/commonroad-sumo-interface)
    - [SUMO](https://sumo.dlr.de/docs/index.html)
 
-   If you have not installed SUMO, run
+   Install the package using the following command:
 
    ```bash
    bash install.sh -e cr37 --sumo
    ```
-   If you already have SUMO installed, run
-
-   ```bash
-   bash intall.sh -e cr37
-   ```
-
-   These commands will create an folder `install/`, pull all the dependencies and install them there.
+   It will create a folder `install/`, pull all the dependencies and install them there.
 
 4. Updating the environment variables
 
@@ -74,4 +68,3 @@ The `Main` and `Secondary` plots show the scenario with and without the ego vehi
    ```
 
    Then navigate to `install/sumo_interface/sumocr/visualization/gif.py`, in line 152, set writer to `imagemagick`.
-
