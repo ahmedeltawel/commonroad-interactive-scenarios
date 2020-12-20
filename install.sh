@@ -107,8 +107,8 @@ require_sudo apt-get install -y ffmpeg
 
 echo "Installing sumo-interface"
 git clone https://gitlab.lrz.de/tum-cps/commonroad-sumo-interface.git
-mv commonroad-sumo-interface sumo_interface
-safe_cd sumo_interface
+# mv commonroad-sumo-interface sumo_interface
+safe_cd commonroad-sumo-interface
 git checkout interactive
 pip install -r requirements.txt
 pwd >> "${CONDA_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/commonroad.pth"
@@ -124,7 +124,6 @@ else
     fail "Could not set SUMO_BINARY in pathConfig.py"
 fi
 back_to_basedir
-rm sumo_interface
 
 
 if [ "${INSTALL_SUMO}" == "TRUE" ]; then
@@ -159,6 +158,8 @@ if [ "${INSTALL_SUMO_MANAGER}" == "TRUE" ]; then
   back_to_basedir
 fi
 
+back_to_basedir
+rm -rf commonroad-sumo-interface
 
 
 echo "Done"
