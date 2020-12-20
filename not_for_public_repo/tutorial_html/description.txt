@@ -1,33 +1,13 @@
-1. The following description replaces the currently online section "Motion planning using motion primitives"
-2. The batch processing section in CommonRoad IO (https://commonroad.in.tum.de/commonroad_io) shall be removed.
-
-
 ------ general description
-CommonRoad Search
-CommonRoad Search provides a selection of exemplary (un)informed search algorithms with motion primitives to solve motion planning problems. Here we also demonstrate how the motion primitives are generated, and how to use our batch processor to search for solutions with parallel execution. 
-
+(title of the section) CommonRoad Interactive Scenarios
+(body) Interactive scenarios are scenarios in which other traffic participants react to the behavior of the ego vehicle. This is achieved by coupling CommonRoad with the SUMO traffic simulator.
 
 ------ individual htmls
-0_tutorial_uninformed_search.html
-Tutorial 01: Uninformed Search
-Uninformed search algorithms with motion primitives to solve motion planning problems.
+1_tutorial_scenario_simulation.html
+Tutorial 01: Interactive Scenario Simulation
+This tutorial explains how are the interactive scenarios simulated.
 
-1_tutorial_informed_search.html
-Tutorial 02: Informed Search
-Informed search algorithms with motion primitives to solve motion planning problems.
+------ links
+repository:https://gitlab.lrz.de/tum-cps/commonroad-interactive-scenarios
+forum:https://commonroad.in.tum.de/forum/c/interactive-scenarios/15
 
-2_tutorial_commonroad_search.html
-Tutorial 03: Commonroad Search
-Combining (un)informed search algorithms with motion primitives to solve real motion planning problems introduced in CommonRoad.
-
-3_tutorial_motion_primitive_generator.html
-Tutorial 04: Motion Primitive Generator
-Learn how to generator your own set of motion primitives.
-
-4_tutorial_batch_processing.html
-Tutotiral 05: Batch Processing
-This tutorial expalins how to use our batch processor to execute searches in parallel.
-
-5_tutorial_route_planner.html
-Tutorial 06: Route Planner
-The route planner plans routes from the initial lanelets to goal lanelets, which can be used to guide the search.
