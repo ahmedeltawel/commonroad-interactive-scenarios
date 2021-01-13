@@ -36,7 +36,13 @@ This project uses Conda, thus it should be installed before proceeding with the 
    ```
    It will create a folder `install/`, pull all the dependencies and install them there.
    
-   Alternatively, you can choose to use sumo-manager instead of installing SUMO by the command```bash install.sh -e cr37``` . To use sumo-manager in simulation, you have to install [Docker](https://docs.docker.com/engine/install/ubuntu/) and follow the [postinstall instructions](https://docs.docker.com/engine/install/linux-postinstall/) as well, to ensure that **you can use the Docker without root privileges**.
+   
+
+4. Updating the environment variables
+
+    If you have just installed SUMO, the `SUMO_PATH` environment variable has been written into the `~/.profile` file. To reach this variable from an IDE (e.g., PyCharm), you must **reboot your system**.
+    
+    *Alternatively*, you can choose to use sumo-manager instead of installing SUMO by the command```bash install.sh -e cr37``` . To use sumo-manager in simulation, you have to install [Docker](https://docs.docker.com/engine/install/ubuntu/) and follow the [postinstall instructions](https://docs.docker.com/engine/install/linux-postinstall/) as well, to ensure that **you can use the Docker without root privileges**.
    
    Run the following to check that your docker is successfully installed.
    ```bash
@@ -48,10 +54,6 @@ This project uses Conda, thus it should be installed before proceeding with the 
     docker login gitlab.lrz.de:5005
     docker pull gitlab.lrz.de:5005/cps/commonroad-sumo-manager:ver0.7.0
     ```
-
-4. Updating the environment variables
-
-    If you have just installed SUMO, the `SUMO_PATH` environment variable has been written into the `~/.profile` file. To reach this variable from an IDE (e.g., PyCharm), you must **reboot your system**.
 
 ## Usage
 
