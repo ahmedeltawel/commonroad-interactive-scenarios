@@ -67,8 +67,8 @@ def simulate_scenario(mode: SimulationOption,
     :return: simulated scenario
     """
 
-    if use_sumo_manager:
-        raise NotImplementedError("Usage of SUMO Manager is not supported yet.")
+#     if use_sumo_manager:
+#         raise NotImplementedError("Usage of SUMO Manager is not supported yet.")
 
     if num_of_steps is None:
         num_of_steps = conf.simulation_steps
@@ -119,6 +119,8 @@ def simulate_scenario(mode: SimulationOption,
                 def run_simulation():
                     ego_vehicles = sumo_sim.ego_vehicles
                     for step in range(num_of_steps):
+                        if use_sumo_manager:
+                            ego_vehicles = sumo_sim.ego_vehicles
                         # retrieve the CommonRoad scenario at the current time step
                         commonroad_scenario = sumo_sim.commonroad_scenario_at_time_step(sumo_sim.current_time_step)
                         for idx, ego_vehicle in enumerate(ego_vehicles.values()):
@@ -166,6 +168,8 @@ def simulate_scenario(mode: SimulationOption,
                     ego_vehicles = sumo_sim.ego_vehicles
 
                     for step in range(num_of_steps):
+                        if use_sumo_manager:
+                            ego_vehicles = sumo_sim.ego_vehicles
                         for idx, ego_vehicle in enumerate(ego_vehicles.values()):
                             # retrieve the current state of the ego vehicle
                             state_current_ego = ego_vehicle.current_state
