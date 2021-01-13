@@ -36,7 +36,7 @@ This project uses Conda, thus it should be installed before proceeding with the 
    ```
    It will create a folder `install/`, pull all the dependencies and install them there.
    
-   Alternatively, you can choose to use sumo-manager instead of installing SUMO. To use sumo-manager in simulation, you have to install [Docker](https://docs.docker.com/engine/install/ubuntu/) and follow the [postinstall instructions](https://docs.docker.com/engine/install/linux-postinstall/) as well, to ensure that **you can use the Docker without root privileges**.
+   Alternatively, you can choose to use sumo-manager instead of installing SUMO by the command```bash bash install.sh -e cr37``` . To use sumo-manager in simulation, you have to install [Docker](https://docs.docker.com/engine/install/ubuntu/) and follow the [postinstall instructions](https://docs.docker.com/engine/install/linux-postinstall/) as well, to ensure that **you can use the Docker without root privileges**.
    
    Run the following to check that your docker is successfully installed.
    ```bash
