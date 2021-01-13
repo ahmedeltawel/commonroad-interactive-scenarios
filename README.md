@@ -35,6 +35,19 @@ This project uses Conda, thus it should be installed before proceeding with the 
    bash install.sh -e cr37 --sumo
    ```
    It will create a folder `install/`, pull all the dependencies and install them there.
+   
+   Alternatively, you can choose to use sumo-manager instead of installing SUMO. To use sumo-manager in simulation, you have to install [Docker](https://docs.docker.com/engine/install/ubuntu/) and follow the [postinstall instructions](https://docs.docker.com/engine/install/linux-postinstall/) as well, to ensure that **you can use the Docker without root privileges**.
+   
+   Run the following to check that your docker is successfully installed.
+   ```bash
+   docker run hello-world
+   ```
+   
+   *(optional)* as the docker image is yet un-released now, for testing you have to pull the image on your own"
+   ```bash
+    docker login gitlab.lrz.de:5005
+    docker pull gitlab.lrz.de:5005/cps/commonroad-sumo-manager:ver0.7.0
+    ```
 
 4. Updating the environment variables
 
