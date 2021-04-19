@@ -21,6 +21,7 @@ from typing import Tuple, Dict, Optional
 
 import matplotlib as mpl
 import numpy as np
+from commonroad.scenario.obstacle import ObstacleType
 from commonroad.scenario.trajectory import Trajectory
 
 mpl.use('TkAgg')
@@ -233,9 +234,7 @@ def simulate_without_ego(interactive_scenario_path: str,
     :param use_sumo_manager: indicates whether to use the SUMO Manager
     :return: Tuple of the simulated scenario and the planning problem set
     """
-    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
-        conf = pickle.load(input_file)
-
+    conf = load_sumo_configuration(interactive_scenario_path)
     scenario_file = os.path.join(interactive_scenario_path, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
@@ -280,9 +279,7 @@ def simulate_with_solution(interactive_scenario_path: str,
     if not isinstance(solution, Solution):
         raise Exception("Solution to the planning problem is not given.")
 
-    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
-        conf = pickle.load(input_file)
-
+    conf = load_sumo_configuration(interactive_scenario_path)
     scenario_file = os.path.join(interactive_scenario_path, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
@@ -327,9 +324,7 @@ def simulate_with_planner(interactive_scenario_path: str,
     :param create_ego_obstacle: indicates whether to create obstacles from the planned trajectories as the ego vehicles
     :return: Tuple of the simulated scenario and the planning problem set
     """
-    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
-        conf = pickle.load(input_file)
-
+    conf = load_sumo_configuration(interactive_scenario_path)
     scenario_file = os.path.join(interactive_scenario_path, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
@@ -356,6 +351,15 @@ def simulate_with_planner(interactive_scenario_path: str,
             scenario_with_planner.add_objects(obstacle_ego)
 
     return scenario_with_planner, planning_problem_set, list(dict_idx_to_trajectory.values())[0]
+
+
+def load_sumo_configuration(interactive_scenario_path: str) -> SumoConf:
+    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
+        conf = pickle.load(input_file)
+        for dict_params in conf.veh_params.values():
+            dict_params[ObstacleType.CAR] = dict_params['passenger']
+
+    return conf
 
 
 def create_gif_for_simulation(scenario_with_planner: Scenario, output_folder_path: str,
