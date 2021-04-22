@@ -12,12 +12,11 @@ import matplotlib as mpl
 from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
 from commonroad.scenario.scenario import ScenarioID, Scenario
-from configuration import CONFIG_TYPE, get_interactive_scenario_configuration
-from configuration import SumoConfigBase
+from config import CONFIG_TYPE, get_interactive_scenario_configuration, CRSumoConfigBase
 
 mpl.use('TkAgg')
 
-from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
+from crdesigner.conversion.sumo_map.cr2sumo import CR2SumoMapConverter
 from sumocr.maps.util import *
 import numpy as np
 
@@ -59,12 +58,13 @@ def reduce_scenario(scenario: Scenario):
 
 def convert_to_sumo_files(scenario_file: str,
                           output_folder: str,
-                          conf: SumoConfigBase) -> CR2SumoMapConverter:
+                          conf: CRSumoConfigBase) -> CR2SumoMapConverter:
     # Generate network file
     os.makedirs(output_folder, exist_ok=True)
 
     # load CR scenario and translate to origo
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
+    conf.country_id = scenario.scenario_id.country_id
     # translate_scenario(scenario, planning_problem_set)
 
     # convert scenario to SUMO files
@@ -118,7 +118,7 @@ def convert_scenario(cr_scenario_path: str,
     benchmark_id = ScenarioID.from_benchmark_id(os.path.splitext(os.path.basename(cr_scenario_path))[0],
                                                 scenario_version="2020a")
 #   I means interactive, I-X-Y, Y means the number of configuration id
-    benchmark_id.prediction_type = 'I'
+    benchmark_id.obstacle_behavior = 'I'
     
     conf = get_interactive_scenario_configuration(config_type, str(benchmark_id))
     output_folder = os.path.join(output_folder_path, conf.scenario_name)

@@ -17,10 +17,11 @@ import warnings
 from collections import defaultdict
 from enum import unique, Enum
 from math import sin, cos
-from typing import Tuple
+from typing import Tuple, Dict, Optional
 
 import matplotlib as mpl
 import numpy as np
+from commonroad.scenario.obstacle import ObstacleType
 from commonroad.scenario.trajectory import Trajectory
 
 mpl.use('TkAgg')
@@ -167,22 +168,26 @@ def simulate_scenario(mode: SimulationOption,
                 def run_simulation():
                     ego_vehicles = sumo_sim.ego_vehicles
 
-                    for step in range(num_of_steps):
+                    for time_step in range(num_of_steps):
                         if use_sumo_manager:
                             ego_vehicles = sumo_sim.ego_vehicles
-                        for idx, ego_vehicle in enumerate(ego_vehicles.values()):
+                        for idx_ego, ego_vehicle in enumerate(ego_vehicles.values()):
                             # retrieve the current state of the ego vehicle
                             state_current_ego = ego_vehicle.current_state
 
                             # save to list of states for later creation of Trajectory object
-                            dict_idx_to_list_state[idx].append(state_current_ego)
+                            dict_idx_to_list_state[idx_ego].append(state_current_ego)
 
                             # update the ego vehicles with solution trajectories
-                            trajectory_solution = solution.planning_problem_solutions[idx].trajectory
-                            if len(trajectory_solution.state_list) <= step:
-                                return
+                            try:
+                                trajectory_solution = solution.planning_problem_solutions[idx_ego].trajectory
+                                if len(trajectory_solution.state_list) <= time_step:
+                                    return
+                                next_state = copy.deepcopy(trajectory_solution.state_list[time_step])
 
-                            next_state = copy.deepcopy(trajectory_solution.state_list[step])
+                            except IndexError:
+                                next_state = copy.deepcopy(state_current_ego)
+
                             next_state.time_step = 1
                             trajectory_ego = [next_state]
                             ego_vehicle.set_planned_trajectory(trajectory_ego)
@@ -232,9 +237,7 @@ def simulate_without_ego(interactive_scenario_path: str,
     :param use_sumo_manager: indicates whether to use the SUMO Manager
     :return: Tuple of the simulated scenario and the planning problem set
     """
-    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
-        conf = pickle.load(input_file)
-
+    conf = load_sumo_configuration(interactive_scenario_path)
     scenario_file = os.path.join(interactive_scenario_path, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
@@ -253,16 +256,8 @@ def simulate_without_ego(interactive_scenario_path: str,
     simulated_scenario_without_ego.scenario_id = scenario.scenario_id
 
     if create_GIF:
-        if not output_folder_path:
-            print("Output folder not specified, skipping GIF generation.")
-        else:
-            for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
-                create_gif(simulated_scenario_without_ego,
-                           output_folder_path,
-                           planning_problem=planning_problem,
-                           trajectory=None,
-                           follow_ego=True,
-                           suffix=SimulationOption.WITHOUT_EGO.value)
+        create_gif_for_simulation(simulated_scenario_without_ego, output_folder_path, planning_problem_set,
+                                  None, SimulationOption.WITHOUT_EGO.value)
 
     return simulated_scenario_without_ego, planning_problem_set
 
@@ -287,9 +282,7 @@ def simulate_with_solution(interactive_scenario_path: str,
     if not isinstance(solution, Solution):
         raise Exception("Solution to the planning problem is not given.")
 
-    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
-        conf = pickle.load(input_file)
-
+    conf = load_sumo_configuration(interactive_scenario_path)
     scenario_file = os.path.join(interactive_scenario_path, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
@@ -307,18 +300,9 @@ def simulate_with_solution(interactive_scenario_path: str,
     scenario_with_solution.scenario_id = scenario.scenario_id
 
     if create_GIF:
-        if not output_folder_path:
-            print("Output folder not specified, skipping GIF generation.")
-        else:
-            for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
-                trajectory = dict_idx_to_trajectory[idx]
-                create_gif(scenario_with_solution,
-                           output_folder_path,
-                           planning_problem=planning_problem,
-                           trajectory=trajectory,
-                           # trajectory=solution.planning_problem_solutions[idx].trajectory,
-                           follow_ego=True,
-                           suffix=SimulationOption.SOLUTION.value)
+        create_gif_for_simulation(scenario_with_solution, output_folder_path, planning_problem_set,
+                                  dict_idx_to_trajectory, SimulationOption.SOLUTION.value)
+
     if create_ego_obstacle:
         for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
             trajectory = dict_idx_to_trajectory[idx]
@@ -343,9 +327,7 @@ def simulate_with_planner(interactive_scenario_path: str,
     :param create_ego_obstacle: indicates whether to create obstacles from the planned trajectories as the ego vehicles
     :return: Tuple of the simulated scenario and the planning problem set
     """
-    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
-        conf = pickle.load(input_file)
-
+    conf = load_sumo_configuration(interactive_scenario_path)
     scenario_file = os.path.join(interactive_scenario_path, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
@@ -362,17 +344,8 @@ def simulate_with_planner(interactive_scenario_path: str,
     scenario_with_planner.scenario_id = scenario.scenario_id
 
     if create_GIF:
-        if not output_folder_path:
-            print("Output folder not specified, skipping GIF generation.")
-        else:
-            for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
-                trajectory = dict_idx_to_trajectory[idx]
-                create_gif(scenario_with_planner,
-                           output_folder_path,
-                           planning_problem=planning_problem,
-                           trajectory=trajectory,
-                           follow_ego=True,
-                           suffix=SimulationOption.MOTION_PLANNER.value)
+        create_gif_for_simulation(scenario_with_planner, output_folder_path, planning_problem_set,
+                                  dict_idx_to_trajectory, SimulationOption.MOTION_PLANNER.value)
 
     if create_ego_obstacle:
         for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
@@ -381,3 +354,38 @@ def simulate_with_planner(interactive_scenario_path: str,
             scenario_with_planner.add_objects(obstacle_ego)
 
     return scenario_with_planner, planning_problem_set, list(dict_idx_to_trajectory.values())[0]
+
+
+def load_sumo_configuration(interactive_scenario_path: str) -> SumoConf:
+    with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
+        conf = pickle.load(input_file)
+
+    return conf
+
+
+def create_gif_for_simulation(scenario_with_planner: Scenario, output_folder_path: str,
+                              planning_problem_set: PlanningProblemSet,
+                              dict_idx_to_trajectory: Optional[Dict[int, Trajectory]],
+                              suffix: str, follow_ego: bool = True):
+    """Creates the GIF animation for the simulation result."""
+    if not output_folder_path:
+        print("Output folder not specified, skipping GIF generation.")
+        return
+
+    # create list of planning problems and trajectories
+    list_planning_problems = []
+    list_trajectories = []
+    for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
+        list_planning_problems.append(planning_problem)
+
+        if dict_idx_to_trajectory:
+            trajectory = dict_idx_to_trajectory[idx]
+            list_trajectories.append(trajectory)
+
+    # create GIF animation
+    create_gif(scenario_with_planner,
+               output_folder_path,
+               planning_problems=list_planning_problems,
+               trajectories=list_trajectories,
+               follow_ego=follow_ego,
+               suffix=suffix)
