@@ -73,147 +73,145 @@ def simulate_scenario(mode: SimulationOption,
         num_of_steps = conf.simulation_steps
 
     simulated_scenario = None
-    num_of_trials = 3
 
-    for _ in range(num_of_trials):
-        try:
-            sumo_interface = None
-            if use_sumo_manager:
-                try:
-                    from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
-                except ImportError:
-                    SumoInterface = None
-                    raise ImportError("CommonRoad SUMO Manager not installed!")
+    try:
+        sumo_interface = None
+        if use_sumo_manager:
+            try:
+                from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
+            except ImportError:
+                SumoInterface = None
+                raise ImportError("CommonRoad SUMO Manager not installed!")
 
-                sumo_interface = SumoInterface(use_docker=True)
-                sumo_sim = sumo_interface.start_simulator()
+            sumo_interface = SumoInterface(use_docker=True)
+            sumo_sim = sumo_interface.start_simulator()
 
-                sumo_sim.send_sumo_scenario(conf.scenario_name,
-                                            scenario_path)
-            else:
-                sumo_sim = SumoSimulation()
+            sumo_sim.send_sumo_scenario(conf.scenario_name,
+                                        scenario_path)
+        else:
+            sumo_sim = SumoSimulation()
 
-            if planning_problem_set is not None:
-                sumo_sim.planning_problem_set = planning_problem_set
+        if planning_problem_set is not None:
+            sumo_sim.planning_problem_set = planning_problem_set
 
-            # initialize simulation
-            sumo_sim.initialize(conf, scenario_wrapper)
+        # initialize simulation
+        sumo_sim.initialize(conf, scenario_wrapper)
 
-            # dict to store state list of the ego vehicle
-            dict_idx_to_list_state = defaultdict(list)
+        # dict to store state list of the ego vehicle
+        dict_idx_to_list_state = defaultdict(list)
 
-            if mode is SimulationOption.WITHOUT_EGO:
-                # simulation without ego vehicle
+        if mode is SimulationOption.WITHOUT_EGO:
+            # simulation without ego vehicle
+            for step in range(num_of_steps):
+                # set to dummy simulation
+                sumo_sim.dummy_ego_simulation = True
+                sumo_sim.simulate_step()
+
+        elif mode is SimulationOption.MOTION_PLANNER:
+            # simulation with plugged in planner
+
+            # specify planning duration (1 step = 0.1 seconds)
+            duration_planning = 80
+
+            def run_simulation():
+                ego_vehicles = sumo_sim.ego_vehicles
                 for step in range(num_of_steps):
-                    # set to dummy simulation
-                    sumo_sim.dummy_ego_simulation = True
+                    if use_sumo_manager:
+                        ego_vehicles = sumo_sim.ego_vehicles
+                    # retrieve the CommonRoad scenario at the current time step
+                    commonroad_scenario = sumo_sim.commonroad_scenario_at_time_step(sumo_sim.current_time_step)
+                    for idx, ego_vehicle in enumerate(ego_vehicles.values()):
+                        # retrieve the current state of the ego vehicle
+                        state_current_ego = ego_vehicle.current_state
+
+                        # save to list of states for later creation of Trajectory object
+                        dict_idx_to_list_state[idx].append(state_current_ego)
+
+                        if duration_planning <= step:
+                            # return if exceeds specified planning horizon
+                            return
+
+                        next_state = copy.deepcopy(state_current_ego)
+                        # ====== plug in your motion planner here
+                        # example motion planner which decelerates to full stop
+                        a = -5.0
+                        dt = 0.1
+                        if next_state.velocity > 0:
+                            v = next_state.velocity
+                            x, y = next_state.position
+                            o = next_state.orientation
+
+                            next_state.position = np.array([x + v * cos(o) * dt, y + v * sin(o) * dt])
+                            next_state.velocity += a * dt
+                        # ====== end of motion planner
+
+                        # update the ego vehicle with new trajectory with only 1 state for the current step
+                        next_state.time_step = 1
+                        trajectory_ego = [next_state]
+                        ego_vehicle.set_planned_trajectory(trajectory_ego)
+
+                    if use_sumo_manager:
+                        # set the modified ego vehicles to synchronize in case of using SUMO Manager
+                        sumo_sim.ego_vehicles = ego_vehicles
+
                     sumo_sim.simulate_step()
 
-            elif mode is SimulationOption.MOTION_PLANNER:
-                # simulation with plugged in planner
+            run_simulation()
 
-                # specify planning duration (1 step = 0.1 seconds)
-                duration_planning = 80
+        elif mode is SimulationOption.SOLUTION:
+            # simulation with given solution trajectory
 
-                def run_simulation():
-                    ego_vehicles = sumo_sim.ego_vehicles
-                    for step in range(num_of_steps):
-                        if use_sumo_manager:
-                            ego_vehicles = sumo_sim.ego_vehicles
-                        # retrieve the CommonRoad scenario at the current time step
-                        commonroad_scenario = sumo_sim.commonroad_scenario_at_time_step(sumo_sim.current_time_step)
-                        for idx, ego_vehicle in enumerate(ego_vehicles.values()):
-                            # retrieve the current state of the ego vehicle
-                            state_current_ego = ego_vehicle.current_state
+            def run_simulation():
+                ego_vehicles = sumo_sim.ego_vehicles
 
-                            # save to list of states for later creation of Trajectory object
-                            dict_idx_to_list_state[idx].append(state_current_ego)
+                for time_step in range(num_of_steps):
+                    if use_sumo_manager:
+                        ego_vehicles = sumo_sim.ego_vehicles
+                    for idx_ego, ego_vehicle in enumerate(ego_vehicles.values()):
+                        # retrieve the current state of the ego vehicle
+                        state_current_ego = ego_vehicle.current_state
 
-                            if duration_planning <= step:
-                                # return if exceeds specified planning horizon
+                        # save to list of states for later creation of Trajectory object
+                        dict_idx_to_list_state[idx_ego].append(state_current_ego)
+
+                        # update the ego vehicles with solution trajectories
+                        try:
+                            trajectory_solution = solution.planning_problem_solutions[idx_ego].trajectory
+                            if len(trajectory_solution.state_list) <= time_step:
                                 return
+                            next_state = copy.deepcopy(trajectory_solution.state_list[time_step])
 
+                        except IndexError:
                             next_state = copy.deepcopy(state_current_ego)
-                            # ====== plug in your motion planner here
-                            # example motion planner which decelerates to full stop
-                            a = -5.0
-                            dt = 0.1
-                            if next_state.velocity > 0:
-                                v = next_state.velocity
-                                x, y = next_state.position
-                                o = next_state.orientation
 
-                                next_state.position = np.array([x + v * cos(o) * dt, y + v * sin(o) * dt])
-                                next_state.velocity += a * dt
-                            # ====== end of motion planner
+                        next_state.time_step = 1
+                        trajectory_ego = [next_state]
+                        ego_vehicle.set_planned_trajectory(trajectory_ego)
 
-                            # update the ego vehicle with new trajectory with only 1 state for the current step
-                            next_state.time_step = 1
-                            trajectory_ego = [next_state]
-                            ego_vehicle.set_planned_trajectory(trajectory_ego)
+                    if use_sumo_manager:
+                        # set the modified ego vehicles to synchronize in case of using SUMO Manager
+                        sumo_sim.ego_vehicles = ego_vehicles
 
-                        if use_sumo_manager:
-                            # set the modified ego vehicles to synchronize in case of using SUMO Manager
-                            sumo_sim.ego_vehicles = ego_vehicles
+                    sumo_sim.simulate_step()
 
-                        sumo_sim.simulate_step()
+            run_simulation()
 
-                run_simulation()
+        # retrieve the simulated scenario in CR format
+        simulated_scenario = sumo_sim.commonroad_scenarios_all_time_steps()
 
-            elif mode is SimulationOption.SOLUTION:
-                # simulation with given solution trajectory
+        # stop the simulation
+        sumo_sim.stop()
+        if use_sumo_manager:
+            sumo_interface.stop_simulator()
 
-                def run_simulation():
-                    ego_vehicles = sumo_sim.ego_vehicles
+        dict_idx_to_trajectory = {}
 
-                    for time_step in range(num_of_steps):
-                        if use_sumo_manager:
-                            ego_vehicles = sumo_sim.ego_vehicles
-                        for idx_ego, ego_vehicle in enumerate(ego_vehicles.values()):
-                            # retrieve the current state of the ego vehicle
-                            state_current_ego = ego_vehicle.current_state
+        if mode is not SimulationOption.WITHOUT_EGO:
+            for idx, list_states in dict_idx_to_list_state.items():
+                trajectory = create_trajectory_from_list_states(list_states)
+                dict_idx_to_trajectory[idx] = trajectory
 
-                            # save to list of states for later creation of Trajectory object
-                            dict_idx_to_list_state[idx_ego].append(state_current_ego)
-
-                            # update the ego vehicles with solution trajectories
-                            try:
-                                trajectory_solution = solution.planning_problem_solutions[idx_ego].trajectory
-                                if len(trajectory_solution.state_list) <= time_step:
-                                    return
-                                next_state = copy.deepcopy(trajectory_solution.state_list[time_step])
-
-                            except IndexError:
-                                next_state = copy.deepcopy(state_current_ego)
-
-                            next_state.time_step = 1
-                            trajectory_ego = [next_state]
-                            ego_vehicle.set_planned_trajectory(trajectory_ego)
-
-                        if use_sumo_manager:
-                            # set the modified ego vehicles to synchronize in case of using SUMO Manager
-                            sumo_sim.ego_vehicles = ego_vehicles
-
-                        sumo_sim.simulate_step()
-
-                run_simulation()
-
-            # retrieve the simulated scenario in CR format
-            simulated_scenario = sumo_sim.commonroad_scenarios_all_time_steps()
-
-            # stop the simulation
-            sumo_sim.stop()
-            if use_sumo_manager:
-                sumo_interface.stop_simulator()
-
-            dict_idx_to_trajectory = {}
-
-            if mode is not SimulationOption.WITHOUT_EGO:
-                for idx, list_states in dict_idx_to_list_state.items():
-                    trajectory = create_trajectory_from_list_states(list_states)
-                    dict_idx_to_trajectory[idx] = trajectory
-
-            return simulated_scenario, dict_idx_to_trajectory
+        return simulated_scenario, dict_idx_to_trajectory
 
     except Exception as e:
         warnings.warn(f"Unsuccessful simulation, trying again: {e}")
