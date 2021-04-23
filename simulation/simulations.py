@@ -24,8 +24,6 @@ import numpy as np
 from commonroad.scenario.obstacle import ObstacleType
 from commonroad.scenario.trajectory import Trajectory
 
-mpl.use('TkAgg')
-
 from config.sumo_config import SumoConf
 from sumocr.interface.sumo_simulation import SumoSimulation
 from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
@@ -217,8 +215,8 @@ def simulate_scenario(mode: SimulationOption,
 
             return simulated_scenario, dict_idx_to_trajectory
 
-        except Exception as e:
-            warnings.warn(f"Unsuccessful simulation, trying again: {e}")
+    except Exception as e:
+        warnings.warn(f"Unsuccessful simulation, trying again: {e}")
 
     if simulated_scenario is None:
         raise RuntimeError("Unexpected errors occurred during the simulation.")
