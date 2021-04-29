@@ -28,6 +28,7 @@ from config.sumo_config import SumoConf
 from sumocr.interface.sumo_simulation import SumoSimulation
 from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
 from sumocr.visualization.gif import create_gif
+from sumocr.sumo_docker.interface.docker_interface import SumoInterface
 
 from commonroad.scenario.scenario import Scenario
 from commonroad.planning.planning_problem import PlanningProblemSet
@@ -66,9 +67,6 @@ def simulate_scenario(mode: SimulationOption,
     :return: simulated scenario
     """
 
-#     if use_sumo_manager:
-#         raise NotImplementedError("Usage of SUMO Manager is not supported yet.")
-
     if num_of_steps is None:
         num_of_steps = conf.simulation_steps
 
@@ -77,12 +75,6 @@ def simulate_scenario(mode: SimulationOption,
     try:
         sumo_interface = None
         if use_sumo_manager:
-            try:
-                from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
-            except ImportError:
-                SumoInterface = None
-                raise ImportError("CommonRoad SUMO Manager not installed!")
-
             sumo_interface = SumoInterface(use_docker=True)
             sumo_sim = sumo_interface.start_simulator()
 
