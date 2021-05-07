@@ -1,0 +1,13 @@
+------ general description
+(title of the section) CommonRoad Interactive Scenarios
+(body) Interactive scenarios are scenarios in which other traffic participants react to the behavior of the ego vehicle. This is achieved by coupling CommonRoad with the SUMO traffic simulator.
+
+------ individual htmls
+1_tutorial_scenario_simulation.html
+Tutorial 01: Interactive Scenario Simulation
+This tutorial explains how are the interactive scenarios simulated.
+
+------ links
+repository:https://gitlab.lrz.de/tum-cps/commonroad-interactive-scenarios
+forum:https://commonroad.in.tum.de/forum/c/interactive-scenarios/15
+

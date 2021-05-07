@@ -29,22 +29,27 @@ This project uses Conda, thus it should be installed before proceeding with the 
    - [CommonRoad-SUMO Interface](https://gitlab.lrz.de/tum-cps/commonroad-sumo-interface)
    - [SUMO](https://sumo.dlr.de/docs/index.html)
 
-   If you have not installed SUMO, run
+   Install the package using the following command:
 
    ```bash
    bash install.sh -e cr37 --sumo
    ```
-   If you already have SUMO installed, run
-
-   ```bash
-   bash intall.sh -e cr37
-   ```
-
-   These commands will create an folder `install/`, pull all the dependencies and install them there.
+   It will create a folder `install/`, pull all the dependencies and install them there.
+   
+   
 
 4. Updating the environment variables
 
     If you have just installed SUMO, the `SUMO_PATH` environment variable has been written into the `~/.profile` file. To reach this variable from an IDE (e.g., PyCharm), you must **reboot your system**.
+    
+    *Alternatively*, you can choose to use the dockerized sumo installation instead of installing SUMO by the command```bash install.sh -e cr37``` . To use dockerized sumo simulation, you have to install [Docker](https://docs.docker.com/engine/install/ubuntu/) and follow the [postinstall instructions](https://docs.docker.com/engine/install/linux-postinstall/) as well, to ensure that **you can use the Docker without root privileges**.
+   
+   Run the following to check that your docker is successfully installed.
+   ```bash
+   docker run hello-world
+   ```
+   
+   The rest
 
 ## Usage
 
@@ -74,4 +79,3 @@ The `Main` and `Secondary` plots show the scenario with and without the ego vehi
    ```
 
    Then navigate to `install/sumo_interface/sumocr/visualization/gif.py`, in line 152, set writer to `imagemagick`.
-
