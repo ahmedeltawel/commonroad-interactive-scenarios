@@ -12,7 +12,7 @@ from commonroad.scenario.scenario import Scenario
 
 from common.simulation import simulate_scenario
 from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
-from sumocr.visualization.gif import create_gif
+from sumocr.visualization.video import create_video
 
 mpl.use('TkAgg')
 import os
@@ -106,11 +106,7 @@ def simulate_interactive_solution(interactive_scenario_folder: str,
         if output_folder_path is None:
             output_folder_path = os.path.dirname(solution_file)
         for idx, planning_problem in enumerate(planning_problem_set.planning_problem_dict.values()):
-            create_gif(simulated_scenario_with_ego, output_folder_path,
-                       planning_problem=planning_problem,
-                       trajectory=solution.planning_problem_solutions[idx].trajectory,
-                       secondary_scenario=simulated_scenario_without_ego,
-                       follow_ego=True)
+            create_video(simulated_scenario_with_ego, output_folder_path, follow_ego=True)
 
     return simulated_scenario_without_ego, simulated_scenario_with_ego
 

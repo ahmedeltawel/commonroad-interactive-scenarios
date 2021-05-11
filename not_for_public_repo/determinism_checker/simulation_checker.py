@@ -15,7 +15,7 @@ from commonroad.scenario.obstacle import DynamicObstacle
 from commonroad.scenario.scenario import Scenario
 from commonroad.visualization.draw_dispatch_cr import draw_object
 from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
-from sumocr.visualization.gif import create_gif
+from sumocr.visualization.video import create_video
 
 from common.simulation import simulate_scenario
 
@@ -175,6 +175,6 @@ def resimulate_scenario(scenario_folder_path: str,
         simulated_scenarios.update({simulation_id: simulated_scenario})
 
         if creating_video:
-            create_gif(simulated_scenario, output_folder_path)
+            create_video(simulated_scenario, output_folder_path)
 
     return simulated_scenarios
