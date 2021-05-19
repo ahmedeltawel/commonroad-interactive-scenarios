@@ -151,14 +151,10 @@ def simulate_scenario(mode: SimulationOption,
                     state_current_ego = ego_vehicle.current_state
 
                     # update the ego vehicles with solution trajectories
-                    try:
-                        trajectory_solution = solution.planning_problem_solutions[idx_ego].trajectory
-                        if len(trajectory_solution.state_list) <= time_step:
-                            return
-                        next_state = copy.deepcopy(trajectory_solution.state_list[time_step])
-
-                    except IndexError:
-                        next_state = copy.deepcopy(state_current_ego)
+                    trajectory_solution = solution.planning_problem_solutions[idx_ego].trajectory
+                    if len(trajectory_solution.state_list) <= time_step:
+                        return
+                    next_state = copy.deepcopy(trajectory_solution.state_list[time_step])
 
                     next_state.time_step = 1
                     trajectory_ego = [next_state]
@@ -186,8 +182,6 @@ def simulate_scenario(mode: SimulationOption,
 
     return simulated_scenario, ego_vechicles
 
-    if simulated_scenario is None:
-        raise RuntimeError("Unexpected errors occurred during the simulation.")
 
 
 def simulate_without_ego(interactive_scenario_path: str,
