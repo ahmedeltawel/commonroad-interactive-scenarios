@@ -9,6 +9,7 @@ from sumocr.sumo_config import DefaultConfig
 
 migration_dict_replace = {
     "veh_params" : {
+        "motorcycle": ObstacleType.MOTORCYCLE,
         "passenger": ObstacleType.CAR,
         "truck": ObstacleType.TRUCK,
         "bus": ObstacleType.BUS,
@@ -41,7 +42,7 @@ def migrate_config_file(path: str):
 
     conf.lateral_resolution = 0.5
     conf.scenarios_path = None
-    # replace_veh_params(conf)
+    replace_veh_params(conf)
     # add_country_code(conf)
     # if hasattr(conf, "scenarios_path"):
     #     delattr(conf.__class__, "scenarios_path")

@@ -16,7 +16,7 @@ from config import CONFIG_TYPE, get_interactive_scenario_configuration, CRSumoCo
 
 mpl.use('TkAgg')
 
-from crdesigner.conversion.sumo_map.cr2sumo import CR2SumoMapConverter
+from crdesigner.conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
 from sumocr.maps.util import *
 import numpy as np
 
@@ -40,9 +40,6 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "-o", "--output", type=str, default="./example_scenarios/output", help="Output folder path",
-    )
-    parser.add_argument(
-        "-v", "--video", action="store_true", default=False, help="Create video",
     )
     parser.add_argument(
         "-c", "--config", type=CONFIG_TYPE, default=CONFIG_TYPE.SUMO_CONFIG_1, choices=list(CONFIG_TYPE),
@@ -101,8 +98,7 @@ def convert_to_sumo_files(scenario_file: str,
 
 def convert_scenario(cr_scenario_path: str,
                      output_folder_path: str,
-                     config_type: CONFIG_TYPE,
-                     creating_video: bool = False) -> Tuple[bool, str]:
+                     config_type: CONFIG_TYPE) -> Tuple[bool, str]:
     """
     Generates interactive scenarios from CR maps
     :param cr_maps_folder_path: Path to the folder which contains the CR scenarios
@@ -112,8 +108,6 @@ def convert_scenario(cr_scenario_path: str,
     when no interesting ego vehicle has been found in the generated traffic
     :return Num of generated scenarios
     """
-    if creating_video:
-        raise NotImplementedError()
    
     benchmark_id = ScenarioID.from_benchmark_id(os.path.splitext(os.path.basename(cr_scenario_path))[0],
                                                 scenario_version="2020a")
@@ -132,5 +126,4 @@ if __name__ == '__main__':
     arguments = convert_scenario_argsparser().parse_args(sys.argv[1:])
     convert_scenario(cr_scenario_path=arguments.cr_scneario,
                      output_folder_path=arguments.output,
-                     config_type=arguments.config,
-                     creating_video=arguments.video)
+                     config_type=arguments.config)
