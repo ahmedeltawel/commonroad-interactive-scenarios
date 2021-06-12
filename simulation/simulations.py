@@ -23,7 +23,7 @@ import numpy as np
 from commonroad.prediction.prediction import TrajectoryPrediction
 from commonroad.scenario.trajectory import Trajectory
 
-from config.sumo_config import SumoConf
+from sumocr.sumo_config.default import DefaultConfig
 from sumocr.interface.ego_vehicle import EgoVehicle
 from sumocr.interface.sumo_simulation import SumoSimulation
 from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
@@ -32,7 +32,7 @@ from sumocr.sumo_docker.interface.docker_interface import SumoInterface
 
 from commonroad.scenario.scenario import Scenario
 from commonroad.planning.planning_problem import PlanningProblemSet
-from commonroad.common.solution import Solution
+from commonroad.common.solution import Solution, PlanningProblemSolution
 from commonroad.common.file_reader import CommonRoadFileReader
 
 
@@ -44,7 +44,7 @@ class SimulationOption(Enum):
 
 
 def simulate_scenario(mode: SimulationOption,
-                      conf: SumoConf,
+                      conf: DefaultConfig,
                       scenario_wrapper: AbstractScenarioWrapper,
                       scenario_path: str,
                       num_of_steps: int = None,
@@ -147,13 +147,8 @@ def simulate_scenario(mode: SimulationOption,
                 if use_sumo_manager:
                     ego_vehicles = sumo_sim.ego_vehicles
                 for idx_ego, ego_vehicle in enumerate(ego_vehicles.values()):
-                    # retrieve the current state of the ego vehicle
-                    state_current_ego = ego_vehicle.current_state
-
                     # update the ego vehicles with solution trajectories
                     trajectory_solution = solution.planning_problem_solutions[idx_ego].trajectory
-                    if len(trajectory_solution.state_list) <= time_step:
-                        return
                     next_state = copy.deepcopy(trajectory_solution.state_list[time_step])
 
                     next_state.time_step = 1
@@ -166,6 +161,7 @@ def simulate_scenario(mode: SimulationOption,
 
                 sumo_sim.simulate_step()
 
+        check_trajectories(solution, planning_problem_set, conf)
         run_simulation()
 
     # retrieve the simulated scenario in CR format
@@ -315,11 +311,23 @@ def simulate_with_planner(interactive_scenario_path: str,
     return scenario_with_planner, planning_problem_set, ego_vehicles
 
 
-def load_sumo_configuration(interactive_scenario_path: str) -> SumoConf:
+def load_sumo_configuration(interactive_scenario_path: str) -> DefaultConfig:
     with open(os.path.join(interactive_scenario_path, "simulation_config.p"), "rb") as input_file:
         conf = pickle.load(input_file)
 
     return conf
+
+
+def check_trajectories(solution: Solution, pps: PlanningProblemSet, config: DefaultConfig):
+    assert len(set(solution.planning_problem_ids) - set(pps.planning_problem_dict.keys())) == 0, \
+        f"Provided solution trajectories with IDs {solution.planning_problem_ids} don't match " \
+        f"planning problem IDs{list(pps.planning_problem_dict.keys())}"
+
+    for s in solution.planning_problem_solutions:
+        if s.trajectory.final_state.time_step < config.simulation_steps:
+            raise ValueError(f"The simulation requires {config.simulation_steps}"
+                             f"states, but the solution only provides"
+                             f"{s.trajectory.final_state.time_step} time steps!")
 
 
 def create_gif_for_simulation(scenario_with_planner: Scenario, output_folder_path: str,

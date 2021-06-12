@@ -1,7 +1,10 @@
 """
 Default configuration for CommonRoad to SUMO map converter
 """
-from commonroad.scenario.scenario import ScenarioID
+from typing import Dict, Union
+
+from commonroad.common.util import Interval
+from commonroad.scenario.obstacle import ObstacleType
 from sumocr.sumo_config.default import DefaultConfig
 
 from .cr_sumo_config_base import CRSumoConfigBase
@@ -26,7 +29,7 @@ class CRSumoConfig_1(CRSumoConfigBase):
         self.simulation_steps = 200  # number of simulated (and synchronized) time steps
         self.with_sumo_gui = False
         # lateral resolution > 0 enables SUMO'S sublane model, see https://sumo.dlr.de/docs/Simulation/SublaneModel.html
-        self.lateral_resolution = 0
+        self.lateral_resolution = 1.0
         # re-compute orientation when fetching vehicles from SUMO.
         # Avoids lateral "sliding" at lane changes at computational costs
         self.compute_orientation = True
@@ -65,76 +68,78 @@ class CRSumoConfig_1(CRSumoConfigBase):
         # random seed for deterministic sumo traffic generation
         self.random_seed: int = 1234
 
+        # probability distribution of different vehicle classes. Do not need to sum up to 1.
+        veh_distribution = {
+            ObstacleType.CAR: 4,
+            ObstacleType.TRUCK: 0.8,
+            ObstacleType.BUS: 0.3,
+            ObstacleType.BICYCLE: 0.2,
+            ObstacleType.PEDESTRIAN: 0
+        }
+
+        # default vehicle attributes to determine edge restrictions
+
         # vehicle attributes
-        self.veh_params = {
-            # length
+        veh_params = {
+            # maximum length
             'length': {
-                'passenger': 5.0,
-                'truck': 7.5,
-                'bus': 12.4,
-                'motorcycle': 2.5,
-                'bicycle': 2.,
-                'pedestrian': 0.415
+                ObstacleType.CAR: 5.0,
+                ObstacleType.TRUCK: 7.5,
+                ObstacleType.BUS: 12.4,
+                ObstacleType.BICYCLE: 2.,
+                ObstacleType.PEDESTRIAN: 0.415
             },
-            # width
+            # maximum width
             'width': {
-                'passenger': 2.0,
-                'truck': 2.6,
-                'bus': 2.7,
-                'motorcycle': 0.8,
-                'bicycle': 0.68,
-                'pedestrian': 0.678
+                ObstacleType.CAR: 2.0,
+                ObstacleType.TRUCK: 2.6,
+                ObstacleType.BUS: 2.7,
+                ObstacleType.BICYCLE: 0.68,
+                ObstacleType.PEDESTRIAN: 0.678
             },
             'minGap': {
-                'passenger': 1.0,
-                'truck': 2.5,
-                'bus': 2.5,
-                'motorcycle': 2.5,
+                ObstacleType.CAR: 2.5,
+                ObstacleType.TRUCK: 2.5,
+                ObstacleType.BUS: 2.5,
                 # default 0.5
-                'bicycle': 1.,
-                'pedestrian': 0.25
+                ObstacleType.BICYCLE: 1.,
+                ObstacleType.PEDESTRIAN: 0.25
             },
             'accel': {
                 # default 2.9 m/s²
-                'passenger': 2.9,
+                ObstacleType.CAR: Interval(1.8, 2.9),
                 # default 1.3
-                'truck': 1.3,
+                ObstacleType.TRUCK: Interval(1, 1.5),
                 # default 1.2
-                'bus': 1.2,
-                # default 2.5
-                'motorcycle': 2.5,
+                ObstacleType.BUS: Interval(1, 1.4),
                 # default 1.2
-                'bicycle': 1.2,
+                ObstacleType.BICYCLE: Interval(1, 1.4),
                 # default 1.5
-                'pedestrian': 1.5,
+                ObstacleType.PEDESTRIAN: Interval(1.3, 1.7),
             },
             'decel': {
                 # default 7.5 m/s²
-                'passenger': 7.5,
+                ObstacleType.CAR: Interval(4, 6.5),
                 # default 4
-                'truck': 4,
+                ObstacleType.TRUCK: Interval(3, 4.5),
                 # default 4
-                'bus': 4,
-                # default 6
-                'motorcycle': 6,
+                ObstacleType.BUS: Interval(3, 4.5),
                 # default 3
-                'bicycle': 3,
+                ObstacleType.BICYCLE: Interval(2.5, 3.5),
                 # default 2
-                'pedestrian': 2,
+                ObstacleType.PEDESTRIAN: Interval(1.5, 2.5),
             },
             'maxSpeed': {
                 # default 180/3.6 m/s
-                'passenger': 180 / 3.6,
+                ObstacleType.CAR: 180 / 3.6,
                 # default 130/3.6
-                'truck': 130 / 3.6,
+                ObstacleType.TRUCK: 130 / 3.6,
                 # default 85/3.6
-                'bus': 85 / 3.6,
-                # default 130/3.6
-                'motorcycle': 130 / 3.6,
+                ObstacleType.BUS: 85 / 3.6,
                 # default 85/3.6
-                'bicycle': 25 / 3.6,
+                ObstacleType.BICYCLE: 25 / 3.6,
                 # default 5.4/3.6
-                'pedestrian': 5.4 / 3.6,
+                ObstacleType.PEDESTRIAN: 5.4 / 3.6,
             }
         }
 
@@ -149,31 +154,18 @@ class CRSumoConfig_1(CRSumoConfigBase):
         'lcCooperative': willingness for performing cooperative lane changing. Lower values result in reduced cooperation. sumo_default: 1.0
         'sigma': [0-1] driver imperfection (0 denotes perfect driving. sumo_default: 0.5
         'speedDev': [0-1] deviation of the speedFactor. sumo_default 0.1
-        'speedFactor': [0-1] The vehicles expected multiplicator for lane speed limits. sumo_default 1.0
+        'lcMaxSpeedLatStanding': max. lateral speed when vehicle is standing (avoids lateral sliding in standstill)
         """
-        self.driving_params = {
-            'lcStrategic': 10,
-            'lcSpeedGain': 3,
-            'lcCooperative': 1,
-            'sigma': 0.5,
-            'speedDev': 0.1,
-            'speedFactor': 0.9,
-            'lcImpatience': 0,
-            'impatience': 0
+        driving_params = {
+            'lcStrategic': Interval(10, 100),
+            'lcSpeedGain': Interval(3, 20),
+            'lcCooperative': Interval(1, 3),
+            'sigma': Interval(0.5, 0.65),
+            'speedDev': Interval(0.1, 0.2),
+            'speedFactor': Interval(0.9, 1.1),
+            'lcImpatience': Interval(0, 0.5),
+            'impatience': Interval(0, 0.5),
+            'lcMaxSpeedLatStanding': 0,
+            'lcSigma': Interval(0.1, 0.2),
+            'lcKeepRight': Interval(0.8, 0.9)
         }
-
-    @classmethod
-    def from_scenario_name(cls, scenario_name: str):
-        """Initialize the config with a scenario name"""
-        obj = cls()
-        obj.scenario_name = scenario_name + f"-{obj.config_id}"
-        return obj
-
-    @classmethod
-    def from_dict(cls, param_dict: dict):
-        """Initialize config from dictionary"""
-        obj = cls()
-        for param, value in param_dict.items():
-            if hasattr(obj, param):
-                setattr(obj, param, value)
-        return obj

@@ -72,22 +72,8 @@ class CRSumoConfigBase(DefaultConfig):
         'lcCooperative': willingness for performing cooperative lane changing. Lower values result in reduced cooperation. sumo_default: 1.0
         'sigma': [0-1] driver imperfection (0 denotes perfect driving. sumo_default: 0.5
         'speedDev': [0-1] deviation of the speedFactor. sumo_default 0.1
+        'speedDev': [0-1] deviation of the speedFactor. sumo_default 0.1
         'speedFactor': [0-1] The vehicles expected multiplicator for lane speed limits. sumo_default 1.0
         """
         self.driving_params = None
 
-    @classmethod
-    def from_scenario_name(cls, scenario_name: str):
-        """Initialize the config with a scenario name"""
-        obj = cls()
-        obj.scenario_name = scenario_name
-        return obj
-
-    @classmethod
-    def from_dict(cls, param_dict: dict):
-        """Initialize config from dictionary"""
-        obj = cls()
-        for param, value in param_dict.items():
-            if hasattr(obj, param):
-                setattr(obj, param, value)
-        return obj

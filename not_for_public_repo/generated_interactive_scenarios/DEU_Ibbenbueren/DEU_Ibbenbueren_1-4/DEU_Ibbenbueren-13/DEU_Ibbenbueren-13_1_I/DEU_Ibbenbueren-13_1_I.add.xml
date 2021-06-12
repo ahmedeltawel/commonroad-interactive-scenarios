@@ -1,8 +1,0 @@
-<additional>
-    <vTypeDistribution id="DEFAULT_VEHTYPE">
-        <vType accel="2.79" decel="4.42" guiShape="passenger" id="passenger" lcCooperative="2.04" lcSpeedGain="4.06" lcStrategic="1371.42" length="5.0" maxSpeed="50.0" minGap="2.5" probability="4" sigma="0.51" speedDev="0.11" speedFactor="0.97" vClass="passenger" width="2.0"/>
-        <vType accel="1.06" decel="3.97" guiShape="truck" id="truck" lcCooperative="1.97" lcSpeedGain="16.32" lcStrategic="6634.56" length="7.5" maxSpeed="36.11111111111111" minGap="2.5" probability="0.3" sigma="0.58" speedDev="0.11" speedFactor="0.91" vClass="truck" width="2.6"/>
-        <vType accel="1.32" decel="4.10" guiShape="bus" id="bus" lcCooperative="2.07" lcSpeedGain="18.02" lcStrategic="6320.30" length="12.4" maxSpeed="23.61111111111111" minGap="2.5" probability="0.1" sigma="0.54" speedDev="0.13" speedFactor="1.00" vClass="bus" width="2.7"/>
-        <vType accel="1.01" decel="3.10" guiShape="bicycle" id="bicycle" lcCooperative="1.02" lcSpeedGain="3.45" lcStrategic="4856.94" length="2.0" maxSpeed="6.944444444444445" minGap="1.0" probability="0.15" sigma="0.57" speedDev="0.14" speedFactor="1.01" vClass="bicycle" width="0.68"/>
-    </vTypeDistribution>
-</additional>
