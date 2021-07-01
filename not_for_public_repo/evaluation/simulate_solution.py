@@ -11,9 +11,9 @@ from commonroad.common.solution import CommonRoadSolutionReader
 from commonroad.scenario.scenario import Scenario
 
 from common.simulation import simulate_scenario
-from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
+from sumocr.maps.sumo_scenario import ScenarioWrapper
 from sumocr.visualization.video import create_video
-
+ScenarioWrapper()
 mpl.use('TkAgg')
 import os
 
@@ -75,10 +75,10 @@ def simulate_interactive_solution(interactive_scenario_folder: str,
     scenario_file = os.path.join(interactive_scenario_folder, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
-    scenario_wrapper = AbstractScenarioWrapper()
+    scenario_wrapper = ScenarioWrapper()
     scenario_wrapper.sumo_cfg_file = os.path.join(interactive_scenario_folder,
                                                   f"{conf.scenario_name}.sumo.cfg")
-    scenario_wrapper.lanelet_network = scenario.lanelet_network
+    scenario_wrapper.init_ = scenario
 
     solution = CommonRoadSolutionReader.open(solution_file)
 

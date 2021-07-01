@@ -14,7 +14,8 @@ from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.scenario.obstacle import DynamicObstacle
 from commonroad.scenario.scenario import Scenario
 from commonroad.visualization.draw_dispatch_cr import draw_object
-from sumocr.maps.scenario_wrapper import AbstractScenarioWrapper
+from sumocr.maps.sumo_scenario import ScenarioWrapper
+from sumocr.maps.sumo_scenario import ScenarioWrapper
 from sumocr.visualization.video import create_video
 
 from common.simulation import simulate_scenario
@@ -158,10 +159,10 @@ def resimulate_scenario(scenario_folder_path: str,
     scenario_file = os.path.join(scenario_folder_path, f"{conf.scenario_name}.cr.xml")
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
 
-    scenario_wrapper = AbstractScenarioWrapper()
+    scenario_wrapper = ScenarioWrapper()
     scenario_wrapper.sumo_cfg_file = os.path.join(scenario_folder_path,
                                                   f"{conf.scenario_name}.sumo.cfg")
-    scenario_wrapper.lanelet_network = scenario.lanelet_network
+    scenario_wrapper.initial_scenario = scenario
 
     simulated_scenarios = dict()  # store simulated example_scenarios for every simulation
 
