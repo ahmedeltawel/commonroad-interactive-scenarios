@@ -15,7 +15,7 @@ import os
 import pickle
 from enum import unique, Enum
 from math import sin, cos
-from typing import Tuple, Dict, Optional
+from typing import Tuple, Dict, Optional, Union
 
 import numpy as np
 from sumocr.sumo_config.default import DefaultConfig
@@ -171,7 +171,8 @@ def simulate_scenario(mode: SimulationOption,
 def simulate_without_ego(interactive_scenario_path: str,
                          output_folder_path: str = None,
                          create_video: bool = False,
-                         use_sumo_manager: bool = False) -> Tuple[Scenario, PlanningProblemSet]:
+                         use_sumo_manager: bool = False,
+                         num_of_steps=None) -> Tuple[Scenario, PlanningProblemSet]:
     """
     Simulates an interactive scenario without ego vehicle
 
@@ -179,6 +180,7 @@ def simulate_without_ego(interactive_scenario_path: str,
     :param output_folder_path: path to the output folder
     :param create_video: indicates whether to create a mp4 of the simulated scenario
     :param use_sumo_manager: indicates whether to use the SUMO Manager
+    :param num_of_steps: max. number of simulated time steps
     :return: Tuple of the simulated scenario and the planning problem set
     """
     conf = load_sumo_configuration(interactive_scenario_path)
@@ -189,6 +191,7 @@ def simulate_without_ego(interactive_scenario_path: str,
     scenario_wrapper.sumo_cfg_file = os.path.join(interactive_scenario_path, f"{conf.scenario_name}.sumo.cfg")
     scenario_wrapper.initial_scenario = scenario
 
+    num_of_steps = conf.simulation_steps if num_of_steps is None else num_of_steps
     # simulation without ego vehicle
     simulated_scenario_without_ego, _ = simulate_scenario(SimulationOption.WITHOUT_EGO, conf,
                                                           scenario_wrapper,
