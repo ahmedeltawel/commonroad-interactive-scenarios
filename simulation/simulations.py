@@ -196,7 +196,7 @@ def simulate_without_ego(interactive_scenario_path: str,
     simulated_scenario_without_ego, _ = simulate_scenario(SimulationOption.WITHOUT_EGO, conf,
                                                           scenario_wrapper,
                                                           interactive_scenario_path,
-                                                          num_of_steps=conf.simulation_steps,
+                                                          num_of_steps=num_of_steps,
                                                           planning_problem_set=planning_problem_set,
                                                           solution=None,
                                                           use_sumo_manager=use_sumo_manager)
