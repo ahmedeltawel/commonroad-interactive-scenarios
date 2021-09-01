@@ -64,14 +64,14 @@ def simulate_scenario(mode: SimulationOption,
         num_of_steps = conf.simulation_steps
 
     sumo_interface = None
-    # if use_sumo_manager:
-    #     sumo_interface = SumoInterface(use_docker=True)
-    #     sumo_sim = sumo_interface.start_simulator()
-    #
-    #     sumo_sim.send_sumo_scenario(conf.scenario_name,
-    #                                 scenario_path)
-    # else:
-    sumo_sim = SumoSimulation()
+    if use_sumo_manager:
+        sumo_interface = SumoInterface(use_docker=True)
+        sumo_sim = sumo_interface.start_simulator()
+
+        sumo_sim.send_sumo_scenario(conf.scenario_name,
+                                    scenario_path)
+    else:
+        sumo_sim = SumoSimulation()
 
     # initialize simulation
     sumo_sim.initialize(conf, scenario_wrapper, None)
