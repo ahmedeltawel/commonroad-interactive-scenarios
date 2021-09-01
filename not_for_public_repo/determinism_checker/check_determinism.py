@@ -2,13 +2,14 @@
 Check the determinism of example_scenarios by comparing difference of state values
 """
 import argparse
+import glob
 import os
 import sys
 from pathlib import Path
 
-from determinism_checker.route_file_checker import rou_file_determinism_check
-from determinism_checker.simulation_checker import resimulate_scenario, plot_vehicle_trajectories, \
+from not_for_public_repo.determinism_checker.simulation_checker import resimulate_scenario, plot_vehicle_trajectories, \
     obstacle_determinism_check
+from not_for_public_repo.determinism_checker.route_file_checker import rou_file_determinism_check
 
 __author__ = "Peter Kocsis, Yueming Li"
 __copyright__ = "TUM Cyber-Physical System Group"
@@ -101,13 +102,24 @@ def check_determinism(scenario_file_path: str,
     if is_deterministic:
         print("The scenario is deterministic.")
 
-    return is_deterministic
+    return is_deterministic, is_rou_files_deterministic, is_vehicle_deterministic
 
 
 if __name__ == '__main__':
-    arguments = check_determinism_argsparser().parse_args(sys.argv[1:])
-    check_determinism(scenario_file_path=arguments.scenario_folder_path,
-                      num_of_simulations=arguments.num_of_simulations,
-                      output_folder_path=arguments.output_folder_path,
-                      use_sumo_manager=arguments.sumo_manager,
-                      creating_video=arguments.video)
+    # arguments = check_determinism_argsparser().parse_args(sys.argv[1:])
+    foldername_out = "/home/klischat/Downloads/competition_scenarios_new/interactive"
+    dir_list = []
+    for (dirpath, dirnames, filenames) in os.walk(foldername_out):
+        dir_list.extend(dirnames)
+        break
+
+    deterministic = []
+    for file in dir_list[:20]:
+        deterministic.append(check_determinism(scenario_file_path=os.path.join(foldername_out, file),
+                          num_of_simulations=2,
+                          output_folder_path=None,
+                          use_sumo_manager=False,
+                          creating_video=False)[2])
+
+
+    print(deterministic.count(False), "not deterministic out of", len(deterministic))

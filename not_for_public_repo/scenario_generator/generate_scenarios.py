@@ -14,7 +14,9 @@ from typing import Tuple
 
 import matplotlib as mpl
 from commonroad.scenario.scenario import ScenarioID
-from crmapconverter.sumo_map.cr2sumo import CR2SumoMapConverter
+from crdesigner.conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
+from scenario_factory.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
+
 from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
 # load parameters
 from scenario_generation.config_files.scenario_config import ScenarioConfig
