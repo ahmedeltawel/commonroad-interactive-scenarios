@@ -74,7 +74,7 @@ def simulate_scenario(mode: SimulationOption,
         sumo_sim = SumoSimulation()
 
     # initialize simulation
-    sumo_sim.initialize(conf, scenario_wrapper, None)
+    sumo_sim.initialize(conf, scenario_wrapper, planning_problem_set=planning_problem_set)
 
     if mode is SimulationOption.WITHOUT_EGO:
         # simulation without ego vehicle
