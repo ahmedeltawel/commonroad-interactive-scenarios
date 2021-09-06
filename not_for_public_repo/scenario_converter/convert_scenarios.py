@@ -4,7 +4,7 @@ Script which converts a static CommonRoad scenario with interactive SUMO scenari
 import argparse
 import glob
 import pickle
-from multiprocessing import Pool
+import sys
 
 import matplotlib as mpl
 
@@ -12,13 +12,11 @@ from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
 from commonroad.scenario.scenario import ScenarioID, Scenario
 from crdesigner.conversion.sumo_map.config import SumoConfig
-from simulation.simulations import simulate_without_ego
 
 mpl.use('TkAgg')
 
 from crdesigner.conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
 from sumocr.maps.util import *
-import numpy as np
 
 # load parameters
 
@@ -35,11 +33,11 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
     """Returns a parser for the script's arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-cr", "--cr_scneario", type=str, default="./example_scenarios/cr_scenario/DEU_A9-2_1_T-1.xml",
-        help="Path to the CommonRoad scenario to be converted"
+        "-i", "--in_path", type=str, default="./example_scenarios/cr_scenario/",
+        help="Path to folder with the CommonRoad scenarios to be converted"
     )
     parser.add_argument(
-        "-o", "--output", type=str, default="./example_scenarios/output", help="Output folder path",
+        "-o", "--out_path", type=str, default="./example_scenarios/output", help="Output folder path",
     )
     return parser
 
@@ -99,7 +97,6 @@ def convert_to_sumo_files(scenario_file: str,
 
 def convert_scenario(cr_scenario_path: str,
                      output_folder_path: str,
-                     config_type,
                      conf=None) -> bool:
     """
     Generates interactive scenarios from CR maps
@@ -116,14 +113,12 @@ def convert_scenario(cr_scenario_path: str,
 
 
 if __name__ == '__main__':
-    in_path = ""
-    out_path = ""
-    out_path_simulated = ""
-    for scenario_file in glob.glob(os.path.join(in_path, "*.xml")):
+    arguments = convert_scenario_argsparser().parse_args(sys.argv[1:])
+
+    for scenario_file in glob.glob(os.path.join(arguments.in_path, "*.xml")):
         try:
             convert_scenario(cr_scenario_path=scenario_file,
-                             output_folder_path=out_path,
-                             config_type=None,
+                             output_folder_path=arguments.out_path,
                              conf=DefaultConfig())
         except:
             continue
