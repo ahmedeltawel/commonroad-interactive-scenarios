@@ -12,6 +12,7 @@ from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
 from commonroad.scenario.scenario import ScenarioID, Scenario
 from crdesigner.conversion.sumo_map.config import SumoConfig
+from simulation.simulations import simulate_with_planner
 
 mpl.use('TkAgg')
 
@@ -64,10 +65,10 @@ def convert_to_sumo_files(scenario_file: str,
     converter_config = SumoConfig()
     converter_config.scenario_name = str(scenario.scenario_id)
     converter_config.country_id = scenario.scenario_id.country_id
-    converter = CR2SumoMapConverter(scenario.lanelet_network, converter_config)
+    converter = CR2SumoMapConverter(scenario, converter_config)
     converter.scenario_name = conf.scenario_name
     print(f'Write SUMO files for {scenario_file}')
-    conversion_possible = converter.convert_scenario_to_net_file(scenario, output_folder)
+    conversion_possible = converter.create_sumo_files(output_folder, traffic_from_trajectories=True)
 
     # save the reduced CR scenario
     reduce_scenario(scenario)
@@ -90,6 +91,14 @@ def convert_to_sumo_files(scenario_file: str,
 
     # Save the config
     with open(os.path.join(output_folder, "simulation_config.p"), 'wb') as f:
+        goal_times = [state.time_step for pp_id, pp in planning_problem_set.planning_problem_dict.items()
+                      for state in pp.goal.state_list if hasattr(state, "time_step")]
+        if len(goal_times) > 0:
+            conf.simulation_steps = max(goal_times, key=lambda time_interval: time_interval.end).end
+            print(conf.simulation_steps)
+        else:
+            conf.simulation_steps = max(obs.prediction.final_time_step for obs in scenario.obstacles)
+
         pickle.dump(conf, f)
 
     return converter
