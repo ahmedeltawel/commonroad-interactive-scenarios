@@ -12,7 +12,6 @@ from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
 from commonroad.scenario.scenario import ScenarioID, Scenario
 from crdesigner.conversion.sumo_map.config import SumoConfig
-from simulation.simulations import simulate_with_planner
 
 mpl.use('TkAgg')
 
@@ -54,10 +53,21 @@ def convert_to_sumo_files(scenario_file: str,
 
     # load CR scenario and translate to origo
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
-    conf.country_id = scenario.scenario_id.country_id
     scenario.scenario_id.obstacle_behavior = "I"
+
+    # adapt config file
+    conf.country_id = scenario.scenario_id.country_id
     conf.scenario_name = str(scenario.scenario_id)
     conf.presimulation_steps = 0
+    conf.dt = scenario.dt
+    goal_times = [state.time_step for pp_id, pp in planning_problem_set.planning_problem_dict.items()
+                  for state in pp.goal.state_list if hasattr(state, "time_step")]
+    if len(goal_times) > 0:
+        conf.simulation_steps = max(goal_times, key=lambda time_interval: time_interval.end).end
+        print(conf.simulation_steps)
+    else:
+        conf.simulation_steps = max(obs.prediction.final_time_step for obs in scenario.obstacles)
+
     output_folder = os.path.join(output_folder_path, conf.scenario_name)
     os.makedirs(output_folder, exist_ok=True)
 
@@ -91,14 +101,6 @@ def convert_to_sumo_files(scenario_file: str,
 
     # Save the config
     with open(os.path.join(output_folder, "simulation_config.p"), 'wb') as f:
-        goal_times = [state.time_step for pp_id, pp in planning_problem_set.planning_problem_dict.items()
-                      for state in pp.goal.state_list if hasattr(state, "time_step")]
-        if len(goal_times) > 0:
-            conf.simulation_steps = max(goal_times, key=lambda time_interval: time_interval.end).end
-            print(conf.simulation_steps)
-        else:
-            conf.simulation_steps = max(obs.prediction.final_time_step for obs in scenario.obstacles)
-
         pickle.dump(conf, f)
 
     return converter
