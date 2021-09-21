@@ -11,11 +11,9 @@ import matplotlib as mpl
 from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
 from commonroad.scenario.scenario import ScenarioID, Scenario
-from crdesigner.conversion.sumo_map.config import SumoConfig
+from crdesigner.map_conversion.sumo_map.config import SumoConfig
 
-mpl.use('TkAgg')
-
-from crdesigner.conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
+from crdesigner.map_conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
 from sumocr.maps.util import *
 
 # load parameters

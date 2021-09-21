@@ -14,7 +14,7 @@ from typing import Tuple
 
 import matplotlib as mpl
 from commonroad.scenario.scenario import ScenarioID
-from crdesigner.conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
+from crdesigner.map_conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
 from scenario_factory.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
 
 from scenario_generation.config_files.cr2sumo_map_config import CR2SumoNetConfig_edited
@@ -175,7 +175,7 @@ def generate_scenarios(cr_maps_folder_path: str,
             # conversion from CommonRoad to SUMO map
             sumo_net_path = os.path.join(dir_path, location_name + '-' + str(map_nr) + ".net.xml")
             cr2sumo_converter = CR2SumoMapConverter.from_file(map_file, cr2net_conf)
-            cr2sumo_converter.convert_to_net_file(dir_path)
+            cr2sumo_converter.create_sumo_files(dir_path)
             logger.info(f'write map to path {map_file}')
             conversion_possible = cr2sumo_converter.merge_intermediate_files(sumo_net_path,
                                                                              cleanup=False)

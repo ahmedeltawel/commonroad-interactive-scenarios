@@ -329,9 +329,6 @@ def create_video_for_simulation(scenario_with_planner: Scenario, output_folder_p
         print("Output folder not specified, skipping mp4 generation.")
         return
 
-    # create list of planning problems and trajectories
-    list_planning_problems = []
-
     # create mp4 animation
     create_video(scenario_with_planner,
                  output_folder_path,
