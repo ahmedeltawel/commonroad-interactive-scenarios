@@ -1,9 +1,11 @@
 import glob
 import os
 import pickle
+from copy import deepcopy
 
 from commonroad.scenario.obstacle import ObstacleType
 from commonroad.scenario.scenario import ScenarioID
+from configHighway import SumoConfigHighway
 from simulation.simulations import load_sumo_configuration
 from sumocr.sumo_config import DefaultConfig
 
@@ -51,10 +53,43 @@ def migrate_config_file(path: str):
     return conf
 
 
+def migrate_competition(path):
+    conf = deepcopy(DefaultConfig())
+    assert path.endswith(".p")
+    with open(path, "rb") as input_file:
+        conf_load = pickle.load(input_file)
+
+    # print(conf_load.__dict__)
+    for attr in dir(conf):
+        if attr.startswith('__') or callable(getattr(conf, attr)):
+            continue
+        setattr(conf, attr, getattr(conf_load, attr))
+
+    conf.scenarios_path = None
+    del conf._abc_impl
+    # print(conf.__dict__)
+    return conf
+
 if __name__ == "__main__":
-    interactive_scenario_path = "/home/klischat/GIT_REPOS/commonroad-scenarios-dev/scenarios"
+    interactive_scenario_path = "/home/klischat/Downloads/competition_scenarios/interactive"
+    interactive_scenario_path_out = "/home/klischat/Downloads/competition_scenarios_new/interactive"
     for config_file in glob.glob(os.path.join(interactive_scenario_path, "**/*.p"), recursive=True):
-        conf = migrate_config_file(str(config_file))
-        print(config_file)
-        with open(config_file, 'wb') as f:
+        # conf = migrate_config_file(str(config_file))
+        config_file_out = os.path.join(interactive_scenario_path_out,
+                                       os.path.basename(os.path.dirname(config_file)),
+                                       os.path.basename(config_file))
+        if not os.path.isfile(config_file_out):
+            continue
+        conf = migrate_competition(str(config_file))
+        # print(config_file)
+        # print(conf.scenario_name)
+        with open(config_file_out, 'wb') as f:
             pickle.dump(conf, f)
+
+    # from sumocr.sumo_config import DefaultConfig
+    for config_file in glob.glob(os.path.join(interactive_scenario_path_out, "**/*.p"), recursive=True):
+        # conf = migrate_config_file(str(config_file))
+        print(config_file)
+        with open(config_file, "rb") as input_file:
+            conf_load = pickle.load(input_file)
+        print(conf_load.scenario_name)

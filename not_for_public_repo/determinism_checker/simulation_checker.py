@@ -14,11 +14,12 @@ from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.scenario.obstacle import DynamicObstacle
 from commonroad.scenario.scenario import Scenario
 from commonroad.visualization.draw_dispatch_cr import draw_object
+from simulation.simulations import simulate_scenario, simulate_without_ego
+
 from sumocr.maps.sumo_scenario import ScenarioWrapper
 from sumocr.maps.sumo_scenario import ScenarioWrapper
 from sumocr.visualization.video import create_video
 
-from common.simulation import simulate_scenario
 
 try:
     from commonroad_sumo_manager.crsumo.interface.sumo_interface import SumoInterface
@@ -171,8 +172,7 @@ def resimulate_scenario(scenario_folder_path: str,
     #########################
     for simulation_id in range(num_of_simulations):
         print(f"Simulation {simulation_id} start.")
-        simulated_scenario = simulate_scenario(conf, scenario_wrapper, scenario_folder_path,
-                                               use_sumo_manager=use_sumo_manager)
+        simulated_scenario = simulate_without_ego(interactive_scenario_path=scenario_folder_path)[0]
         simulated_scenarios.update({simulation_id: simulated_scenario})
 
         if creating_video:

@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<CommonRoadSolution benchmark_id="KS1:TR1:DEU_Frankfurt-34_11_I-1:2020a" date="2021-07-08">
+<CommonRoadSolution benchmark_id="KS1:TR1:DEU_Frankfurt-34_11_I-1:2020a" date="2021-07-22">
   <ksTrajectory planningProblem="30315">
     <ksState>
       <x>468582.9169211095</x>

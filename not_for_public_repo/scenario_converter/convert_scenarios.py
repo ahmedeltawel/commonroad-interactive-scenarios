@@ -2,23 +2,19 @@
 Script which converts a static CommonRoad scenario with interactive SUMO scenario, where the vehicles are initialized exactly as in the static scenario
 """
 import argparse
-import sys
-import time
+import glob
 import pickle
-from typing import Tuple
+import sys
 
 import matplotlib as mpl
 
 from commonroad.common.file_reader import CommonRoadFileReader
 from commonroad.common.file_writer import CommonRoadFileWriter, OverwriteExistingFile
 from commonroad.scenario.scenario import ScenarioID, Scenario
-from config import CONFIG_TYPE, get_interactive_scenario_configuration, CRSumoConfigBase
+from crdesigner.map_conversion.sumo_map.config import SumoConfig
 
-mpl.use('TkAgg')
-
-from crdesigner.conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
+from crdesigner.map_conversion.sumo_map.cr2sumo.converter import CR2SumoMapConverter
 from sumocr.maps.util import *
-import numpy as np
 
 # load parameters
 
@@ -35,15 +31,11 @@ def convert_scenario_argsparser() -> argparse.ArgumentParser:
     """Returns a parser for the script's arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-cr", "--cr_scneario", type=str, default="./example_scenarios/cr_scenario/DEU_A9-2_1_T-1.xml",
-        help="Path to the CommonRoad scenario to be converted"
+        "-i", "--in_path", type=str, default="./example_scenarios/cr_scenario/",
+        help="Path to folder with the CommonRoad scenarios to be converted"
     )
     parser.add_argument(
-        "-o", "--output", type=str, default="./example_scenarios/output", help="Output folder path",
-    )
-    parser.add_argument(
-        "-c", "--config", type=CONFIG_TYPE, default=CONFIG_TYPE.SUMO_CONFIG_1, choices=list(CONFIG_TYPE),
-        help="Configuration type of the simulation"
+        "-o", "--out_path", type=str, default="./example_scenarios/output", help="Output folder path",
     )
     return parser
 
@@ -54,21 +46,37 @@ def reduce_scenario(scenario: Scenario):
 
 
 def convert_to_sumo_files(scenario_file: str,
-                          output_folder: str,
-                          conf: CRSumoConfigBase) -> CR2SumoMapConverter:
-    # Generate network file
-    os.makedirs(output_folder, exist_ok=True)
+                          output_folder_path: str,
+                          conf: SumoConfig) -> CR2SumoMapConverter:
 
     # load CR scenario and translate to origo
     scenario, planning_problem_set = CommonRoadFileReader(scenario_file).open()
+    scenario.scenario_id.obstacle_behavior = "I"
+
+    # adapt config file
     conf.country_id = scenario.scenario_id.country_id
-    # translate_scenario(scenario, planning_problem_set)
+    conf.scenario_name = str(scenario.scenario_id)
+    conf.presimulation_steps = 0
+    conf.dt = scenario.dt
+    goal_times = [state.time_step for pp_id, pp in planning_problem_set.planning_problem_dict.items()
+                  for state in pp.goal.state_list if hasattr(state, "time_step")]
+    if len(goal_times) > 0:
+        conf.simulation_steps = max(goal_times, key=lambda time_interval: time_interval.end).end
+        print(conf.simulation_steps)
+    else:
+        conf.simulation_steps = max(obs.prediction.final_time_step for obs in scenario.obstacles)
+
+    output_folder = os.path.join(output_folder_path, conf.scenario_name)
+    os.makedirs(output_folder, exist_ok=True)
 
     # convert scenario to SUMO files
-    converter = CR2SumoMapConverter(scenario.lanelet_network, conf)
+    converter_config = SumoConfig()
+    converter_config.scenario_name = str(scenario.scenario_id)
+    converter_config.country_id = scenario.scenario_id.country_id
+    converter = CR2SumoMapConverter(scenario, converter_config)
     converter.scenario_name = conf.scenario_name
     print(f'Write SUMO files for {scenario_file}')
-    conversion_possible = converter.convert_scenario_to_net_file(scenario, output_folder)
+    conversion_possible = converter.create_sumo_files(output_folder, traffic_from_trajectories=True)
 
     # save the reduced CR scenario
     reduce_scenario(scenario)
@@ -98,7 +106,7 @@ def convert_to_sumo_files(scenario_file: str,
 
 def convert_scenario(cr_scenario_path: str,
                      output_folder_path: str,
-                     config_type: CONFIG_TYPE) -> Tuple[bool, str]:
+                     conf=None) -> bool:
     """
     Generates interactive scenarios from CR maps
     :param cr_maps_folder_path: Path to the folder which contains the CR scenarios
@@ -108,22 +116,18 @@ def convert_scenario(cr_scenario_path: str,
     when no interesting ego vehicle has been found in the generated traffic
     :return Num of generated scenarios
     """
-   
-    benchmark_id = ScenarioID.from_benchmark_id(os.path.splitext(os.path.basename(cr_scenario_path))[0],
-                                                scenario_version="2020a")
-#   I means interactive, I-X-Y, Y means the number of configuration id
-    benchmark_id.obstacle_behavior = 'I'
-    
-    conf = get_interactive_scenario_configuration(config_type, str(benchmark_id))
-    output_folder = os.path.join(output_folder_path, conf.scenario_name)
-    
 
-    scenario_wrapper = convert_to_sumo_files(cr_scenario_path, output_folder, conf)
-    return scenario_wrapper is not None, output_folder
+    scenario_wrapper = convert_to_sumo_files(cr_scenario_path, output_folder_path, conf)
+    return scenario_wrapper is not None
 
 
 if __name__ == '__main__':
     arguments = convert_scenario_argsparser().parse_args(sys.argv[1:])
-    convert_scenario(cr_scenario_path=arguments.cr_scneario,
-                     output_folder_path=arguments.output,
-                     config_type=arguments.config)
+
+    for scenario_file in glob.glob(os.path.join(arguments.in_path, "*.xml")):
+        try:
+            convert_scenario(cr_scenario_path=scenario_file,
+                             output_folder_path=arguments.out_path,
+                             conf=DefaultConfig())
+        except:
+            continue
