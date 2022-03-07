@@ -23,7 +23,7 @@ from commonroad.common.solution import CommonRoadSolutionReader, VehicleType, Ve
 def main():
 
     folder_scenarios = os.path.join(os.path.dirname(__file__), "interactive_scenarios")
-    name_scenario = "DEU_Frankfurt-34_10_I-1"
+    name_scenario = "DEU_Frankfurt-34_11_I-1"
     path_scenario = os.path.join(folder_scenarios, name_scenario)
 
     simulation_without_ego = False
@@ -31,7 +31,7 @@ def main():
     simulation_with_solution = True
 
     # for simulation with a given solution trajectory
-    name_solution = "solution_KS1:TR1:DEU_Frankfurt-34_10_I-1:2020a"
+    name_solution = "solution_KS1:TR1:DEU_Frankfurt-34_11_I-1:2020a"
 
     path_solutions = os.path.join(os.path.dirname(__file__), "solutions")
     solution = CommonRoadSolutionReader.open(os.path.join(path_solutions, name_solution + ".xml"))
