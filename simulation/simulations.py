@@ -58,6 +58,8 @@ def simulate_scenario(mode: SimulationOption,
     :param use_sumo_manager: indicates whether to use the SUMO Manager
     :return: simulated scenario and dictionary with items {planning_problem_id: EgoVehicle}
     """
+    
+    scenario_wrapper.get_rou_file() # applies corrections to route file if necessary
 
     if num_of_steps is None:
         num_of_steps = conf.simulation_steps
