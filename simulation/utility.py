@@ -9,6 +9,7 @@ from commonroad.scenario.scenario import Scenario
 from commonroad.scenario.trajectory import Trajectory
 from commonroad.visualization.mp_renderer import MPRenderer
 from sumocr.interface.ego_vehicle import EgoVehicle
+from commonroad.visualization.draw_params import MPDrawParams
 
 
 def visualize_scenario_with_trajectory(scenario: Scenario,
@@ -29,13 +30,15 @@ def visualize_scenario_with_trajectory(scenario: Scenario,
         if not discrete_time_step:
             display.clear_output(wait=True)
         rnd = MPRenderer()
-        scenario.draw(rnd, draw_params={'time_begin': i})
+        draw_params = MPDrawParams()
+        draw_params.time_begin = i
+        scenario.draw(rnd, draw_params=draw_params)
         planning_problem_set.draw(rnd)
+
         if ego_vehicles:
-            rnd.draw_list(ego_vehicles,
-                          draw_params={'time_begin': i,
-                                       'dynamic_obstacle': {'vehicle_shape': {"occupancy": {"shape": {"rectangle": {
-                                           "facecolor": "green"}}}}}})
+            draw_params.dynamic_obstacle.vehicle_shape.occupancy.shape.facecolor = "green"
+            rnd.draw_list(ego_vehicles, draw_params=draw_params)
+
         rnd.render(show=True)
 
 
