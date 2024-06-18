@@ -24,7 +24,7 @@ from commonroad.planning.planning_problem import PlanningProblemSet
 from commonroad.scenario.scenario import Scenario
 from sumocr.interface.ego_vehicle import EgoVehicle
 from sumocr.interface.sumo_simulation import SumoSimulation
-from sumocr.maps.sumo_scenario import ScenarioWrapper
+from sumocr.scenario.scenario_wrapper import ScenarioWrapper
 from sumocr.sumo_config.default import DefaultConfig
 from sumocr.sumo_docker.interface.docker_interface import SumoInterface
 from sumocr.visualization.video import create_video
